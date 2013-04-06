@@ -10,12 +10,16 @@ import jp.bugscontrol.bugzilla.Server.Listener;
 import android.os.AsyncTask;
 
 public class BugzillaTask extends AsyncTask<Void, Void, Void> {
-    String method;
-    String response;
+    String method, response;
     Listener listener;
 
     public BugzillaTask(String method, Listener listener) {
         this.method = method;
+        this.listener = listener;
+    }
+
+    public BugzillaTask(String method, String params, Listener listener) {
+        this.method = method + "&params=[{" + params + "}]";
         this.listener = listener;
     }
 

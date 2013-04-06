@@ -5,14 +5,18 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
+import jp.bugscontrol.bugzilla.Server.Listener;
+
 import android.os.AsyncTask;
 
 public class BugzillaTask extends AsyncTask<Void, Void, Void> {
     String method;
     String response;
+    Listener listener;
 
-    public BugzillaTask(String method) {
+    public BugzillaTask(String method, Listener listener) {
         this.method = method;
+        this.listener = listener;
     }
 
     @Override
@@ -37,6 +41,6 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        System.out.println(response);
+        listener.callback(response);
     }
 }

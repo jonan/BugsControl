@@ -1,6 +1,6 @@
 package jp.bugscontrol;
 
-import jp.bugscontrol.bugzilla.BugzillaTask;
+import jp.bugscontrol.bugzilla.Server;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
@@ -11,6 +11,6 @@ public class ActivityHome extends SherlockActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        (new BugzillaTask("Product.get_accessible_products")).execute();
+        new Server();
     }
 }

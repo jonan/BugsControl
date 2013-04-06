@@ -5,7 +5,6 @@ import org.json.JSONObject;
 public class Product extends jp.bugscontrol.server.Product {
     public Product(JSONObject json) {
         createFromJSON(json);
-        System.out.println("[" + id + "] " + name + ": " + description);
     }
 
     @Override

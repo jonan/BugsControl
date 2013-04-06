@@ -34,7 +34,7 @@ public class Server extends jp.bugscontrol.server.Server {
                     for (int i=0; i<products_json.length(); ++i) {
                         try {
                             JSONObject p = products_json.getJSONObject(i);
-                            new Product(p);
+                            products.add(new Product(p));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }

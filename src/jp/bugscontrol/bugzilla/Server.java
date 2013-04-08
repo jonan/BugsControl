@@ -9,12 +9,17 @@ public class Server extends jp.bugscontrol.server.Server {
     }
 
     public Server() {
+        loadProducts();
+    }
+
+    void loadProducts() {
+        // Get all the products' ids and pass it to loadProductsFromIds()
         Listener l = new Listener() {
             @Override
             public void callback(String s) {
                 try {
                     JSONObject object = new JSONObject(s);
-                    loadProducts(object.getJSONObject("result").getString("ids"));
+                    loadProductsFromIds(object.getJSONObject("result").getString("ids"));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -24,7 +29,7 @@ public class Server extends jp.bugscontrol.server.Server {
         task.execute();
     }
 
-    void loadProducts(String product_ids) {
+    void loadProductsFromIds(String product_ids) {
         Listener l = new Listener() {
             @Override
             public void callback(String s) {
@@ -34,11 +39,13 @@ public class Server extends jp.bugscontrol.server.Server {
                     for (int i=0; i<products_json.length(); ++i) {
                         try {
                             JSONObject p = products_json.getJSONObject(i);
-                            products.add(new Product(p));
+                            if (products.size() < 60)
+                                products.add(new Product(p));
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
+                    productsListUpdated();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

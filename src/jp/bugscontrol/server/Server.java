@@ -13,8 +13,11 @@ public abstract class Server {
         products = new ArrayList<Product>();
     }
 
+    protected abstract void loadProducts();
+
     public void setAdapterProduct(AdapterProduct adapter) {
         adapter_product = adapter;
+        loadProducts();
     }
 
     public List<Product> getProducts() {return products;}

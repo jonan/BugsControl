@@ -8,11 +8,10 @@ public class Server extends jp.bugscontrol.server.Server {
         void callback(String s);
     }
 
-    public Server() {
-        loadProducts();
-    }
+    public Server() {}
 
-    void loadProducts() {
+    @Override
+    protected void loadProducts() {
         // Get all the products' ids and pass it to loadProductsFromIds()
         Listener l = new Listener() {
             @Override

@@ -20,9 +20,10 @@ public class Bug extends jp.bugscontrol.server.Bug {
     public void createFromJSON(JSONObject json) {
         try {
             id = json.getInt("id");
+            open = json.getBoolean("is_open");
             summary = json.getString("summary");
             assignee = json.getString("assigned_to");
-            open = json.getBoolean("is_open");
+            priority = json.getString("priority");
         } catch (Exception e) {
             e.printStackTrace();
         }

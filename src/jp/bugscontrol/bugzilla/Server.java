@@ -56,13 +56,8 @@ public class Server extends jp.bugscontrol.server.Server {
                     JSONObject object = new JSONObject(s);
                     JSONArray products_json = object.getJSONObject("result").getJSONArray("products");
                     for (int i=0; i<products_json.length(); ++i) {
-                        try {
-                            JSONObject p = products_json.getJSONObject(i);
-                            if (products.size() < 60)
-                                products.add(new Product(p));
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                        JSONObject p = products_json.getJSONObject(i);
+                        products.add(new Product(p));
                     }
                     productsListUpdated();
                 } catch (Exception e) {

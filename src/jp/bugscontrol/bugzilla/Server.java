@@ -39,12 +39,13 @@ public class Server extends jp.bugscontrol.server.Server {
                     for (int i=0; i < bugs.length(); ++i) {
                         p.addBug(new Bug(bugs.getJSONObject(i)));
                     }
+                    bugsListUpdated();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         };
-        BugzillaTask task = new BugzillaTask("Bug.search", "product\": \"" + p.getName() + "\"", l);
+        BugzillaTask task = new BugzillaTask("Bug.search", "\"product\":\"" + p.getName() + "\"", l);
         task.execute();
     }
 

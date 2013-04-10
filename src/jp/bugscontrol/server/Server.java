@@ -3,11 +3,13 @@ package jp.bugscontrol.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.bugscontrol.AdapterBug;
 import jp.bugscontrol.AdapterProduct;
 
 public abstract class Server {
     protected List<Product> products;
     AdapterProduct adapter_product;
+    AdapterBug adapter_bug;
 
     public Server() {
         products = new ArrayList<Product>();
@@ -21,10 +23,19 @@ public abstract class Server {
         loadProducts();
     }
 
+    public void setAdapterBug(Product product, AdapterBug adapter) {
+        adapter_bug = adapter;
+        loadBugsForProduct(product);
+    }
+
     public List<Product> getProducts() {return products;}
 
     protected void productsListUpdated() {
         adapter_product.notifyDataSetChanged();
+    }
+
+    protected void bugsListUpdated() {
+        adapter_bug.notifyDataSetChanged();
     }
 
     public Product getProductFromId(int product_id) {

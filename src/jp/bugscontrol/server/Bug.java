@@ -2,7 +2,8 @@ package jp.bugscontrol.server;
 
 public abstract class Bug {
     protected int id;
-    protected String summary;
+    protected boolean open;
+    protected String summary, assignee;
 
     public Bug() {}
 
@@ -10,5 +11,8 @@ public abstract class Bug {
 
     public int getId() {return id;}
 
-    public String getSummary() {return summary;}
+    public boolean isOpen() {return open;}
+
+    public String getSummary()  {return summary;}
+    public String getAssignee() {return assignee;}
 }

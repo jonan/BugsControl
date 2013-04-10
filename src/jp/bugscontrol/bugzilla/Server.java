@@ -28,6 +28,26 @@ public class Server extends jp.bugscontrol.server.Server {
         task.execute();
     }
 
+    @Override
+    protected void loadBugsForProduct(final jp.bugscontrol.server.Product p) {
+        Listener l = new Listener() {
+            @Override
+            public void callback(String s) {
+                try {
+                    JSONObject object = new JSONObject(s);
+                    JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
+                    for (int i=0; i < bugs.length(); ++i) {
+                        p.addBug(new Bug(bugs.getJSONObject(i)));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        BugzillaTask task = new BugzillaTask("Bug.search", "product\": \"" + p.getName() + "\"", l);
+        task.execute();
+    }
+
     void loadProductsFromIds(String product_ids) {
         Listener l = new Listener() {
             @Override

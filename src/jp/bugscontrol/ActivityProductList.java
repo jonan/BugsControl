@@ -8,16 +8,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Window;
 
 public class ActivityProductList extends SherlockListActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_product_list);
 
         final AdapterProduct adapter = new AdapterProduct(this, ActivityHome.server.getProducts());
         getListView().setAdapter(adapter);
-        ActivityHome.server.setAdapterProduct(adapter);
+        ActivityHome.server.setAdapterProduct(adapter, this);
         final Activity current = this;
         getListView().setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

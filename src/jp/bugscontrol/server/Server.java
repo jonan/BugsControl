@@ -12,7 +12,7 @@ public abstract class Server {
     protected List<Product> products;
     AdapterProduct adapter_product;
     AdapterBug adapter_bug;
-    SherlockListActivity products_activity;
+    SherlockListActivity products_activity, bugs_activity;
 
     public Server() {
         products = new ArrayList<Product>();
@@ -29,8 +29,11 @@ public abstract class Server {
         loadProducts();
     }
 
-    public void setAdapterBug(Product product, AdapterBug adapter) {
+    public void setAdapterBug(Product product, AdapterBug adapter, SherlockListActivity activity) {
         adapter_bug = adapter;
+        bugs_activity = activity;
+
+        bugs_activity.setSupportProgressBarIndeterminateVisibility(true);
         loadBugsForProduct(product);
     }
 
@@ -43,6 +46,7 @@ public abstract class Server {
 
     protected void bugsListUpdated() {
         adapter_bug.notifyDataSetChanged();
+        bugs_activity.setSupportProgressBarIndeterminateVisibility(false);
     }
 
     public Product getProductFromId(int product_id) {

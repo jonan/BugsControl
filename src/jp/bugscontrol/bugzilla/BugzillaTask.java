@@ -6,7 +6,6 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -34,7 +33,8 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... p) {
         try {
-            HttpClient http_client = new DefaultHttpClient();
+            //HttpClient http_client = new DefaultHttpClient();
+            HttpClient http_client = MySSLSocketFactory.getNewHttpClient();
             HttpPost http_post = new HttpPost("https://bugs.kde.org/jsonrpc.cgi");
             http_post.addHeader("Content-Type", "application/json");
 

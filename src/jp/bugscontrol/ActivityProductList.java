@@ -1,23 +1,39 @@
 package jp.bugscontrol;
 
+import jp.bugscontrol.server.Server;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 
+import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Window;
 
-public class ActivityProductList extends SherlockListActivity  {
+public class ActivityProductList extends SherlockListActivity implements ActionBar.OnNavigationListener {
+    int server;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_product_list);
 
-        final int server = getIntent().getIntExtra("server", -1);
+        server = getIntent().getIntExtra("server", -1);
+
+        Context context = getSupportActionBar().getThemedContext();
+        ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, R.layout.sherlock_spinner_item);
+        for (Server s : ActivityHome.servers)
+            list.add(s.getName());
+        list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
+
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getSupportActionBar().setListNavigationCallbacks(list, this);
+        getSupportActionBar().setSelectedNavigationItem(server);
 
         final AdapterProduct adapter = new AdapterProduct(this, ActivityHome.servers.get(server).getProducts());
         getListView().setAdapter(adapter);
@@ -31,5 +47,15 @@ public class ActivityProductList extends SherlockListActivity  {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(int position, long id) {
+        if (position == server)
+            return true;
+        Intent intent = new Intent(this, ActivityProductList.class);
+        intent.putExtra("server", position);
+        startActivity(intent);
+        return true;
     }
 }

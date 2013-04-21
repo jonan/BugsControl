@@ -24,6 +24,9 @@ public class ActivityRegister extends SherlockActivity {
         Server new_server = new Server(name, url);
         new_server.setUser(user, password);
         ActivityHome.servers.add(new_server);
-        startActivity(new Intent(this, ActivityProductList.class));
+
+        Intent intent = new Intent(this, ActivityProductList.class);
+        intent.putExtra("server", ActivityHome.servers.size()-1);
+        startActivity(intent);
     }
 }

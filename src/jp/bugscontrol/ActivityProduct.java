@@ -14,12 +14,13 @@ public class ActivityProduct extends SherlockListActivity  {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_product_list);
 
+        int server = getIntent().getIntExtra("server", -1);
         int product_id = getIntent().getIntExtra("product_id", -1);
-        Product product = ActivityHome.servers.get(0).getProductFromId(product_id);
+        Product product = ActivityHome.servers.get(server).getProductFromId(product_id);
         setTitle(product.getName());
 
         final AdapterBug adapter = new AdapterBug(this, product.getBugs());
         getListView().setAdapter(adapter);
-        ActivityHome.servers.get(0).setAdapterBug(product, adapter, this);
+        ActivityHome.servers.get(server).setAdapterBug(product, adapter, this);
     }
 }

@@ -17,10 +17,11 @@ public class ActivityRegister extends SherlockActivity {
     }
 
     public void registerServer(View view) {
+        String name = ((EditText) findViewById(R.id.name)).getText().toString();
         String url = ((EditText) findViewById(R.id.url)).getText().toString();
         String user = ((EditText) findViewById(R.id.user)).getText().toString();
         String password = ((EditText) findViewById(R.id.password)).getText().toString();
-        Server new_server = new Server(url);
+        Server new_server = new Server(name, url);
         new_server.setUser(user, password);
         ActivityHome.servers.add(new_server);
         startActivity(new Intent(this, ActivityProductList.class));

@@ -8,8 +8,8 @@ public class Server extends jp.bugscontrol.server.Server {
         void callback(String s);
     }
 
-    public Server(String url) {
-        super(url);
+    public Server(String name, String url) {
+        super(name, url);
     }
 
     @Override

@@ -10,13 +10,14 @@ import jp.bugscontrol.AdapterProduct;
 
 public abstract class Server {
     protected List<Product> products;
-    protected String url, user, password;
+    protected String name, url, user, password;
 
     AdapterProduct adapter_product;
     AdapterBug adapter_bug;
     SherlockListActivity products_activity, bugs_activity;
 
-    public Server(String url) {
+    public Server(String name, String url) {
+        this.name = name;
         this.url = url;
         user = "";
         password = "";
@@ -66,6 +67,7 @@ public abstract class Server {
         return null;
     }
 
+    public String getName()     {return name;}
     public String getUrl()      {return url;}
     public String getUser()     {return user;}
     public String getPassword() {return password;}

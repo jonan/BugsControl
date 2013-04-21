@@ -10,11 +10,16 @@ import jp.bugscontrol.AdapterProduct;
 
 public abstract class Server {
     protected List<Product> products;
+    protected String url, user, password;
+
     AdapterProduct adapter_product;
     AdapterBug adapter_bug;
     SherlockListActivity products_activity, bugs_activity;
 
-    public Server() {
+    public Server(String url) {
+        this.url = url;
+        user = "";
+        password = "";
         products = new ArrayList<Product>();
     }
 
@@ -55,4 +60,10 @@ public abstract class Server {
                 return p;
         return null;
     }
+
+    public String getUrl()      {return url;}
+    public String getUser()     {return user;}
+    public String getPassword() {return password;}
+
+    public boolean hasUser() {return user.length() > 0;}
 }

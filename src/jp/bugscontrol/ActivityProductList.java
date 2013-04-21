@@ -17,9 +17,9 @@ public class ActivityProductList extends SherlockListActivity  {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_product_list);
 
-        final AdapterProduct adapter = new AdapterProduct(this, ActivityHome.server.getProducts());
+        final AdapterProduct adapter = new AdapterProduct(this, ActivityHome.servers.get(0).getProducts());
         getListView().setAdapter(adapter);
-        ActivityHome.server.setAdapterProduct(adapter, this);
+        ActivityHome.servers.get(0).setAdapterProduct(adapter, this);
         final Activity current = this;
         getListView().setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

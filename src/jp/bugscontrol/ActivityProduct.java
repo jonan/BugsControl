@@ -15,11 +15,11 @@ public class ActivityProduct extends SherlockListActivity  {
         setContentView(R.layout.activity_product_list);
 
         int product_id = getIntent().getIntExtra("product_id", -1);
-        Product product = ActivityHome.server.getProductFromId(product_id);
+        Product product = ActivityHome.servers.get(0).getProductFromId(product_id);
         setTitle(product.getName());
 
         final AdapterBug adapter = new AdapterBug(this, product.getBugs());
         getListView().setAdapter(adapter);
-        ActivityHome.server.setAdapterBug(product, adapter, this);
+        ActivityHome.servers.get(0).setAdapterBug(product, adapter, this);
     }
 }

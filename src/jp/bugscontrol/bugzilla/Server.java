@@ -8,7 +8,9 @@ public class Server extends jp.bugscontrol.server.Server {
         void callback(String s);
     }
 
-    public Server() {}
+    public Server(String url) {
+        super(url);
+    }
 
     @Override
     protected void loadProducts() {
@@ -24,7 +26,7 @@ public class Server extends jp.bugscontrol.server.Server {
                 }
             }
         };
-        BugzillaTask task = new BugzillaTask("Product.get_accessible_products", l);
+        BugzillaTask task = new BugzillaTask(this, "Product.get_accessible_products", l);
         task.execute();
     }
 
@@ -45,7 +47,7 @@ public class Server extends jp.bugscontrol.server.Server {
                 }
             }
         };
-        BugzillaTask task = new BugzillaTask("Bug.search", "\"product\":\"" + p.getName() + "\"", l);
+        BugzillaTask task = new BugzillaTask(this, "Bug.search", "\"product\":\"" + p.getName() + "\"", l);
         task.execute();
     }
 
@@ -66,7 +68,7 @@ public class Server extends jp.bugscontrol.server.Server {
                 }
             }
         };
-        BugzillaTask task = new BugzillaTask("Product.get", "\"ids\":" + product_ids, l);
+        BugzillaTask task = new BugzillaTask(this, "Product.get", "\"ids\":" + product_ids, l);
         task.execute();
     }
 }

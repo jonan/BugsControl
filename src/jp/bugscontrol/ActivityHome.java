@@ -1,6 +1,9 @@
 package jp.bugscontrol;
 
-import jp.bugscontrol.bugzilla.Server;
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.bugscontrol.server.Server;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
@@ -8,13 +11,14 @@ import android.content.Intent;
 import android.os.Bundle;
 
 public class ActivityHome extends SherlockActivity {
-    static public jp.bugscontrol.server.Server server;
+    static public List<Server> servers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        server = new Server();
+        servers = new ArrayList<Server>();
+        servers.add(new jp.bugscontrol.bugzilla.Server("https://bugs.kde.org/"));
         startActivity(new Intent(this, ActivityProductList.class));
     }
 }

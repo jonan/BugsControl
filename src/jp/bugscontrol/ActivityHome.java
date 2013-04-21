@@ -18,7 +18,6 @@ public class ActivityHome extends SherlockActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         servers = new ArrayList<Server>();
-        servers.add(new jp.bugscontrol.bugzilla.Server("https://bugs.kde.org/"));
-        startActivity(new Intent(this, ActivityProductList.class));
+        startActivity(new Intent(this, ActivityRegister.class));
     }
 }

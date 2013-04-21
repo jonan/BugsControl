@@ -26,6 +26,11 @@ public abstract class Server {
     protected abstract void loadProducts();
     protected abstract void loadBugsForProduct(Product p);
 
+    public void setUser(String user, String password) {
+        this.user = user;
+        this.password = password;
+    }
+
     public void setAdapterProduct(AdapterProduct adapter, SherlockListActivity activity) {
         adapter_product = adapter;
         products_activity = activity;

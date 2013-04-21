@@ -32,7 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/password"
+        android:hint="@string/user_name"
         android:inputType="text" />
 
     <EditText
@@ -40,7 +40,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="@string/confirm_password"
+        android:hint="@string/password"
         android:inputType="textPassword" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="registerServer"
+        android:text="@string/ok" />
 
 </LinearLayout>

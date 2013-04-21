@@ -9,6 +9,6 @@
     <string name="url">URL</string>
     <string name="user_name">Nombre de usuario</string>
     <string name="password">Contraseña</string>
-    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="ok">Aceptar</string>
 
 </resources>

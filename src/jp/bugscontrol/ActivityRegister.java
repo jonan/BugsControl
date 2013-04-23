@@ -17,13 +17,17 @@ public class ActivityRegister extends SherlockActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        List<jp.bugscontrol.db.Server> db_servers = new Select().from(jp.bugscontrol.db.Server.class).execute();
-        if (db_servers.size() > 0) {
-            jp.bugscontrol.db.Server s = db_servers.get(0);
-            ActivityHome.servers.add(new Server(s));
-            Intent intent = new Intent(this, ActivityProductList.class);
-            intent.putExtra("server", ActivityHome.servers.size()-1);
-            startActivity(intent);
+
+        if (!getIntent().getBooleanExtra("new_server", false)) {
+            List<jp.bugscontrol.db.Server> db_servers = new Select().from(jp.bugscontrol.db.Server.class).execute();
+            for (jp.bugscontrol.db.Server s : db_servers)
+                ActivityHome.servers.add(new Server(s));
+
+            if (ActivityHome.servers.size() > 0) {
+                Intent intent = new Intent(this, ActivityProductList.class);
+                intent.putExtra("server", 0);
+                startActivity(intent);
+            }
         }
     }
 

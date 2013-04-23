@@ -29,6 +29,7 @@ public class ActivityProductList extends SherlockListActivity implements ActionB
         ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, R.layout.sherlock_spinner_item);
         for (Server s : ActivityHome.servers)
             list.add(s.getName());
+        list.add("Add new server");
         list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
@@ -53,6 +54,14 @@ public class ActivityProductList extends SherlockListActivity implements ActionB
     public boolean onNavigationItemSelected(int position, long id) {
         if (position == server)
             return true;
+
+        if (position == ActivityHome.servers.size()) {
+            Intent intent = new Intent(this, ActivityRegister.class);
+            intent.putExtra("new_server", true);
+            startActivity(intent);
+            return true;
+        }
+
         Intent intent = new Intent(this, ActivityProductList.class);
         intent.putExtra("server", position);
         startActivity(intent);

@@ -1,5 +1,6 @@
 package jp.bugscontrol;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jp.bugscontrol.bugzilla.Server;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.EditText;
 
 public class ActivityRegister extends SherlockActivity {
+    static public List<Server> servers = new ArrayList<Server>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,9 +24,9 @@ public class ActivityRegister extends SherlockActivity {
         if (!getIntent().getBooleanExtra("new_server", false)) {
             List<jp.bugscontrol.db.Server> db_servers = new Select().from(jp.bugscontrol.db.Server.class).execute();
             for (jp.bugscontrol.db.Server s : db_servers)
-                ActivityHome.servers.add(new Server(s));
+                servers.add(new Server(s));
 
-            if (ActivityHome.servers.size() > 0) {
+            if (servers.size() > 0) {
                 Intent intent = new Intent(this, ActivityProductList.class);
                 intent.putExtra("server", 0);
                 startActivity(intent);
@@ -39,10 +42,10 @@ public class ActivityRegister extends SherlockActivity {
         Server new_server = new Server(name, url);
         new_server.setUser(user, password);
         new_server.save();
-        ActivityHome.servers.add(new_server);
+        servers.add(new_server);
 
         Intent intent = new Intent(this, ActivityProductList.class);
-        intent.putExtra("server", ActivityHome.servers.size()-1);
+        intent.putExtra("server", servers.size()-1);
         startActivity(intent);
     }
 }

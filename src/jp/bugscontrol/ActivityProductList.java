@@ -27,7 +27,7 @@ public class ActivityProductList extends SherlockListActivity implements ActionB
 
         Context context = getSupportActionBar().getThemedContext();
         ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, R.layout.sherlock_spinner_item);
-        for (Server s : ActivityHome.servers)
+        for (Server s : ActivityRegister.servers)
             list.add(s.getName());
         list.add(getResources().getString(R.string.add_server));
         list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
@@ -36,9 +36,9 @@ public class ActivityProductList extends SherlockListActivity implements ActionB
         getSupportActionBar().setListNavigationCallbacks(list, this);
         getSupportActionBar().setSelectedNavigationItem(server);
 
-        final AdapterProduct adapter = new AdapterProduct(this, ActivityHome.servers.get(server).getProducts());
+        final AdapterProduct adapter = new AdapterProduct(this, ActivityRegister.servers.get(server).getProducts());
         getListView().setAdapter(adapter);
-        ActivityHome.servers.get(server).setAdapterProduct(adapter, this);
+        ActivityRegister.servers.get(server).setAdapterProduct(adapter, this);
         final Activity current = this;
         getListView().setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -55,7 +55,7 @@ public class ActivityProductList extends SherlockListActivity implements ActionB
         if (position == server)
             return true;
 
-        if (position == ActivityHome.servers.size()) {
+        if (position == ActivityRegister.servers.size()) {
             Intent intent = new Intent(this, ActivityRegister.class);
             intent.putExtra("new_server", true);
             startActivity(intent);

@@ -18,12 +18,12 @@ public class ActivityProduct extends SherlockListActivity  {
 
         int server = getIntent().getIntExtra("server", -1);
         int product_id = getIntent().getIntExtra("product_id", -1);
-        Product product = ActivityHome.servers.get(server).getProductFromId(product_id);
+        Product product = ActivityRegister.servers.get(server).getProductFromId(product_id);
         setTitle(product.getName());
 
         final AdapterBug adapter = new AdapterBug(this, product.getBugs());
         getListView().setAdapter(adapter);
-        ActivityHome.servers.get(server).setAdapterBug(product, adapter, this);
+        ActivityRegister.servers.get(server).setAdapterBug(product, adapter, this);
     }
 
     @Override

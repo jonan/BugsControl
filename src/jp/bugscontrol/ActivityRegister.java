@@ -23,6 +23,7 @@ public class ActivityRegister extends SherlockActivity {
 
         if (!getIntent().getBooleanExtra("new_server", false)) {
             List<jp.bugscontrol.db.Server> db_servers = new Select().from(jp.bugscontrol.db.Server.class).execute();
+            servers.clear();
             for (jp.bugscontrol.db.Server s : db_servers)
                 servers.add(new Server(s));
 

@@ -10,5 +10,6 @@
     <string name="user_name">Nombre de usuario</string>
     <string name="password">Contraseña</string>
     <string name="ok">Aceptar</string>
+    <string name="add_server">Añadir servidor</string>
 
 </resources>

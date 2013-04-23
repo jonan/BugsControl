@@ -29,7 +29,7 @@ public class ActivityProductList extends SherlockListActivity implements ActionB
         ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, R.layout.sherlock_spinner_item);
         for (Server s : ActivityHome.servers)
             list.add(s.getName());
-        list.add("Add new server");
+        list.add(getResources().getString(R.string.add_server));
         list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);

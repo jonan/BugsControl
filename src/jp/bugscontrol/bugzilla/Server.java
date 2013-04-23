@@ -42,6 +42,7 @@ public class Server extends jp.bugscontrol.server.Server {
                 try {
                     JSONObject object = new JSONObject(s);
                     JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
+                    p.getBugs().clear();
                     for (int i=0; i < bugs.length(); ++i) {
                         p.addBug(new Bug(bugs.getJSONObject(i)));
                     }
@@ -62,6 +63,7 @@ public class Server extends jp.bugscontrol.server.Server {
                 try {
                     JSONObject object = new JSONObject(s);
                     JSONArray products_json = object.getJSONObject("result").getJSONArray("products");
+                    products.clear();
                     for (int i=0; i<products_json.length(); ++i) {
                         JSONObject p = products_json.getJSONObject(i);
                         products.add(new Product(p));

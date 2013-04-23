@@ -12,6 +12,10 @@ public class Server extends jp.bugscontrol.server.Server {
         super(name, url);
     }
 
+    public Server(jp.bugscontrol.db.Server db_server) {
+        super(db_server);
+    }
+
     @Override
     protected void loadProducts() {
         // Get all the products' ids and pass it to loadProductsFromIds()

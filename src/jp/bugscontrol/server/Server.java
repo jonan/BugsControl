@@ -24,6 +24,14 @@ public abstract class Server {
         products = new ArrayList<Product>();
     }
 
+    public Server(jp.bugscontrol.db.Server db_server) {
+        name = db_server.name;
+        url = db_server.url;
+        user = db_server.user;
+        password = db_server.password;
+        products = new ArrayList<Product>();
+    }
+
     protected abstract void loadProducts();
     protected abstract void loadBugsForProduct(Product p);
 
@@ -65,6 +73,15 @@ public abstract class Server {
             if (p.getId() == product_id)
                 return p;
         return null;
+    }
+
+    public void save() {
+        jp.bugscontrol.db.Server db_server = new jp.bugscontrol.db.Server();
+        db_server.name = name;
+        db_server.url = url;
+        db_server.user = user;
+        db_server.password = password;
+        db_server.save();
     }
 
     public String getName()     {return name;}

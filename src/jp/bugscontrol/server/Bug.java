@@ -3,7 +3,8 @@ package jp.bugscontrol.server;
 public abstract class Bug {
     protected int id;
     protected boolean open;
-    protected String summary, assignee, priority;
+    protected String summary, priority;
+    protected String reporter, assignee;
 
     public Bug() {}
 
@@ -14,6 +15,7 @@ public abstract class Bug {
     public boolean isOpen() {return open;}
 
     public String getSummary()  {return summary;}
-    public String getAssignee() {return assignee;}
     public String getPriority() {return priority;}
+    public String getReporter() {return reporter;}
+    public String getAssignee() {return assignee;}
 }

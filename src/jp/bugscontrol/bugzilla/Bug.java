@@ -22,8 +22,9 @@ public class Bug extends jp.bugscontrol.server.Bug {
             id = json.getInt("id");
             open = json.getBoolean("is_open");
             summary = json.getString("summary");
-            assignee = json.getString("assigned_to");
             priority = json.getString("priority");
+            reporter = json.getString("creator");
+            assignee = json.getString("assigned_to");
         } catch (Exception e) {
             e.printStackTrace();
         }

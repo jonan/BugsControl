@@ -44,7 +44,8 @@ public class Server extends jp.bugscontrol.server.Server {
                     JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
                     p.getBugs().clear();
                     for (int i=0; i < bugs.length(); ++i) {
-                        p.addBug(new Bug(bugs.getJSONObject(i)));
+                        if (bugs.getJSONObject(i).getBoolean("is_open"))
+                            p.addBug(new Bug(bugs.getJSONObject(i)));
                     }
                     bugsListUpdated();
                 } catch (Exception e) {

@@ -8,7 +8,7 @@ import com.actionbarsherlock.view.Window;
 
 import jp.bugscontrol.server.Product;
 
-public class ActivityProduct extends SherlockListActivity  {
+public class ActivityProduct extends SherlockListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

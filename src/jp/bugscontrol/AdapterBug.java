@@ -35,4 +35,8 @@ public class AdapterBug extends ArrayAdapter<Bug> {
 
         return view;
     }
+
+    public int getBugIdFromPosition(int position) {
+        return getItem(position).getId();
+    }
 }

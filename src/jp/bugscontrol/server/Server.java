@@ -75,6 +75,14 @@ public abstract class Server {
         return null;
     }
 
+    public Bug getBugFromId(int bug_id) {
+        for (Product p : products)
+            for (Bug b : p.bugs)
+                if (b.getId() == bug_id)
+                    return b;
+        return null;
+    }
+
     public void save() {
         jp.bugscontrol.db.Server db_server = new jp.bugscontrol.db.Server();
         db_server.name = name;

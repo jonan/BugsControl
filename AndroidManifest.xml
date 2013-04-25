@@ -34,6 +34,10 @@
             android:name="jp.bugscontrol.ActivityProduct"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="jp.bugscontrol.ActivityBug"
+            android:label="@string/app_name" >
+        </activity>
     </application>
 
 </manifest>

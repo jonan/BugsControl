@@ -11,5 +11,7 @@
     <string name="password">Contraseña</string>
     <string name="ok">Aceptar</string>
     <string name="add_server">Añadir servidor</string>
+    <string name="reporter">Creador</string>
+    <string name="assignee">Responsable</string>
 
 </resources>

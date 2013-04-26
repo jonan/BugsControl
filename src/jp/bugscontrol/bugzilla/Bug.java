@@ -41,6 +41,7 @@ public class Bug extends jp.bugscontrol.server.Bug {
             open = json.getBoolean("is_open");
             summary = json.getString("summary");
             priority = json.getString("priority");
+            status = json.getString("status");
             reporter = json.getString("creator");
             assignee = json.getString("assigned_to");
         } catch (Exception e) {

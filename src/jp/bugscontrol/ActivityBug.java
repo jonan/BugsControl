@@ -43,6 +43,8 @@ public class ActivityBug extends SherlockActivity {
         ImageLoader.loadImage("http://www.gravatar.com/avatar/" + md5(bug.getAssignee()), (ImageView) findViewById(R.id.assignee_img));
 
         ((TextView) findViewById(R.id.summary)).setText(bug.getSummary());
+        ((TextView) findViewById(R.id.priority)).setText(bug.getPriority());
+        ((TextView) findViewById(R.id.status)).setText(bug.getStatus());
     }
 
     @Override

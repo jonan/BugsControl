@@ -1,6 +1,6 @@
 /*
  *  BugsControl
- *  Copyright (C) 2013  Jon Ander Peñalba
+ *  Copyright (C) 2013  Endika Gutiérrez, Jon Ander Peñalba
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -52,7 +52,7 @@ public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
     protected Bitmap doInBackground(Void... params) {
         Bitmap image = null;
         try {
-            URL url = new URL(src);
+            final URL url = new URL(src);
             image = BitmapFactory.decodeStream(new FlushedInputStream(url.openStream()));
         } catch (Exception e) {
             e.printStackTrace();
@@ -81,11 +81,9 @@ public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
                 long bytesSkipped = in.skip(n - totalBytesSkipped);
                 if (bytesSkipped == 0L) {
                     int b = read();
-                    if (b < 0) {
+                    if (b < 0)
                         break;  // EOF
-                    } else {
-                        bytesSkipped = 1; // Read one byte
-                    }
+                    bytesSkipped = 1; // Read one byte
                 }
                 totalBytesSkipped += bytesSkipped;
             }

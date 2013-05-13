@@ -52,30 +52,8 @@ public class Server extends jp.bugscontrol.server.Server {
         task.execute();
     }
 
-    @Override
-    protected void loadBugsForProduct(final jp.bugscontrol.server.Product p) {
-        Listener l = new Listener() {
-            @Override
-            public void callback(String s) {
-                try {
-                    JSONObject object = new JSONObject(s);
-                    JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
-                    p.getBugs().clear();
-                    for (int i=0; i < bugs.length(); ++i) {
-                        if (bugs.getJSONObject(i).getBoolean("is_open"))
-                            p.addBug(new Bug(bugs.getJSONObject(i)));
-                    }
-                    bugsListUpdated();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        BugzillaTask task = new BugzillaTask(this, "Bug.search", "\"product\":\"" + p.getName() + "\"", l);
-        task.execute();
-    }
-
     void loadProductsFromIds(String product_ids) {
+        final Server server = this;
         Listener l = new Listener() {
             @Override
             public void callback(String s) {
@@ -85,7 +63,7 @@ public class Server extends jp.bugscontrol.server.Server {
                     products.clear();
                     for (int i=0; i<products_json.length(); ++i) {
                         JSONObject p = products_json.getJSONObject(i);
-                        products.add(new Product(p));
+                        products.add(new Product(server, p));
                     }
                     productsListUpdated();
                 } catch (Exception e) {

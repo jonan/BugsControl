@@ -23,7 +23,6 @@ import java.util.List;
 
 import com.actionbarsherlock.app.SherlockListActivity;
 
-import jp.bugscontrol.AdapterBug;
 import jp.bugscontrol.AdapterProduct;
 
 public abstract class Server {
@@ -31,8 +30,7 @@ public abstract class Server {
     protected String name, url, user, password;
 
     AdapterProduct adapter_product;
-    AdapterBug adapter_bug;
-    SherlockListActivity products_activity, bugs_activity;
+    SherlockListActivity products_activity;
 
     public Server(String name, String url) {
         this.name = name;
@@ -51,7 +49,6 @@ public abstract class Server {
     }
 
     protected abstract void loadProducts();
-    protected abstract void loadBugsForProduct(Product p);
 
     public void setUser(String user, String password) {
         this.user = user;
@@ -66,24 +63,11 @@ public abstract class Server {
         loadProducts();
     }
 
-    public void setAdapterBug(Product product, AdapterBug adapter, SherlockListActivity activity) {
-        adapter_bug = adapter;
-        bugs_activity = activity;
-
-        bugs_activity.setSupportProgressBarIndeterminateVisibility(true);
-        loadBugsForProduct(product);
-    }
-
     public List<Product> getProducts() {return products;}
 
     protected void productsListUpdated() {
         adapter_product.notifyDataSetChanged();
         products_activity.setSupportProgressBarIndeterminateVisibility(false);
-    }
-
-    protected void bugsListUpdated() {
-        adapter_bug.notifyDataSetChanged();
-        bugs_activity.setSupportProgressBarIndeterminateVisibility(false);
     }
 
     public Product getProductFromId(int product_id) {

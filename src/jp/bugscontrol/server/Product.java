@@ -21,6 +21,9 @@ package jp.bugscontrol.server;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.actionbarsherlock.app.SherlockListActivity;
+
+import jp.bugscontrol.AdapterBug;
 import jp.bugscontrol.server.Bug;
 
 public abstract class Product {
@@ -28,8 +31,29 @@ public abstract class Product {
     protected String name, description;
     protected List<Bug> bugs;
 
-    public Product() {
+    protected AdapterBug adapter_bug;
+    protected SherlockListActivity bugs_activity;
+
+    protected Server server;
+
+    public Product(Server server) {
         bugs = new ArrayList<Bug>();
+        this.server = server;
+    }
+
+    protected abstract void loadBugs();
+
+    public void setAdapterBug(Product product, AdapterBug adapter, SherlockListActivity activity) {
+        adapter_bug = adapter;
+        bugs_activity = activity;
+
+        bugs_activity.setSupportProgressBarIndeterminateVisibility(true);
+        loadBugs();
+    }
+
+    protected void bugsListUpdated() {
+        adapter_bug.notifyDataSetChanged();
+        bugs_activity.setSupportProgressBarIndeterminateVisibility(false);
     }
 
     abstract public void createFromString(String s);

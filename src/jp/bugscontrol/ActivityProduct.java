@@ -46,7 +46,7 @@ public class ActivityProduct extends SherlockListActivity {
 
         final AdapterBug adapter = new AdapterBug(this, product.getBugs());
         getListView().setAdapter(adapter);
-        ActivityRegister.servers.get(server).setAdapterBug(product, adapter, this);
+        product.setAdapterBug(product, adapter, this);
         final Activity current = this;
         getListView().setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {

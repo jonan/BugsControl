@@ -18,11 +18,39 @@
 
 package jp.bugscontrol.bugzilla;
 
+import jp.bugscontrol.bugzilla.Server.Listener;
+
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Product extends jp.bugscontrol.server.Product {
-    public Product(JSONObject json) {
+    public Product(jp.bugscontrol.server.Server server, JSONObject json) {
+        super(server);
         createFromJSON(json);
+    }
+
+    @Override
+    protected void loadBugs() {
+        final Product p = this;
+        Listener l = new Listener() {
+            @Override
+            public void callback(String s) {
+                try {
+                    JSONObject object = new JSONObject(s);
+                    JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
+                    p.getBugs().clear();
+                    for (int i=0; i < bugs.length(); ++i) {
+                        if (bugs.getJSONObject(i).getBoolean("is_open"))
+                            p.addBug(new Bug(bugs.getJSONObject(i)));
+                    }
+                    bugsListUpdated();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        BugzillaTask task = new BugzillaTask(server, "Bug.search", "\"product\":\"" + p.getName() + "\"", l);
+        task.execute();
     }
 
     @Override

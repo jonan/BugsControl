@@ -18,23 +18,37 @@
 
 package jp.bugscontrol.server;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Bug {
     protected int id;
     protected boolean open;
-    protected String summary, priority, status;
+    protected String summary, priority, status, description;
     protected String reporter, assignee;
+    protected List<String> comments;
 
-    public Bug() {}
+    protected Product product;
+
+    public Bug(Product product) {
+        comments = new ArrayList<String>();
+        this.product = product;
+    }
 
     abstract public void createFromString(String s);
+
+    abstract public void loadAllInfo();
 
     public int getId() {return id;}
 
     public boolean isOpen() {return open;}
 
-    public String getSummary()  {return summary;}
-    public String getPriority() {return priority;}
-    public String getStatus()   {return status;}
-    public String getReporter() {return reporter;}
-    public String getAssignee() {return assignee;}
+    public String getSummary()     {return summary;}
+    public String getPriority()    {return priority;}
+    public String getStatus()      {return status;}
+    public String getDescription() {return description;}
+    public String getReporter()    {return reporter;}
+    public String getAssignee()    {return assignee;}
+
+    public List<String> getComments() {return comments;}
 }

@@ -63,6 +63,8 @@ public abstract class Product {
     public String getName()        {return name;}
     public String getDescription() {return description;}
 
+    public Server getServer() {return server;}
+
     public List<Bug> getBugs() {return bugs;}
 
     public void addBug(Bug bug) {

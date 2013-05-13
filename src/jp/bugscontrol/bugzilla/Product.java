@@ -41,7 +41,7 @@ public class Product extends jp.bugscontrol.server.Product {
                     p.getBugs().clear();
                     for (int i=0; i < bugs.length(); ++i) {
                         if (bugs.getJSONObject(i).getBoolean("is_open"))
-                            p.addBug(new Bug(bugs.getJSONObject(i)));
+                            p.addBug(new Bug(p, bugs.getJSONObject(i)));
                     }
                     bugsListUpdated();
                 } catch (Exception e) {

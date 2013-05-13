@@ -45,6 +45,11 @@ public class ActivityBug extends SherlockActivity {
         ((TextView) findViewById(R.id.summary)).setText(bug.getSummary());
         ((TextView) findViewById(R.id.priority)).setText(bug.getPriority());
         ((TextView) findViewById(R.id.status)).setText(bug.getStatus());
+
+        String comments = "";
+        for (String c : bug.getComments())
+            comments += c + "\n\n";
+        ((TextView) findViewById(R.id.comments)).setText(comments);
     }
 
     @Override

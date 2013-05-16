@@ -70,22 +70,16 @@ public class ImageLoader extends AsyncTask<Void, Void, Bitmap> {
 
     // This class addresses an Android bug
     static class FlushedInputStream extends FilterInputStream {
-        public FlushedInputStream(InputStream inputStream) {
-            super(inputStream);
-        }
 
         @Override
         public long skip(long n) throws IOException {
             long totalBytesSkipped = 0L;
             while (totalBytesSkipped < n) {
                 long bytesSkipped = in.skip(n - totalBytesSkipped);
-                if (bytesSkipped == 0L) {
-                    int b = read();
-                    if (b < 0) {
+                if (bytesSkipped == 0L)
+                    if (read() < 0)
                         break;  // EOF
-                    } else {
-                        bytesSkipped = 1; // Read one byte
-                    }
+                    bytesSkipped = 1; // Read one byte
                 }
                 totalBytesSkipped += bytesSkipped;
             }

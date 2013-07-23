@@ -31,16 +31,16 @@ public class AdapterComment extends ArrayAdapter<String> {
     LayoutInflater inflater;
 
     public AdapterComment(Context context, List<String> list) {
-        super(context, R.layout.adapter_bug, list);
+        super(context, R.layout.adapter_comment, list);
         inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.adapter_bug, parent, false);
+        View view = inflater.inflate(R.layout.adapter_comment, parent, false);
 
         String item = getItem(position);
-        ((TextView) view.findViewById(R.id.summary)).setText(item);
+        ((TextView) view.findViewById(R.id.text)).setText(item);
 
         return view;
     }

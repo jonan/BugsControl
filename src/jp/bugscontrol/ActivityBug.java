@@ -21,14 +21,18 @@ package jp.bugscontrol;
 import java.security.MessageDigest;
 
 import jp.bugscontrol.server.Bug;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.app.SherlockListActivity;
 
-public class ActivityBug extends SherlockActivity {
+public class ActivityBug extends SherlockListActivity {
+    private Bug bug;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,30 +41,26 @@ public class ActivityBug extends SherlockActivity {
 
         int server = getIntent().getIntExtra("server", -1);
         int bug_id = getIntent().getIntExtra("bug_id", -1);
-        Bug bug = ActivityRegister.servers.get(server).getBugFromId(bug_id);
+        bug = ActivityRegister.servers.get(server).getBugFromId(bug_id);
 
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + md5(bug.getReporter()), (ImageView) findViewById(R.id.reporter_img));
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + md5(bug.getAssignee()), (ImageView) findViewById(R.id.assignee_img));
-
-        ((TextView) findViewById(R.id.summary)).setText(bug.getSummary());
-        ((TextView) findViewById(R.id.priority)).setText(bug.getPriority());
-        ((TextView) findViewById(R.id.status)).setText(bug.getStatus());
-
-        String comments = "";
-        for (String c : bug.getComments())
-            comments += c + "\n\n";
-        ((TextView) findViewById(R.id.comments)).setText(comments);
+        getListView().addHeaderView(getUserProfileView());
+        getListView().setAdapter(new AdapterComment(this, bug.getComments()));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+    public View getUserProfileView() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = inflater.inflate(R.layout.bug_info, getListView(), false);
+
+        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + md5(bug.getReporter()), (ImageView) view.findViewById(R.id.reporter_img));
+        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + md5(bug.getAssignee()), (ImageView) view.findViewById(R.id.assignee_img));
+
+        ((TextView) view.findViewById(R.id.summary)).setText(bug.getSummary());
+        ((TextView) view.findViewById(R.id.priority)).setText(bug.getPriority());
+        ((TextView) view.findViewById(R.id.status)).setText(bug.getStatus());
+
+        ((TextView) view.findViewById(R.id.description)).setText(bug.getDescription());
+
+        return view;
     }
 
     private String md5(String s) {

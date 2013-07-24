@@ -26,12 +26,12 @@ public abstract class Bug {
     protected boolean open;
     protected String summary, priority, status, description;
     protected String reporter, assignee;
-    protected List<String> comments;
+    protected List<Comment> comments;
 
     protected Product product;
 
     public Bug(Product product) {
-        comments = new ArrayList<String>();
+        comments = new ArrayList<Comment>();
         this.product = product;
     }
 
@@ -50,5 +50,5 @@ public abstract class Bug {
     public String getReporter()    {return reporter;}
     public String getAssignee()    {return assignee;}
 
-    public List<String> getComments() {return comments;}
+    public List<Comment> getComments() {return comments;}
 }

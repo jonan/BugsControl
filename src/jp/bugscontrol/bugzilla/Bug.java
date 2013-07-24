@@ -53,7 +53,7 @@ public class Bug extends jp.bugscontrol.server.Bug {
                         if (i == 0)
                             description = comments.getJSONObject(i).getString("text");
                         else
-                            b.comments.add(comments.getJSONObject(i).getString("text"));
+                            b.comments.add(new Comment(b, comments.getJSONObject(i)));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

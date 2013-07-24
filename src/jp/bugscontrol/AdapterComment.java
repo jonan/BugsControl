@@ -20,6 +20,8 @@ package jp.bugscontrol;
 
 import java.util.List;
 
+import jp.bugscontrol.server.Comment;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,10 +29,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-public class AdapterComment extends ArrayAdapter<String> {
+public class AdapterComment extends ArrayAdapter<Comment> {
     LayoutInflater inflater;
 
-    public AdapterComment(Context context, List<String> list) {
+    public AdapterComment(Context context, List<Comment> list) {
         super(context, R.layout.adapter_comment, list);
         inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -39,8 +41,8 @@ public class AdapterComment extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = inflater.inflate(R.layout.adapter_comment, parent, false);
 
-        String item = getItem(position);
-        ((TextView) view.findViewById(R.id.text)).setText(item);
+        Comment item = getItem(position);
+        ((TextView) view.findViewById(R.id.text)).setText(item.getText());
 
         return view;
     }

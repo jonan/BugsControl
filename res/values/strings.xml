@@ -13,5 +13,6 @@
     <string name="add_server">Añadir servidor</string>
     <string name="reporter">Creador</string>
     <string name="assignee">Responsable</string>
+    <string name="author">Autor</string>
 
 </resources>

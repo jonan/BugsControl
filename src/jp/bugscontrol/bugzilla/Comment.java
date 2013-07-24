@@ -52,7 +52,7 @@ public class Comment extends jp.bugscontrol.server.Comment {
         try {
             id = json.getInt("id");
             text = json.getString("text");
-            creator = json.getString("creator");
+            author = json.getString("creator");
         } catch (Exception e) {
             e.printStackTrace();
         }

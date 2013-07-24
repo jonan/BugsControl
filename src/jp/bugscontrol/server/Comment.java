@@ -20,7 +20,7 @@ package jp.bugscontrol.server;
 
 public abstract class Comment {
     protected int id;
-    protected String text, creator;
+    protected String text, author;
     protected Bug bug;
 
     protected Product product;
@@ -33,8 +33,8 @@ public abstract class Comment {
 
     public int getId() {return id;}
 
-    public String getText()    {return text;}
-    public String getCreator() {return creator;}
+    public String getText()   {return text;}
+    public String getAuthor() {return author;}
 
     public Bug getBug() {return bug;}
 }

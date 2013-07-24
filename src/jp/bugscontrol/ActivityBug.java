@@ -18,9 +18,8 @@
 
 package jp.bugscontrol;
 
-import java.security.MessageDigest;
-
 import jp.bugscontrol.server.Bug;
+import jp.util.Util;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -51,8 +50,8 @@ public class ActivityBug extends SherlockListActivity {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.bug_info, getListView(), false);
 
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + md5(bug.getReporter()), (ImageView) view.findViewById(R.id.reporter_img));
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + md5(bug.getAssignee()), (ImageView) view.findViewById(R.id.assignee_img));
+        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getReporter()), (ImageView) view.findViewById(R.id.reporter_img));
+        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getAssignee()), (ImageView) view.findViewById(R.id.assignee_img));
 
         ((TextView) view.findViewById(R.id.summary)).setText(bug.getSummary());
         ((TextView) view.findViewById(R.id.priority)).setText(bug.getPriority());
@@ -61,22 +60,5 @@ public class ActivityBug extends SherlockListActivity {
         ((TextView) view.findViewById(R.id.description)).setText(bug.getDescription());
 
         return view;
-    }
-
-    private String md5(String s) {
-        String hash = "";
-
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(s.getBytes("CP1252"));
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i)
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
-            hash = sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return hash;
     }
 }

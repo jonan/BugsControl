@@ -18,10 +18,10 @@
 
 package jp.bugscontrol;
 
-import java.security.MessageDigest;
 import java.util.List;
 
 import jp.bugscontrol.server.Comment;
+import jp.util.Util;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -47,25 +47,8 @@ public class AdapterComment extends ArrayAdapter<Comment> {
         ((TextView) view.findViewById(R.id.creator)).setText(item.getAuthor());
         ((TextView) view.findViewById(R.id.text)).setText(item.getText());
 
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + md5(item.getAuthor()), (ImageView) view.findViewById(R.id.author_img));
+        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(item.getAuthor()), (ImageView) view.findViewById(R.id.author_img));
 
         return view;
-    }
-
-    private String md5(String s) {
-        String hash = "";
-
-        try {
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(s.getBytes("CP1252"));
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < array.length; ++i)
-                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1,3));
-            hash = sb.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return hash;
     }
 }

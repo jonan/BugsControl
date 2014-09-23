@@ -28,7 +28,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import jp.bugscontrol.server.Server;
+import jp.bugscontrol.general.Server;
 import jp.util.Util.Listener;
 
 import android.os.AsyncTask;

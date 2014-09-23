@@ -20,7 +20,7 @@ package jp.bugscontrol.bugzilla;
 
 import org.json.JSONObject;
 
-public class Comment extends jp.bugscontrol.server.Comment {
+public class Comment extends jp.bugscontrol.general.Comment {
     public Comment(final Bug bug, final JSONObject json) {
         super(bug);
         createFromJSON(json);

@@ -24,8 +24,8 @@ import org.json.JSONObject;
 import jp.util.Util.Listener;
 
 
-public class Bug extends jp.bugscontrol.server.Bug {
-    public Bug(final jp.bugscontrol.server.Product product, final JSONObject json) {
+public class Bug extends jp.bugscontrol.general.Bug {
+    public Bug(final jp.bugscontrol.general.Product product, final JSONObject json) {
         super(product);
         createFromJSON(json);
         loadAllInfo();

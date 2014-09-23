@@ -20,7 +20,7 @@ package jp.bugscontrol;
 
 import java.util.List;
 
-import jp.bugscontrol.server.Comment;
+import jp.bugscontrol.general.Comment;
 import jp.util.Util;
 
 import android.content.Context;

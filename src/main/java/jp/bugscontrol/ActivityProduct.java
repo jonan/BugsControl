@@ -29,7 +29,7 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
-import jp.bugscontrol.server.Product;
+import jp.bugscontrol.general.Product;
 
 public class ActivityProduct extends SherlockListActivity {
     @Override

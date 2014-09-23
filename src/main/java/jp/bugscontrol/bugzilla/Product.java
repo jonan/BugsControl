@@ -23,8 +23,8 @@ import org.json.JSONObject;
 
 import jp.util.Util.Listener;
 
-public class Product extends jp.bugscontrol.server.Product {
-    public Product(final jp.bugscontrol.server.Server server, final JSONObject json) {
+public class Product extends jp.bugscontrol.general.Product {
+    public Product(final jp.bugscontrol.general.Server server, final JSONObject json) {
         super(server);
         createFromJSON(json);
     }

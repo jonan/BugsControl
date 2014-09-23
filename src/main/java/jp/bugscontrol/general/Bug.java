@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jp.bugscontrol.server;
+package jp.bugscontrol.general;
 
 import java.util.ArrayList;
 import java.util.List;

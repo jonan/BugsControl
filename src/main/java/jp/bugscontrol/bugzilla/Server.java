@@ -19,12 +19,11 @@
 package jp.bugscontrol.bugzilla;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import jp.util.Util.Listener;
 
-public class Server extends jp.bugscontrol.server.Server {
+public class Server extends jp.bugscontrol.general.Server {
     public Server(final String name, final String url) {
         super(name, url);
     }

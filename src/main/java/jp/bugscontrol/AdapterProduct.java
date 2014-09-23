@@ -20,7 +20,7 @@ package jp.bugscontrol;
 
 import java.util.List;
 
-import jp.bugscontrol.server.Product;
+import jp.bugscontrol.general.Product;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -18,7 +18,7 @@
 
 package jp.bugscontrol;
 
-import jp.bugscontrol.server.Bug;
+import jp.bugscontrol.general.Bug;
 import jp.util.Util;
 import android.content.Context;
 import android.os.Bundle;

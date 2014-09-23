@@ -18,86 +18,116 @@
 
 package jp.bugscontrol.server;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.text.TextUtils;
 
 import com.actionbarsherlock.app.SherlockListActivity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.bugscontrol.AdapterProduct;
 
 public abstract class Server {
-    protected List<Product> products;
-    protected String name, url, user, password;
+    protected final List<Product> products = new ArrayList<Product>();
+    protected final String name;
+    protected final String url;
+    protected String user;
+    protected String password;
 
-    AdapterProduct adapter_product;
-    SherlockListActivity products_activity;
+    private AdapterProduct adapter;
+    private SherlockListActivity activity;
 
-    public Server(String name, String url) {
+    private jp.bugscontrol.db.Server databaseServer = null;
+
+    public Server(final String name, final String url) {
         this.name = name;
         this.url = url;
         user = "";
         password = "";
-        products = new ArrayList<Product>();
     }
 
-    public Server(jp.bugscontrol.db.Server db_server) {
-        name = db_server.name;
-        url = db_server.url;
-        user = db_server.user;
-        password = db_server.password;
-        products = new ArrayList<Product>();
+    public Server(final jp.bugscontrol.db.Server server) {
+        databaseServer = server;
+        name = server.name;
+        url = server.url;
+        user = server.user;
+        password = server.password;
     }
 
-    protected abstract void loadProducts();
-
-    public void setUser(String user, String password) {
+    public void setUser(final String user, final String password) {
         this.user = user;
         this.password = password;
     }
 
-    public void setAdapterProduct(AdapterProduct adapter, SherlockListActivity activity) {
-        adapter_product = adapter;
-        products_activity = activity;
+    public void setAdapterProduct(final AdapterProduct adapter, final SherlockListActivity activity) {
+        this.adapter = adapter;
+        this.activity = activity;
 
-        products_activity.setSupportProgressBarIndeterminateVisibility(true);
+        activity.setSupportProgressBarIndeterminateVisibility(true);
         loadProducts();
     }
 
-    public List<Product> getProducts() {return products;}
-
-    protected void productsListUpdated() {
-        adapter_product.notifyDataSetChanged();
-        products_activity.setSupportProgressBarIndeterminateVisibility(false);
-    }
-
-    public Product getProductFromId(int product_id) {
-        for (Product p : products)
-            if (p.getId() == product_id)
+    public Product getProductFromId(final int productId) {
+        for (Product p : products) {
+            if (p.getId() == productId) {
                 return p;
+            }
+        }
+
         return null;
     }
 
-    public Bug getBugFromId(int bug_id) {
-        for (Product p : products)
-            for (Bug b : p.bugs)
-                if (b.getId() == bug_id)
+    public Bug getBugFromId(final int bugId) {
+        for (Product p : products) {
+            for (Bug b : p.bugs) {
+                if (b.getId() == bugId) {
                     return b;
+                }
+            }
+        }
+
         return null;
     }
 
     public void save() {
-        jp.bugscontrol.db.Server db_server = new jp.bugscontrol.db.Server();
-        db_server.name = name;
-        db_server.url = url;
-        db_server.user = user;
-        db_server.password = password;
-        db_server.save();
+        if (databaseServer == null) {
+            databaseServer = new jp.bugscontrol.db.Server();
+        }
+        databaseServer.name = name;
+        databaseServer.url = url;
+        databaseServer.user = user;
+        databaseServer.password = password;
+        databaseServer.save();
     }
 
-    public String getName()     {return name;}
-    public String getUrl()      {return url;}
-    public String getUser()     {return user;}
-    public String getPassword() {return password;}
+    public List<Product> getProducts() {
+        return products;
+    }
 
-    public boolean hasUser() {return user.length() > 0;}
+    public String getName() {
+        return name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public boolean hasUser() {
+        return !TextUtils.isEmpty(user);
+    }
+
+    protected abstract void loadProducts();
+
+    protected void productsListUpdated() {
+        adapter.notifyDataSetChanged();
+        activity.setSupportProgressBarIndeterminateVisibility(false);
+    }
 }

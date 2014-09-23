@@ -24,50 +24,59 @@ import java.util.List;
 import com.actionbarsherlock.app.SherlockListActivity;
 
 import jp.bugscontrol.AdapterBug;
-import jp.bugscontrol.server.Bug;
 
 public abstract class Product {
+    protected final Server server;
+
     protected int id;
-    protected String name, description;
-    protected List<Bug> bugs;
+    protected String name;
+    protected String description;
 
-    protected AdapterBug adapter_bug;
-    protected SherlockListActivity bugs_activity;
+    protected final List<Bug> bugs = new ArrayList<Bug>();
 
-    protected Server server;
+    protected AdapterBug adapter;
+    protected SherlockListActivity activity;
 
     public Product(Server server) {
-        bugs = new ArrayList<Bug>();
         this.server = server;
     }
 
     protected abstract void loadBugs();
 
-    public void setAdapterBug(Product product, AdapterBug adapter, SherlockListActivity activity) {
-        adapter_bug = adapter;
-        bugs_activity = activity;
+    public void setAdapterBug(final AdapterBug adapter, final SherlockListActivity activity) {
+        this.adapter = adapter;
+        this.activity = activity;
 
-        bugs_activity.setSupportProgressBarIndeterminateVisibility(true);
+        activity.setSupportProgressBarIndeterminateVisibility(true);
         loadBugs();
     }
 
     protected void bugsListUpdated() {
-        adapter_bug.notifyDataSetChanged();
-        bugs_activity.setSupportProgressBarIndeterminateVisibility(false);
+        adapter.notifyDataSetChanged();
+        activity.setSupportProgressBarIndeterminateVisibility(false);
     }
 
-    abstract public void createFromString(String s);
+    public int getId() {
+        return id;
+    }
 
-    public int getId() {return id;}
+    public String getName() {
+        return name;
+    }
 
-    public String getName()        {return name;}
-    public String getDescription() {return description;}
+    public String getDescription() {
+        return description;
+    }
 
-    public Server getServer() {return server;}
+    public Server getServer() {
+        return server;
+    }
 
-    public List<Bug> getBugs() {return bugs;}
+    public List<Bug> getBugs() {
+        return bugs;
+    }
 
-    public void addBug(Bug bug) {
+    public void addBug(final Bug bug) {
         bugs.add(bug);
     }
 }

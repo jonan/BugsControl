@@ -18,13 +18,13 @@
 
 package jp.bugscontrol.bugzilla;
 
-import jp.bugscontrol.bugzilla.Server.Listener;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import jp.util.Util.Listener;
+
 public class Product extends jp.bugscontrol.server.Product {
-    public Product(jp.bugscontrol.server.Server server, JSONObject json) {
+    public Product(final jp.bugscontrol.server.Server server, final JSONObject json) {
         super(server);
         createFromJSON(json);
     }
@@ -32,42 +32,33 @@ public class Product extends jp.bugscontrol.server.Product {
     @Override
     protected void loadBugs() {
         final Product p = this;
-        Listener l = new Listener() {
+        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + p.getName() + "'",  new Listener() {
             @Override
-            public void callback(String s) {
+            public void callback(final String s) {
                 try {
-                    JSONObject object = new JSONObject(s);
-                    JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
+                    final JSONObject object = new JSONObject(s);
+                    final JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
                     p.getBugs().clear();
-                    for (int i=0; i < bugs.length(); ++i) {
-                        if (bugs.getJSONObject(i).getBoolean("is_open"))
+                    for (int i = 0; i < bugs.length(); ++i) {
+                        if (bugs.getJSONObject(i).getBoolean("is_open")) {
                             p.addBug(new Bug(p, bugs.getJSONObject(i)));
+                        }
                     }
                     bugsListUpdated();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                 }
             }
-        };
-        BugzillaTask task = new BugzillaTask(server, "Bug.search", "\"product\":\"" + p.getName() + "\"", l);
+        });
         task.execute();
     }
 
-    @Override
-    public void createFromString(String s) {
-        try {
-            createFromJSON(new JSONObject(s));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void createFromJSON(JSONObject json) {
+    public void createFromJSON(final JSONObject json) {
         try {
             id = json.getInt("id");
             name = json.getString("name");
             description = json.getString("description");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }

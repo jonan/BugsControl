@@ -28,9 +28,8 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import jp.bugscontrol.bugzilla.Server.Listener;
-
 import jp.bugscontrol.server.Server;
+import jp.util.Util.Listener;
 
 import android.os.AsyncTask;
 
@@ -68,7 +67,7 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
             if (server.hasUser()) {
                 if (params.length() > 0)
                     params += ",";
-                params += "\"Bugzilla_login\":\"" + server.getUser() + "\",\"Bugzilla_password\":\"" + server.getPassword() + "\"";
+                params += "'Bugzilla_login':'" + server.getUser() + "','Bugzilla_password':'" + server.getPassword() + "'";
             }
             if (params.length() > 0)
                 array = new JSONArray("[{" + params + "}]");

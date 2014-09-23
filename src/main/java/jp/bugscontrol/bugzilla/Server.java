@@ -19,59 +19,56 @@
 package jp.bugscontrol.bugzilla;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Server extends jp.bugscontrol.server.Server {
-    public interface Listener {
-        void callback(String s);
-    }
+import jp.util.Util.Listener;
 
-    public Server(String name, String url) {
+public class Server extends jp.bugscontrol.server.Server {
+    public Server(final String name, final String url) {
         super(name, url);
     }
 
-    public Server(jp.bugscontrol.db.Server db_server) {
-        super(db_server);
+    public Server(final jp.bugscontrol.db.Server server) {
+        super(server);
     }
 
     @Override
     protected void loadProducts() {
         // Get all the products' ids and pass it to loadProductsFromIds()
-        Listener l = new Listener() {
+        final BugzillaTask task = new BugzillaTask(this, "Product.get_accessible_products", new Listener() {
             @Override
-            public void callback(String s) {
+            public void callback(final String s) {
                 try {
-                    JSONObject object = new JSONObject(s);
+                    final JSONObject object = new JSONObject(s);
                     loadProductsFromIds(object.getJSONObject("result").getString("ids"));
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                 }
             }
-        };
-        BugzillaTask task = new BugzillaTask(this, "Product.get_accessible_products", l);
+        });
         task.execute();
     }
 
-    void loadProductsFromIds(String product_ids) {
+    private void loadProductsFromIds(final String productIds) {
         final Server server = this;
-        Listener l = new Listener() {
+        final BugzillaTask task = new BugzillaTask(this, "Product.get", "'ids':" + productIds + ",'include_fields':['id', 'name', 'description']",  new Listener() {
             @Override
-            public void callback(String s) {
+            public void callback(final String s) {
                 try {
-                    JSONObject object = new JSONObject(s);
-                    JSONArray products_json = object.getJSONObject("result").getJSONArray("products");
+                    final JSONObject object = new JSONObject(s);
+                    final JSONArray productsJson = object.getJSONObject("result").getJSONArray("products");
                     products.clear();
-                    for (int i=0; i<products_json.length(); ++i) {
-                        JSONObject p = products_json.getJSONObject(i);
+                    for (int i = 0; i < productsJson.length(); ++i) {
+                        final JSONObject p = productsJson.getJSONObject(i);
                         products.add(new Product(server, p));
                     }
                     productsListUpdated();
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                 }
             }
-        };
-        BugzillaTask task = new BugzillaTask(this, "Product.get", "\"ids\":" + product_ids, l);
+        });
         task.execute();
     }
 }

@@ -21,21 +21,12 @@ package jp.bugscontrol.bugzilla;
 import org.json.JSONObject;
 
 public class Comment extends jp.bugscontrol.server.Comment {
-    public Comment(Bug bug, JSONObject json) {
+    public Comment(final Bug bug, final JSONObject json) {
         super(bug);
         createFromJSON(json);
     }
 
-    @Override
-    public void createFromString(String s) {
-        try {
-            createFromJSON(new JSONObject(s));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void createFromJSON(JSONObject json) {
+    public void createFromJSON(final JSONObject json) {
         /* Comment JSON
          *
          * {
@@ -54,7 +45,7 @@ public class Comment extends jp.bugscontrol.server.Comment {
             text = json.getString("text");
             author = json.getString("creator");
             date = json.getString("time");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }

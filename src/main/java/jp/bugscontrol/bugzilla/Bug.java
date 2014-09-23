@@ -18,53 +18,43 @@
 
 package jp.bugscontrol.bugzilla;
 
-import jp.bugscontrol.bugzilla.Server.Listener;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import jp.util.Util.Listener;
+
 
 public class Bug extends jp.bugscontrol.server.Bug {
-    public Bug(jp.bugscontrol.server.Product product, JSONObject json) {
+    public Bug(final jp.bugscontrol.server.Product product, final JSONObject json) {
         super(product);
         createFromJSON(json);
         loadAllInfo();
     }
 
-    @Override
-    public void createFromString(String s) {
-        try {
-            createFromJSON(new JSONObject(s));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public void loadAllInfo() {
         final Bug b = this;
-        Listener l = new Listener() {
+        final BugzillaTask task = new BugzillaTask(product.getServer(), "Bug.comments", "'ids':[" + b.id + "]", new Listener() {
             @Override
-            public void callback(String s) {
+            public void callback(final String s) {
                 try {
-                    JSONObject object = new JSONObject(s);
-                    JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(b.id)).getJSONArray("comments");
+                    final JSONObject object = new JSONObject(s);
+                    final JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(b.id)).getJSONArray("comments");
                     for (int i=0; i < comments.length(); ++i) {
-                        if (i == 0)
+                        if (i == 0) {
                             description = comments.getJSONObject(i).getString("text");
-                        else
+                        } else {
                             b.comments.add(new Comment(b, comments.getJSONObject(i)));
+                        }
                     }
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     e.printStackTrace();
                 }
             }
-        };
-        BugzillaTask task = new BugzillaTask(product.getServer(), "Bug.comments", "\"ids\":[" + b.id + "]", l);
+        });
         task.execute();
     }
 
-    public void createFromJSON(JSONObject json) {
+    public void createFromJSON(final JSONObject json) {
         try {
             /* Bug JSON
             *
@@ -113,7 +103,7 @@ public class Bug extends jp.bugscontrol.server.Bug {
             status = json.getString("status");
             reporter = json.getString("creator");
             assignee = json.getString("assigned_to");
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
     }

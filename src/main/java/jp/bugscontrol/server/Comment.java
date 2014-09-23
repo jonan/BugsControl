@@ -20,22 +20,31 @@ package jp.bugscontrol.server;
 
 public abstract class Comment {
     protected int id;
-    protected String text, author, date;
-    protected Bug bug;
+    protected String text;
+    protected String author;
+    protected String date;
 
-    protected Product product;
+    protected final Bug bug;
 
-    public Comment(Bug bug) {
+    public Comment(final Bug bug) {
         this.bug = bug;
     }
 
-    abstract public void createFromString(String s);
-
     public int getId() {return id;}
 
-    public String getText()   {return text;}
-    public String getAuthor() {return author;}
-    public String getDate()   {return date;}
+    public String getText() {
+        return text;
+    }
 
-    public Bug getBug() {return bug;}
+    public String getAuthor() {
+        return author;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public Bug getBug() {
+        return bug;
+    }
 }

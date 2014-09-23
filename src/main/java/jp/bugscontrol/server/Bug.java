@@ -24,31 +24,56 @@ import java.util.List;
 public abstract class Bug {
     protected int id;
     protected boolean open;
-    protected String summary, priority, status, description;
-    protected String reporter, assignee;
-    protected List<Comment> comments;
 
-    protected Product product;
+    protected String summary;
+    protected String priority;
+    protected String status;
+    protected String description;
 
-    public Bug(Product product) {
-        comments = new ArrayList<Comment>();
+    protected String reporter;
+    protected String assignee;
+
+    protected final List<Comment> comments = new ArrayList<Comment>();
+
+    protected final Product product;
+
+    public Bug(final Product product) {
         this.product = product;
     }
 
-    abstract public void createFromString(String s);
+    public int getId() {
+        return id;
+    }
 
-    abstract public void loadAllInfo();
+    public boolean isOpen() {
+        return open;
+    }
 
-    public int getId() {return id;}
+    public String getSummary() {
+        return summary;
+    }
 
-    public boolean isOpen() {return open;}
+    public String getPriority() {
+        return priority;
+    }
 
-    public String getSummary()     {return summary;}
-    public String getPriority()    {return priority;}
-    public String getStatus()      {return status;}
-    public String getDescription() {return description;}
-    public String getReporter()    {return reporter;}
-    public String getAssignee()    {return assignee;}
+    public String getStatus() {
+        return status;
+    }
 
-    public List<Comment> getComments() {return comments;}
+    public String getDescription() {
+        return description;
+    }
+
+    public String getReporter() {
+        return reporter;
+    }
+
+    public String getAssignee() {
+        return assignee;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
 }

@@ -24,12 +24,12 @@ import com.activeandroid.annotation.Table;
 
 @Table(name = "Servers")
 public class Server extends Model {
-    @Column(name = "Name")
+    @Column(name = "name")
     public String name;
-    @Column(name = "Url")
+    @Column(name = "url")
     public String url;
-    @Column(name = "User")
+    @Column(name = "user")
     public String user;
-    @Column(name = "Password")
+    @Column(name = "password")
     public String password;
 }

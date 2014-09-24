@@ -57,15 +57,16 @@ public class Server extends jp.bugscontrol.general.Server {
                 try {
                     final JSONObject object = new JSONObject(s);
                     final JSONArray productsJson = object.getJSONObject("result").getJSONArray("products");
+                    final int size = productsJson.length();
                     products.clear();
-                    for (int i = 0; i < productsJson.length(); ++i) {
+                    for (int i = 0; i < size; ++i) {
                         final JSONObject p = productsJson.getJSONObject(i);
                         products.add(new Product(server, p));
                     }
-                    productsListUpdated();
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }
+                productsListUpdated();
             }
         });
         task.execute();

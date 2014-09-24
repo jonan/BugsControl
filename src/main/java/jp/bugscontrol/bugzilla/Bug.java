@@ -18,6 +18,8 @@
 
 package jp.bugscontrol.bugzilla;
 
+import android.text.TextUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,7 +30,7 @@ public class Bug extends jp.bugscontrol.general.Bug {
     public Bug(final jp.bugscontrol.general.Product product, final JSONObject json) {
         super(product);
         createFromJSON(json);
-        loadAllInfo();
+        //loadAllInfo();
     }
 
     public void loadAllInfo() {
@@ -97,12 +99,12 @@ public class Bug extends jp.bugscontrol.general.Bug {
             *
             */
             id = json.getInt("id");
-            open = json.getBoolean("is_open");
             summary = json.getString("summary");
             priority = json.getString("priority");
             status = json.getString("status");
             reporter = json.getString("creator");
             assignee = json.getString("assigned_to");
+            open = TextUtils.isEmpty(json.getString("resolution"));
         } catch (final Exception e) {
             e.printStackTrace();
         }

@@ -32,22 +32,21 @@ public class Product extends jp.bugscontrol.general.Product {
     @Override
     protected void loadBugs() {
         final Product p = this;
-        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + p.getName() + "'",  new Listener() {
+        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + p.getName() + "','include_fields':['id', 'summary', 'priority', 'status', 'creator', 'assigned_to', 'resolution']",  new Listener() {
             @Override
             public void callback(final String s) {
                 try {
                     final JSONObject object = new JSONObject(s);
                     final JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
+                    final int size = bugs.length();
                     p.getBugs().clear();
-                    for (int i = 0; i < bugs.length(); ++i) {
-                        if (bugs.getJSONObject(i).getBoolean("is_open")) {
-                            p.addBug(new Bug(p, bugs.getJSONObject(i)));
-                        }
+                    for (int i = 0; i < size; ++i) {
+                        p.addBug(new Bug(p, bugs.getJSONObject(i)));
                     }
-                    bugsListUpdated();
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }
+                bugsListUpdated();
             }
         });
         task.execute();

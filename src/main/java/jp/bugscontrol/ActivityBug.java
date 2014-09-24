@@ -38,7 +38,7 @@ public class ActivityBug extends SherlockListActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_bug);
 
-        int server = getIntent().getIntExtra("server", -1);
+        int server = getIntent().getIntExtra("server_position", -1);
         int bug_id = getIntent().getIntExtra("bug_id", -1);
         bug = ActivityRegister.servers.get(server).getBugFromId(bug_id);
 

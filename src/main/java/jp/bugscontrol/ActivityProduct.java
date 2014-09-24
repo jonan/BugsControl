@@ -39,7 +39,7 @@ public class ActivityProduct extends SherlockListActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_product_list);
 
-        final int server = getIntent().getIntExtra("server", -1);
+        final int server = getIntent().getIntExtra("server_position", -1);
         int product_id = getIntent().getIntExtra("product_id", -1);
         Product product = ActivityRegister.servers.get(server).getProductFromId(product_id);
         setTitle(product.getName());
@@ -51,7 +51,7 @@ public class ActivityProduct extends SherlockListActivity {
         getListView().setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
                 Intent intent = new Intent(current, ActivityBug.class);
-                intent.putExtra("server", server);
+                intent.putExtra("server_position", server);
                 intent.putExtra("bug_id", adapter.getBugIdFromPosition(position));
                 startActivity(intent);
             }

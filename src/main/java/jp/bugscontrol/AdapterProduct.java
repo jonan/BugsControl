@@ -30,24 +30,26 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class AdapterProduct extends ArrayAdapter<Product> {
-    LayoutInflater inflater;
+    private final LayoutInflater inflater;
 
-    public AdapterProduct(Context context, List<Product> values) {
+    public AdapterProduct(final Context context, final List<Product> values) {
         super(context, R.layout.adapter_product, values);
-        inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.adapter_product, parent, false);
+    public View getView(final int position, View convertView, final ViewGroup parent) {
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.adapter_product, parent, false);
+        }
 
-        Product item = getItem(position);
-        ((TextView) view.findViewById(R.id.name)).setText(item.getName());
+        final Product item = getItem(position);
+        ((TextView) convertView.findViewById(R.id.name)).setText(item.getName());
 
-        return view;
+        return convertView;
     }
 
-    public int getProductIdFromPosition(int position) {
+    public int getProductIdFromPosition(final int position) {
         return getItem(position).getId();
     }
 }

@@ -27,61 +27,67 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Window;
 
 public class ActivityProductList extends SherlockListActivity implements ActionBar.OnNavigationListener {
-    int server;
+    private int serverPos;
+    private Server server;
+
+    private AdapterProduct adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_product_list);
 
-        server = getIntent().getIntExtra("server", -1);
+        serverPos = getIntent().getIntExtra("server_position", -1);
+        server = ActivityRegister.servers.get(serverPos);
 
-        Context context = getSupportActionBar().getThemedContext();
+        final Context context = getSupportActionBar().getThemedContext();
         ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, R.layout.sherlock_spinner_item);
-        for (Server s : ActivityRegister.servers)
+        for (Server s : ActivityRegister.servers) {
             list.add(s.getName());
+        }
         list.add(getResources().getString(R.string.add_server));
         list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 
         getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getSupportActionBar().setListNavigationCallbacks(list, this);
-        getSupportActionBar().setSelectedNavigationItem(server);
+        getSupportActionBar().setSelectedNavigationItem(serverPos);
 
-        final AdapterProduct adapter = new AdapterProduct(this, ActivityRegister.servers.get(server).getProducts());
-        getListView().setAdapter(adapter);
-        ActivityRegister.servers.get(server).setAdapterProduct(adapter, this);
-        final Activity current = this;
-        getListView().setOnItemClickListener(new OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-                Intent intent = new Intent(current, ActivityProduct.class);
-                intent.putExtra("server", server);
-                intent.putExtra("product_id", adapter.getProductIdFromPosition(position));
-                startActivity(intent);
-            }
-        });
+        adapter = new AdapterProduct(this, server.getProducts());
+        setListAdapter(adapter);
+        server.setAdapterProduct(adapter, this);
     }
 
     @Override
-    public boolean onNavigationItemSelected(int position, long id) {
-        if (position == server)
+    protected void onListItemClick(final ListView l, final View v, final int position, final long id) {
+        final Intent intent = new Intent(this, ActivityProduct.class);
+        intent.putExtra("server_position", serverPos);
+        intent.putExtra("product_id", adapter.getProductIdFromPosition(position));
+        startActivity(intent);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(final int position, final long id) {
+        if (position == serverPos) {
             return true;
+        }
 
         if (position == ActivityRegister.servers.size()) {
-            Intent intent = new Intent(this, ActivityRegister.class);
+            final Intent intent = new Intent(this, ActivityRegister.class);
             intent.putExtra("new_server", true);
             startActivity(intent);
             return true;
         }
 
-        Intent intent = new Intent(this, ActivityProductList.class);
-        intent.putExtra("server", position);
+        final Intent intent = new Intent(this, ActivityProductList.class);
+        intent.putExtra("server_position", position);
         startActivity(intent);
         return true;
     }

@@ -30,31 +30,35 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class AdapterBug extends ArrayAdapter<Bug> {
-    LayoutInflater inflater;
+    private final LayoutInflater inflater;
 
-    public AdapterBug(Context context, List<Bug> list) {
+    public AdapterBug(final Context context, final List<Bug> list) {
         super(context, R.layout.adapter_bug, list);
-        inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.adapter_bug, parent, false);
+    public View getView(final int position, View convertView, final ViewGroup parent) {
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.adapter_bug, parent, false);
+        }
 
-        Bug item = getItem(position);
-        int color;
-        if (item.isOpen())
+        final Bug item = getItem(position);
+        final int color;
+        if (item.isOpen()) {
             color = getContext().getResources().getColor(R.color.adapter_red);
-        else
+        } else {
             color = getContext().getResources().getColor(R.color.adapter_green);
-        ((TextView) view.findViewById(R.id.summary)).setTextColor(color);
-        ((TextView) view.findViewById(R.id.summary)).setText("[" + item.getPriority() + "] " + item.getSummary());
-        ((TextView) view.findViewById(R.id.assignee)).setText(item.getAssignee());
+        }
 
-        return view;
+        ((TextView) convertView.findViewById(R.id.summary)).setTextColor(color);
+        ((TextView) convertView.findViewById(R.id.summary)).setText("[" + item.getPriority() + "] " + item.getSummary());
+        ((TextView) convertView.findViewById(R.id.assignee)).setText(item.getAssignee());
+
+        return convertView;
     }
 
-    public int getBugIdFromPosition(int position) {
+    public int getBugIdFromPosition(final int position) {
         return getItem(position).getId();
     }
 }

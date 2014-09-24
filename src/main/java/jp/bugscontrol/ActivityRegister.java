@@ -18,20 +18,20 @@
 
 package jp.bugscontrol;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import jp.bugscontrol.general.Server;
-
-import com.actionbarsherlock.app.SherlockActivity;
-import com.activeandroid.query.Select;
-
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
-public class ActivityRegister extends SherlockActivity {
+import com.activeandroid.query.Select;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.bugscontrol.general.Server;
+
+public class ActivityRegister extends Activity {
     static public List<Server> servers = new ArrayList<Server>();
 
     @Override
@@ -63,7 +63,7 @@ public class ActivityRegister extends SherlockActivity {
         newServer.save();
         servers.add(newServer);
 
-        openProductList(servers.size()-1);
+        openProductList(servers.size() - 1);
     }
 
     private void openProductList(final int position) {

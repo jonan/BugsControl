@@ -18,22 +18,19 @@
 
 package jp.bugscontrol;
 
-import jp.bugscontrol.general.Server;
-import android.app.Activity;
+import android.app.ActionBar;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Window;
+import jp.bugscontrol.general.Server;
 
-public class ActivityProductList extends SherlockListActivity implements ActionBar.OnNavigationListener {
+public class ActivityProductList extends ListActivity implements ActionBar.OnNavigationListener {
     private int serverPos;
     private Server server;
 
@@ -46,19 +43,21 @@ public class ActivityProductList extends SherlockListActivity implements ActionB
         setContentView(R.layout.activity_product_list);
 
         serverPos = getIntent().getIntExtra("server_position", -1);
-        server = ActivityRegister.servers.get(serverPos);
 
-        final Context context = getSupportActionBar().getThemedContext();
-        ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, R.layout.sherlock_spinner_item);
+        // Set up the action bar
+        final Context context = getActionBar().getThemedContext();
+        ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_dropdown_item);
         for (Server s : ActivityRegister.servers) {
             list.add(s.getName());
         }
         list.add(getResources().getString(R.string.add_server));
-        list.setDropDownViewResource(R.layout.sherlock_spinner_dropdown_item);
 
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        getSupportActionBar().setListNavigationCallbacks(list, this);
-        getSupportActionBar().setSelectedNavigationItem(serverPos);
+        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        getActionBar().setListNavigationCallbacks(list, this);
+        getActionBar().setSelectedNavigationItem(serverPos);
+
+        // Set the adapter
+        server = ActivityRegister.servers.get(serverPos);
 
         adapter = new AdapterProduct(this, server.getProducts());
         setListAdapter(adapter);

@@ -18,9 +18,8 @@
 
 package jp.bugscontrol.general;
 
+import android.app.Activity;
 import android.text.TextUtils;
-
-import com.actionbarsherlock.app.SherlockListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +34,7 @@ public abstract class Server {
     protected String password;
 
     private AdapterProduct adapter;
-    private SherlockListActivity activity;
+    private Activity activity;
 
     private jp.bugscontrol.db.Server databaseServer = null;
 
@@ -59,11 +58,11 @@ public abstract class Server {
         this.password = password;
     }
 
-    public void setAdapterProduct(final AdapterProduct adapter, final SherlockListActivity activity) {
+    public void setAdapterProduct(final AdapterProduct adapter, final Activity activity) {
         this.adapter = adapter;
         this.activity = activity;
 
-        activity.setSupportProgressBarIndeterminateVisibility(true);
+        activity.setProgressBarIndeterminateVisibility(true);
         loadProducts();
     }
 
@@ -128,6 +127,6 @@ public abstract class Server {
 
     protected void productsListUpdated() {
         adapter.notifyDataSetChanged();
-        activity.setSupportProgressBarIndeterminateVisibility(false);
+        activity.setProgressBarIndeterminateVisibility(false);
     }
 }

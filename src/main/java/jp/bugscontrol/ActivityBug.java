@@ -18,8 +18,7 @@
 
 package jp.bugscontrol;
 
-import jp.bugscontrol.general.Bug;
-import jp.util.Util;
+import android.app.ListActivity;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -27,15 +26,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockListActivity;
+import jp.bugscontrol.general.Bug;
+import jp.util.Util;
 
-public class ActivityBug extends SherlockListActivity {
+public class ActivityBug extends ListActivity {
     private Bug bug;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_bug);
 
         int server = getIntent().getIntExtra("server_position", -1);

@@ -18,10 +18,10 @@
 
 package jp.bugscontrol.general;
 
+import android.app.Activity;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.actionbarsherlock.app.SherlockListActivity;
 
 import jp.bugscontrol.AdapterBug;
 
@@ -35,7 +35,7 @@ public abstract class Product {
     protected final List<Bug> bugs = new ArrayList<Bug>();
 
     protected AdapterBug adapter;
-    protected SherlockListActivity activity;
+    protected Activity activity;
 
     public Product(Server server) {
         this.server = server;
@@ -43,17 +43,17 @@ public abstract class Product {
 
     protected abstract void loadBugs();
 
-    public void setAdapterBug(final AdapterBug adapter, final SherlockListActivity activity) {
+    public void setAdapterBug(final AdapterBug adapter, final Activity activity) {
         this.adapter = adapter;
         this.activity = activity;
 
-        activity.setSupportProgressBarIndeterminateVisibility(true);
+        activity.setProgressBarIndeterminateVisibility(true);
         loadBugs();
     }
 
     protected void bugsListUpdated() {
         adapter.notifyDataSetChanged();
-        activity.setSupportProgressBarIndeterminateVisibility(false);
+        activity.setProgressBarIndeterminateVisibility(false);
     }
 
     public int getId() {

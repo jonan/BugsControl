@@ -42,26 +42,18 @@ public class ActivityProductList extends ListActivity implements ActionBar.OnNav
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_product_list);
 
-        serverPos = getIntent().getIntExtra("server_position", -1);
-
         // Set up the action bar
         final Context context = getActionBar().getThemedContext();
         ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_dropdown_item);
-        for (Server s : ActivityRegister.servers) {
+        for (final Server s : ActivityRegister.servers) {
             list.add(s.getName());
         }
         list.add(getResources().getString(R.string.add_server));
 
         getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         getActionBar().setListNavigationCallbacks(list, this);
-        getActionBar().setSelectedNavigationItem(serverPos);
 
-        // Set the adapter
-        server = ActivityRegister.servers.get(serverPos);
-
-        adapter = new AdapterProduct(this, server.getProducts());
-        setListAdapter(adapter);
-        server.setAdapterProduct(adapter, this);
+        setServer(getIntent().getIntExtra("server_position", -1));
     }
 
     @Override
@@ -85,9 +77,18 @@ public class ActivityProductList extends ListActivity implements ActionBar.OnNav
             return true;
         }
 
-        final Intent intent = new Intent(this, ActivityProductList.class);
-        intent.putExtra("server_position", position);
-        startActivity(intent);
+        setServer(position);
         return true;
+    }
+
+    private void setServer(final int pos) {
+        serverPos = pos;
+        getActionBar().setSelectedNavigationItem(serverPos);
+
+        server = ActivityRegister.servers.get(pos);
+
+        adapter = new AdapterProduct(this, server.getProducts());
+        setListAdapter(adapter);
+        server.setAdapterProduct(adapter, this);
     }
 }

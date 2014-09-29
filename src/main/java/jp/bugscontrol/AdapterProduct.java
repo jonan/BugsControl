@@ -18,16 +18,16 @@
 
 package jp.bugscontrol;
 
-import java.util.List;
-
-import jp.bugscontrol.general.Product;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import java.util.List;
+
+import jp.bugscontrol.general.Product;
 
 public class AdapterProduct extends ArrayAdapter<Product> {
     private final LayoutInflater inflater;
@@ -43,8 +43,9 @@ public class AdapterProduct extends ArrayAdapter<Product> {
             convertView = inflater.inflate(R.layout.adapter_product, parent, false);
         }
 
-        final Product item = getItem(position);
-        ((TextView) convertView.findViewById(R.id.name)).setText(item.getName());
+        final Product p = getItem(position);
+        ((TextView) convertView.findViewById(R.id.name)).setText(p.getName());
+        ((TextView) convertView.findViewById(R.id.description)).setText(p.getDescription());
 
         return convertView;
     }

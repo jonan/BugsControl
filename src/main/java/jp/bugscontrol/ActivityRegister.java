@@ -42,7 +42,7 @@ public class ActivityRegister extends Activity {
         if (!getIntent().getBooleanExtra("new_server", false)) {
             final List<jp.bugscontrol.db.Server> dBservers = new Select().from(jp.bugscontrol.db.Server.class).execute();
             servers.clear();
-            for (jp.bugscontrol.db.Server s : dBservers) {
+            for (final jp.bugscontrol.db.Server s : dBservers) {
                 servers.add(new jp.bugscontrol.bugzilla.Server(s));
             }
 

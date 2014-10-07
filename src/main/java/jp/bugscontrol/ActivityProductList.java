@@ -32,7 +32,6 @@ import jp.bugscontrol.general.Server;
 
 public class ActivityProductList extends ListActivity implements ActionBar.OnNavigationListener {
     private int serverPos;
-    private Server server;
 
     private AdapterProduct adapter;
 
@@ -43,15 +42,17 @@ public class ActivityProductList extends ListActivity implements ActionBar.OnNav
         setContentView(R.layout.activity_product_list);
 
         // Set up the action bar
-        final Context context = getActionBar().getThemedContext();
+        final ActionBar actionBar = getActionBar();
+        final Context context = actionBar.getThemedContext();
         ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_dropdown_item);
         for (final Server s : ActivityRegister.servers) {
             list.add(s.getName());
         }
         list.add(getResources().getString(R.string.add_server));
 
-        getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        getActionBar().setListNavigationCallbacks(list, this);
+        actionBar.setTitle("");
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        actionBar.setListNavigationCallbacks(list, this);
 
         setServer(getIntent().getIntExtra("server_position", -1));
     }
@@ -85,7 +86,7 @@ public class ActivityProductList extends ListActivity implements ActionBar.OnNav
         serverPos = pos;
         getActionBar().setSelectedNavigationItem(serverPos);
 
-        server = ActivityRegister.servers.get(pos);
+        final Server server = ActivityRegister.servers.get(pos);
 
         adapter = new AdapterProduct(this, server.getProducts());
         setListAdapter(adapter);

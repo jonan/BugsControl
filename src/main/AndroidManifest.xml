@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.bugscontrol"
     android:versionCode="1"
-    android:versionName="1.0" >
+    android:versionName="1.0">
 
     <uses-sdk
         android:minSdkVersion="15"
@@ -19,7 +19,7 @@
         <activity
             android:name="jp.bugscontrol.ActivityRegister"
             android:label="@string/app_name"
-            android:noHistory="true" >
+            android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,16 +28,9 @@
         </activity>
         <activity
             android:name="jp.bugscontrol.ActivityProductList"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="jp.bugscontrol.ActivityProduct"
-            android:label="@string/app_name" >
-        </activity>
-        <activity
-            android:name="jp.bugscontrol.ActivityBug"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="" />
+        <activity android:name="jp.bugscontrol.ActivityProduct" />
+        <activity android:name="jp.bugscontrol.ActivityBug" />
     </application>
 
 </manifest>

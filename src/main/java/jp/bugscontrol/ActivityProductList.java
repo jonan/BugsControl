@@ -50,7 +50,6 @@ public class ActivityProductList extends ListActivity implements ActionBar.OnNav
         }
         list.add(getResources().getString(R.string.add_server));
 
-        actionBar.setTitle("");
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setListNavigationCallbacks(list, this);
 

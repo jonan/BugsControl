@@ -23,6 +23,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,9 +33,12 @@ import jp.util.Util;
 public class ActivityBug extends ListActivity {
     private Bug bug;
 
+    private View mainView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_bug);
 
@@ -42,23 +46,25 @@ public class ActivityBug extends ListActivity {
         int bug_id = getIntent().getIntExtra("bug_id", -1);
         bug = ActivityRegister.servers.get(server).getBugFromId(bug_id);
 
-        getListView().addHeaderView(getUserProfileView());
+        final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mainView = inflater.inflate(R.layout.bug_info, getListView(), false);
+
+        getListView().addHeaderView(mainView);
         getListView().setAdapter(new AdapterComment(this, bug.getComments()));
+
+        final AdapterComment adapter = new AdapterComment(this, bug.getComments());
+        getListView().setAdapter(adapter);
+        bug.setAdapterComment(adapter, this);
     }
 
-    public View getUserProfileView() {
-        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.bug_info, getListView(), false);
+    public void updateView() {
+        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getReporter()), (ImageView) mainView.findViewById(R.id.reporter_img));
+        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getAssignee()), (ImageView) mainView.findViewById(R.id.assignee_img));
 
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getReporter()), (ImageView) view.findViewById(R.id.reporter_img));
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getAssignee()), (ImageView) view.findViewById(R.id.assignee_img));
+        ((TextView) mainView.findViewById(R.id.summary)).setText(bug.getSummary());
+        ((TextView) mainView.findViewById(R.id.priority)).setText(bug.getPriority());
+        ((TextView) mainView.findViewById(R.id.status)).setText(bug.getStatus());
 
-        ((TextView) view.findViewById(R.id.summary)).setText(bug.getSummary());
-        ((TextView) view.findViewById(R.id.priority)).setText(bug.getPriority());
-        ((TextView) view.findViewById(R.id.status)).setText(bug.getStatus());
-
-        ((TextView) view.findViewById(R.id.description)).setText(bug.getDescription());
-
-        return view;
+        ((TextView) mainView.findViewById(R.id.description)).setText(bug.getDescription());
     }
 }

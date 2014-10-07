@@ -30,10 +30,10 @@ public class Bug extends jp.bugscontrol.general.Bug {
     public Bug(final jp.bugscontrol.general.Product product, final JSONObject json) {
         super(product);
         createFromJSON(json);
-        //loadAllInfo();
     }
 
-    public void loadAllInfo() {
+    @Override
+    protected void loadComments() {
         final Bug b = this;
         final BugzillaTask task = new BugzillaTask(product.getServer(), "Bug.comments", "'ids':[" + b.id + "]", new Listener() {
             @Override
@@ -41,6 +41,7 @@ public class Bug extends jp.bugscontrol.general.Bug {
                 try {
                     final JSONObject object = new JSONObject(s);
                     final JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(b.id)).getJSONArray("comments");
+                    b.comments.clear();
                     for (int i=0; i < comments.length(); ++i) {
                         if (i == 0) {
                             description = comments.getJSONObject(i).getString("text");
@@ -51,12 +52,13 @@ public class Bug extends jp.bugscontrol.general.Bug {
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }
+                commentsListUpdated();
             }
         });
         task.execute();
     }
 
-    public void createFromJSON(final JSONObject json) {
+    private void createFromJSON(final JSONObject json) {
         try {
             /* Bug JSON
             *

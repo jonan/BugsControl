@@ -32,24 +32,36 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class AdapterComment extends ArrayAdapter<Comment> {
-    LayoutInflater inflater;
+    private LayoutInflater inflater;
 
-    public AdapterComment(Context context, List<Comment> list) {
+    public AdapterComment(final Context context, final List<Comment> list) {
         super(context, R.layout.adapter_comment, list);
         inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = inflater.inflate(R.layout.adapter_comment, parent, false);
+    public View getView(final int position, View convertView, final ViewGroup parent) {
+        if (convertView == null) {
+            convertView = inflater.inflate(R.layout.adapter_comment, parent, false);
+        }
 
-        Comment item = getItem(position);
-        ((TextView) view.findViewById(R.id.creator)).setText(item.getAuthor());
-        ((TextView) view.findViewById(R.id.text)).setText(item.getText());
-        ((TextView) view.findViewById(R.id.date)).setText(item.getDate());
+        final Comment item = getItem(position);
+        ((TextView) convertView.findViewById(R.id.creator)).setText(item.getAuthor());
+        ((TextView) convertView.findViewById(R.id.text)).setText(item.getText());
+        ((TextView) convertView.findViewById(R.id.date)).setText(item.getDate());
 
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(item.getAuthor()), (ImageView) view.findViewById(R.id.author_img));
+        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(item.getAuthor()), (ImageView) convertView.findViewById(R.id.author_img));
 
-        return view;
+        return convertView;
+    }
+
+    @Override
+    public boolean areAllItemsEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled(final int position) {
+        return false;
     }
 }

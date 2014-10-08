@@ -4,4 +4,7 @@
     <color name="adapter_red">#B01212</color>
     <color name="adapter_green">#0E820E</color>
 
+    <color name="header_background">#586682</color>
+    <color name="light_background">#AECFFB</color>
+
 </resources>

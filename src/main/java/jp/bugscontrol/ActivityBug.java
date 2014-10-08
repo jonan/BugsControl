@@ -48,6 +48,7 @@ public class ActivityBug extends ListActivity {
 
         final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mainView = inflater.inflate(R.layout.bug_info, getListView(), false);
+        updateView();
 
         getListView().addHeaderView(mainView);
         getListView().setAdapter(new AdapterComment(this, bug.getComments()));

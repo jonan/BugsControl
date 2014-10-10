@@ -23,8 +23,11 @@ import android.text.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jp.util.Util;
-import jp.util.Util.Listener;
+import jp.util.Util.TaskListener;
 
 
 public class Bug extends jp.bugscontrol.general.Bug {
@@ -36,23 +39,29 @@ public class Bug extends jp.bugscontrol.general.Bug {
     @Override
     protected void loadComments() {
         final Bug b = this;
-        final BugzillaTask task = new BugzillaTask(product.getServer(), "Bug.comments", "'ids':[" + b.id + "]", new Listener() {
+        final List<jp.bugscontrol.general.Comment> newList = new ArrayList<jp.bugscontrol.general.Comment>();
+        final BugzillaTask task = new BugzillaTask(product.getServer(), "Bug.comments", "'ids':[" + b.id + "]", new TaskListener() {
             @Override
-            public void callback(final String s) {
+            public void doInBackground(final String s) {
                 try {
                     final JSONObject object = new JSONObject(s);
                     final JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(b.id)).getJSONArray("comments");
-                    b.comments.clear();
                     for (int i = 0; i < comments.length(); ++i) {
                         if (i == 0) {
                             description = comments.getJSONObject(i).getString("text");
                         } else {
-                            b.comments.add(new Comment(b, comments.getJSONObject(i)));
+                            newList.add(new Comment(b, comments.getJSONObject(i)));
                         }
                     }
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onPostExecute(final String s) {
+                comments.clear();
+                comments.addAll(newList);
                 commentsListUpdated();
             }
         });

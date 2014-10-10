@@ -18,7 +18,7 @@
 
 package jp.bugscontrol.bugzilla;
 
-import java.util.UUID;
+import android.os.AsyncTask;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.HttpClient;
@@ -28,24 +28,28 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import jp.bugscontrol.general.Server;
-import jp.util.Util.Listener;
+import java.util.UUID;
 
-import android.os.AsyncTask;
+import jp.bugscontrol.general.Server;
+import jp.util.Util.TaskListener;
 
 public class BugzillaTask extends AsyncTask<Void, Void, Void> {
-    String method, params, response;
-    Listener listener;
-    Server server;
+    private final String method;
+    private String params;
+    private String response;
 
-    public BugzillaTask(Server server, String method, Listener listener) {
+    private TaskListener listener;
+
+    private Server server;
+
+    public BugzillaTask(final Server server, final String method, final TaskListener listener) {
         this.server = server;
         this.method = method;
         this.params = "";
         this.listener = listener;
     }
 
-    public BugzillaTask(Server server, String method, String params, Listener listener) {
+    public BugzillaTask(final Server server, final String method, final String params, final TaskListener listener) {
         this.server = server;
         this.method = method;
         this.params = params;
@@ -55,37 +59,46 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... p) {
         try {
-            //HttpClient http_client = new DefaultHttpClient();
-            HttpClient http_client = MySSLSocketFactory.getNewHttpClient();
-            HttpPost http_post = new HttpPost(server.getUrl() + "/jsonrpc.cgi");
-            http_post.addHeader("Content-Type", "application/json");
-
-            JSONObject request = new JSONObject();
-            request.put("id", UUID.randomUUID().hashCode());
-            request.put("method", method);
-            JSONArray array;
+            // Add login info if needed
             if (server.hasUser()) {
-                if (params.length() > 0)
+                if (params.length() > 0) {
                     params += ",";
+                }
                 params += "'Bugzilla_login':'" + server.getUser() + "','Bugzilla_password':'" + server.getPassword() + "'";
             }
-            if (params.length() > 0)
+
+            // Create the final array
+            final JSONArray array;
+            if (params.length() > 0) {
                 array = new JSONArray("[{" + params + "}]");
-            else
+            } else {
                 array = new JSONArray();
+            }
+
+            // Create the request
+            final JSONObject request = new JSONObject();
+            request.put("id", UUID.randomUUID().hashCode());
+            request.put("method", method);
             request.put("params", array);
 
-            http_post.setEntity(new StringEntity(request.toString()));
-            HttpEntity entity = http_client.execute(http_post).getEntity();
+            // Send the request
+            //HttpClient httpClient = new DefaultHttpClient();
+            final HttpClient httpClient = MySSLSocketFactory.getNewHttpClient();
+            final HttpPost httpPost = new HttpPost(server.getUrl() + "/jsonrpc.cgi");
+            httpPost.addHeader("Content-Type", "application/json");
+            httpPost.setEntity(new StringEntity(request.toString()));
+            HttpEntity entity = httpClient.execute(httpPost).getEntity();
             response = EntityUtils.toString(entity);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             e.printStackTrace();
         }
+
+        listener.doInBackground(response);
         return null;
     }
 
     @Override
     protected void onPostExecute(Void result) {
-        listener.callback(response);
+        listener.onPostExecute(response);
     }
 }

@@ -35,4 +35,9 @@ abstract public class Util {
     public interface Listener {
         void callback(final String s);
     }
+
+    public interface TaskListener {
+        void doInBackground(final String s);
+        void onPostExecute(final String s);
+    }
 }

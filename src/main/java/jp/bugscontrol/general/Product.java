@@ -79,4 +79,12 @@ public abstract class Product {
     public void addBug(final Bug bug) {
         bugs.add(bug);
     }
+
+    public void addBugs(final List<Bug> newBugs) {
+        bugs.addAll(newBugs);
+    }
+
+    public void clearBugs() {
+        bugs.clear();
+    }
 }

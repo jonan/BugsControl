@@ -21,9 +21,11 @@ package jp.bugscontrol.bugzilla;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
-import jp.util.Util.Listener;
+import jp.util.Util.TaskListener;
 
 public class Product extends jp.bugscontrol.general.Product {
     public Product(final jp.bugscontrol.general.Server server, final JSONObject json) {
@@ -34,21 +36,27 @@ public class Product extends jp.bugscontrol.general.Product {
     @Override
     protected void loadBugs() {
         final Product p = this;
-        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + p.getName() + "', 'resolution':'', 'limit':0, 'include_fields':['id', 'summary', 'priority', 'status', 'creator', 'assigned_to', 'resolution', 'creation_time']",  new Listener() {
+        final List<jp.bugscontrol.general.Bug> newList = new ArrayList<jp.bugscontrol.general.Bug>();
+        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + p.getName() + "', 'resolution':'', 'limit':0, 'include_fields':['id', 'summary', 'priority', 'status', 'creator', 'assigned_to', 'resolution', 'creation_time']", new TaskListener() {
             @Override
-            public void callback(final String s) {
+            public void doInBackground(final String s) {
                 try {
                     final JSONObject object = new JSONObject(s);
                     final JSONArray bugs = object.getJSONObject("result").getJSONArray("bugs");
                     final int size = bugs.length();
-                    p.getBugs().clear();
                     for (int i = 0; i < size; ++i) {
-                        p.addBug(new Bug(p, bugs.getJSONObject(i)));
+                        newList.add(new Bug(p, bugs.getJSONObject(i)));
                     }
-                    Collections.reverse(p.getBugs());
+                    Collections.reverse(newList);
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onPostExecute(final String s) {
+                p.clearBugs();
+                p.addBugs(newList);
                 bugsListUpdated();
             }
         });

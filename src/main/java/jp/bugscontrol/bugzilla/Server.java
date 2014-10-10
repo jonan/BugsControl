@@ -21,7 +21,10 @@ package jp.bugscontrol.bugzilla;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import jp.util.Util.Listener;
+import java.util.ArrayList;
+import java.util.List;
+
+import jp.util.Util.TaskListener;
 
 public class Server extends jp.bugscontrol.general.Server {
     public Server(final String name, final String url) {
@@ -35,9 +38,13 @@ public class Server extends jp.bugscontrol.general.Server {
     @Override
     protected void loadProducts() {
         // Get all the products' ids and pass it to loadProductsFromIds()
-        final BugzillaTask task = new BugzillaTask(this, "Product.get_accessible_products", new Listener() {
+        final BugzillaTask task = new BugzillaTask(this, "Product.get_accessible_products", new TaskListener() {
             @Override
-            public void callback(final String s) {
+            public void doInBackground(final String s) {
+            }
+
+            @Override
+            public void onPostExecute(final String s) {
                 try {
                     final JSONObject object = new JSONObject(s);
                     loadProductsFromIds(object.getJSONObject("result").getString("ids"));
@@ -51,21 +58,27 @@ public class Server extends jp.bugscontrol.general.Server {
 
     private void loadProductsFromIds(final String productIds) {
         final Server server = this;
-        final BugzillaTask task = new BugzillaTask(this, "Product.get", "'ids':" + productIds + ",'include_fields':['id', 'name', 'description']",  new Listener() {
+        final List<jp.bugscontrol.general.Product> newList = new ArrayList<jp.bugscontrol.general.Product>();
+        final BugzillaTask task = new BugzillaTask(this, "Product.get", "'ids':" + productIds + ",'include_fields':['id', 'name', 'description']", new TaskListener() {
             @Override
-            public void callback(final String s) {
+            public void doInBackground(final String s) {
                 try {
                     final JSONObject object = new JSONObject(s);
                     final JSONArray productsJson = object.getJSONObject("result").getJSONArray("products");
                     final int size = productsJson.length();
-                    products.clear();
                     for (int i = 0; i < size; ++i) {
                         final JSONObject p = productsJson.getJSONObject(i);
-                        products.add(new Product(server, p));
+                        newList.add(new Product(server, p));
                     }
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }
+            }
+
+            @Override
+            public void onPostExecute(final String s) {
+                products.clear();
+                products.addAll(newList);
                 productsListUpdated();
             }
         });

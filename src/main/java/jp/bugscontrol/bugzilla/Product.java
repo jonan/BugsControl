@@ -21,6 +21,8 @@ package jp.bugscontrol.bugzilla;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.Collections;
+
 import jp.util.Util.Listener;
 
 public class Product extends jp.bugscontrol.general.Product {
@@ -43,6 +45,7 @@ public class Product extends jp.bugscontrol.general.Product {
                     for (int i = 0; i < size; ++i) {
                         p.addBug(new Bug(p, bugs.getJSONObject(i)));
                     }
+                    Collections.reverse(p.getBugs());
                 } catch (final Exception e) {
                     e.printStackTrace();
                 }

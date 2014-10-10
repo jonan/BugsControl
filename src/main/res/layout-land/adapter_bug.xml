@@ -10,8 +10,7 @@
         android:id="@+id/summary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:lines="2"
+        android:singleLine="true"
         android:textIsSelectable="false"
         android:textSize="14sp"
         android:textStyle="bold" />

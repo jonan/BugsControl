@@ -32,7 +32,7 @@ public class Product extends jp.bugscontrol.general.Product {
     @Override
     protected void loadBugs() {
         final Product p = this;
-        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + p.getName() + "','resolution':'','limit':0,'include_fields':['id', 'summary', 'priority', 'status', 'creator', 'assigned_to', 'resolution']",  new Listener() {
+        final BugzillaTask task = new BugzillaTask(server, "Bug.search", "'product':'" + p.getName() + "', 'resolution':'', 'limit':0, 'include_fields':['id', 'summary', 'priority', 'status', 'creator', 'assigned_to', 'resolution', 'creation_time']",  new Listener() {
             @Override
             public void callback(final String s) {
                 try {

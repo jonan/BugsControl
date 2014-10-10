@@ -33,6 +33,7 @@ public abstract class Bug {
     protected String priority;
     protected String status;
     protected String description;
+    protected String creationDate;
 
     protected String reporter;
     protected String assignee;
@@ -86,6 +87,10 @@ public abstract class Bug {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
     }
 
     public String getReporter() {

@@ -60,48 +60,9 @@ public class Bug extends jp.bugscontrol.general.Bug {
 
     private void createFromJSON(final JSONObject json) {
         try {
-            /* Bug JSON
-            *
-            * {
-            *  "priority": "NOR",
-            *  "blocks": [ ],
-            *  "creator": "dvratil@redhat.com",
-            *  "last_change_time": "2013-01-02T11:45:10Z",
-            *  "is_cc_accessible": true,
-            *  "keywords": [ ],
-            *  "cc": ["dvratil@redhat.com"],
-            *  "url": "",
-            *  "assigned_to": "afiestas@kde.org",
-            *  "see_also": [ ],
-            *  "groups": [ ],
-            *  "id": 310727,
-            *  "creation_time": "2012-11-26T18:30:00Z",
-            *  "whiteboard": "",
-            *  "qa_contact": "",
-            *  "depends_on": [ ],
-            *  "dupe_of": null,
-            *  "resolution": "FIXED",
-            *  "classification": "Unclassified",
-            *  "alias": null,
-            *  "op_sys": "Linux",
-            *  "status": "RESOLVED",
-            *  "summary": "KScreen::Edid should be created on demand",
-            *  "is_open": false,
-            *  "platform": "unspecified",
-            *  "severity": "normal",
-            *  "cf_commitlink": "",
-            *  "version": "unspecified",
-            *  "cf_versionfixedin": "",
-            *  "component": "libkscreen",
-            *  "is_creator_accessible": true,
-            *  "is_confirmed": true,
-            *  "product": "KScreen",
-            *  "target_milestone": "---"
-            * }
-            *
-            */
             id = json.getInt("id");
             summary = json.getString("summary");
+            creationDate = json.getString("creation_time");
             priority = json.getString("priority");
             status = json.getString("status");
             reporter = json.getString("creator");

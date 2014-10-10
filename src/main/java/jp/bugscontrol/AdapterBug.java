@@ -51,8 +51,11 @@ public class AdapterBug extends ArrayAdapter<Bug> {
             color = getContext().getResources().getColor(R.color.adapter_green);
         }
 
-        ((TextView) convertView.findViewById(R.id.summary)).setTextColor(color);
-        ((TextView) convertView.findViewById(R.id.summary)).setText("[" + item.getPriority() + "] " + item.getSummary());
+        final TextView summaryView = (TextView) convertView.findViewById(R.id.summary);
+        summaryView.setTextColor(color);
+        summaryView.setText("[" + item.getPriority() + "] " + item.getSummary());
+
+        ((TextView) convertView.findViewById(R.id.creation_date)).setText(item.getCreationDate());
         ((TextView) convertView.findViewById(R.id.assignee)).setText(item.getAssignee());
 
         return convertView;

@@ -49,6 +49,7 @@ public class AdapterComment extends ArrayAdapter<Comment> {
         ((TextView) convertView.findViewById(R.id.creator)).setText(item.getAuthor());
         ((TextView) convertView.findViewById(R.id.text)).setText(item.getText());
         ((TextView) convertView.findViewById(R.id.date)).setText(item.getDate());
+        ((TextView) convertView.findViewById(R.id.bug_number)).setText("#" + ( (item.getNumber() > 0) ? item.getNumber() : (position + 1) ));
 
         ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(item.getAuthor()), (ImageView) convertView.findViewById(R.id.author_img));
 

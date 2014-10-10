@@ -23,6 +23,7 @@ public abstract class Comment {
     protected String text;
     protected String author;
     protected String date;
+    protected int number;
 
     protected final Bug bug;
 
@@ -30,7 +31,9 @@ public abstract class Comment {
         this.bug = bug;
     }
 
-    public int getId() {return id;}
+    public int getId() {
+        return id;
+    }
 
     public String getText() {
         return text;
@@ -46,5 +49,9 @@ public abstract class Comment {
 
     public Bug getBug() {
         return bug;
+    }
+
+    public int getNumber() {
+        return number;
     }
 }

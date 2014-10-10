@@ -27,24 +27,25 @@ public class Comment extends jp.bugscontrol.general.Comment {
     }
 
     public void createFromJSON(final JSONObject json) {
-        /* Comment JSON
-         *
-         * {
-         *  "is_private": false,
-         *  "creator": "author@email",
-         *  "attachment_id": null,
-         *  "time": "2012-11-26T18:30:48Z",
-         *  "bug_id": 310727,
-         *  "text": "comment text",
-         *  "id": 1318664
-         * }
-         *
-         */
         try {
             id = json.getInt("id");
             text = json.getString("text");
-            author = json.getString("creator");
-            date = json.getString("time");
+
+            if (json.has("creator")) {
+                author = json.getString("creator");
+            } else {
+                author = json.getString("author");
+            }
+
+            if (json.has("creation_time")) {
+                date = json.getString("creation_time");
+            } else {
+                date = json.getString("time");
+            }
+
+            if (json.has("count")) {
+                number = json.getInt("count");
+            }
         } catch (final Exception e) {
             e.printStackTrace();
         }

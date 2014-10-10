@@ -63,6 +63,10 @@ public class ActivityBug extends ListActivity {
         ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getAssignee()), (ImageView) mainView.findViewById(R.id.assignee_img));
 
         ((TextView) mainView.findViewById(R.id.summary)).setText(bug.getSummary());
+
+        ((TextView) mainView.findViewById(R.id.reporter)).setText(bug.getReporter());
+        ((TextView) mainView.findViewById(R.id.assignee)).setText(bug.getAssignee());
+
         ((TextView) mainView.findViewById(R.id.priority)).setText(bug.getPriority());
         ((TextView) mainView.findViewById(R.id.status)).setText(bug.getStatus());
 

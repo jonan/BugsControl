@@ -1,6 +1,9 @@
 package jp.util;
 
 import java.security.MessageDigest;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
 
 abstract public class Util {
     static public String md5(final String s) {
@@ -17,6 +20,16 @@ abstract public class Util {
         }
 
         return "";
+    }
+
+    static public String formatDate(final String format, final String string) {
+        try {
+            final SimpleDateFormat df = new SimpleDateFormat(format, Locale.getDefault());
+            return DateFormat.getDateTimeInstance().format(df.parse(string));
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        return string;
     }
 
     public interface Listener {

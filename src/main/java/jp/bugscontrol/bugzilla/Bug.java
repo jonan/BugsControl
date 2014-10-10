@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import jp.util.Util;
 import jp.util.Util.Listener;
 
 
@@ -42,7 +43,7 @@ public class Bug extends jp.bugscontrol.general.Bug {
                     final JSONObject object = new JSONObject(s);
                     final JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(b.id)).getJSONArray("comments");
                     b.comments.clear();
-                    for (int i=0; i < comments.length(); ++i) {
+                    for (int i = 0; i < comments.length(); ++i) {
                         if (i == 0) {
                             description = comments.getJSONObject(i).getString("text");
                         } else {
@@ -62,7 +63,7 @@ public class Bug extends jp.bugscontrol.general.Bug {
         try {
             id = json.getInt("id");
             summary = json.getString("summary");
-            creationDate = json.getString("creation_time");
+            creationDate = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time"));
             priority = json.getString("priority");
             status = json.getString("status");
             reporter = json.getString("creator");

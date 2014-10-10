@@ -20,6 +20,8 @@ package jp.bugscontrol.bugzilla;
 
 import org.json.JSONObject;
 
+import jp.util.Util;
+
 public class Comment extends jp.bugscontrol.general.Comment {
     public Comment(final Bug bug, final JSONObject json) {
         super(bug);
@@ -38,9 +40,9 @@ public class Comment extends jp.bugscontrol.general.Comment {
             }
 
             if (json.has("creation_time")) {
-                date = json.getString("creation_time");
+                date = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time"));
             } else {
-                date = json.getString("time");
+                date = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("time"));
             }
 
             if (json.has("count")) {

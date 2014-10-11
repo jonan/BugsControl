@@ -27,11 +27,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.ActivityProductList"
+            android:name=".ui.ActivityServer"
             android:label="" />
         <activity
             android:name=".ui.ActivityProduct"
-            android:parentActivityName=".ui.ActivityProductList" />
+            android:parentActivityName=".ui.ActivityServer" />
         <activity
             android:name=".ui.ActivityBug"
             android:parentActivityName=".ui.ActivityProduct" />

@@ -68,7 +68,7 @@ public class ActivityRegister extends Activity {
     }
 
     private void openProductList(final int position) {
-        final Intent intent = new Intent(this, ActivityProductList.class);
+        final Intent intent = new Intent(this, ActivityServer.class);
         intent.putExtra("server_position", position);
         startActivity(intent);
     }

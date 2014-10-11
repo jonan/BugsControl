@@ -31,7 +31,7 @@ import android.widget.ListView;
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
-public class ActivityProductList extends ListActivity implements ActionBar.OnNavigationListener {
+public class ActivityServer extends ListActivity implements ActionBar.OnNavigationListener {
     private int serverPos;
 
     private AdapterProduct adapter;

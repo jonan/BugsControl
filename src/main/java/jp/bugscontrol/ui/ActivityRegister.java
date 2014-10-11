@@ -19,10 +19,16 @@
 package jp.bugscontrol.ui;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.activeandroid.query.Select;
 
@@ -34,6 +40,11 @@ import jp.bugscontrol.general.Server;
 
 public class ActivityRegister extends Activity {
     static public List<Server> servers = new ArrayList<Server>();
+
+    private static String[] typeName = {"Bugzilla", "GitHub"};
+    private static int[] typeIcon = {R.drawable.server_icon_bugzilla, R.drawable.server_icon_github};
+
+    private Spinner serverTypeSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +61,20 @@ public class ActivityRegister extends Activity {
             if (servers.size() > 0) {
                 openProductList(0);
             }
+
+            return;
         }
+
+        serverTypeSpinner = (Spinner) findViewById(R.id.server_type_spinner);
+        serverTypeSpinner.setAdapter(new ServerTypeAdapter(this));
     }
 
     public void registerServer(View view) {
+        if (serverTypeSpinner.getSelectedItemPosition() != 0) {
+            Toast.makeText(this, "This server type is not yet supported", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         final String name = ((EditText) findViewById(R.id.name)).getText().toString();
         final String url = ((EditText) findViewById(R.id.url)).getText().toString();
         final String user = ((EditText) findViewById(R.id.user)).getText().toString();
@@ -72,5 +93,24 @@ public class ActivityRegister extends Activity {
         final Intent intent = new Intent(this, ActivityServer.class);
         intent.putExtra("server_position", position);
         startActivity(intent);
+    }
+
+    private class ServerTypeAdapter extends ArrayAdapter {
+        public ServerTypeAdapter(final Context context) {
+            super(context, R.layout.adapter_server_type, R.id.name, typeName);
+        }
+
+        @Override
+        public View getView(final int position, final View convertView, final ViewGroup parent) {
+            final View view = super.getDropDownView(position, convertView, parent);
+            final ImageView iconImage = (ImageView) view.findViewById(R.id.icon);
+            iconImage.setImageResource(typeIcon[position]);
+            return view;
+        }
+
+        @Override
+        public View getDropDownView(final int position, final View convertView, final ViewGroup parent) {
+            return getView(position, convertView, parent);
+        }
     }
 }

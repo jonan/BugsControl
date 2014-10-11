@@ -16,11 +16,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jp.bugscontrol;
+package jp.bugscontrol.ui;
 
 import java.util.List;
 
+import jp.bugscontrol.R;
 import jp.bugscontrol.general.Comment;
+import jp.util.ImageLoader;
 import jp.util.Util;
 
 import android.content.Context;

@@ -23,7 +23,7 @@ import android.widget.BaseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.bugscontrol.ActivityBug;
+import jp.bugscontrol.ui.ActivityBug;
 
 public abstract class Bug {
     protected int id;

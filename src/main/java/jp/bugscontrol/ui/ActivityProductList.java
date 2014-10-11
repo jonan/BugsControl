@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jp.bugscontrol;
+package jp.bugscontrol.ui;
 
 import android.app.ActionBar;
 import android.app.ListActivity;
@@ -28,6 +28,7 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
 public class ActivityProductList extends ListActivity implements ActionBar.OnNavigationListener {

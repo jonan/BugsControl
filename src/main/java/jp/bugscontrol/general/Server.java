@@ -24,7 +24,7 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.bugscontrol.AdapterProduct;
+import jp.bugscontrol.ui.AdapterProduct;
 
 public abstract class Server {
     protected final List<Product> products = new ArrayList<Product>();

@@ -23,7 +23,7 @@ import android.app.Activity;
 import java.util.ArrayList;
 import java.util.List;
 
-import jp.bugscontrol.AdapterBug;
+import jp.bugscontrol.ui.AdapterBug;
 
 public abstract class Product {
     protected final Server server;

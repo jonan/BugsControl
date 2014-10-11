@@ -17,7 +17,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
         <activity
-            android:name="jp.bugscontrol.ActivityRegister"
+            android:name=".ui.ActivityRegister"
             android:label="@string/app_name"
             android:noHistory="true">
             <intent-filter>
@@ -27,10 +27,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="jp.bugscontrol.ActivityProductList"
+            android:name=".ui.ActivityProductList"
             android:label="" />
-        <activity android:name="jp.bugscontrol.ActivityProduct" />
-        <activity android:name="jp.bugscontrol.ActivityBug" />
+        <activity android:name=".ui.ActivityProduct" />
+        <activity android:name=".ui.ActivityBug" />
     </application>
 
 </manifest>

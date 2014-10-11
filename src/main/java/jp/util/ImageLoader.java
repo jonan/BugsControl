@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jp.bugscontrol;
+package jp.util;
 
 import java.io.FilterInputStream;
 import java.io.IOException;

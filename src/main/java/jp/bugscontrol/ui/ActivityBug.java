@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jp.bugscontrol;
+package jp.bugscontrol.ui;
 
 import android.app.ListActivity;
 import android.content.Context;
@@ -27,7 +27,9 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import jp.bugscontrol.R;
 import jp.bugscontrol.general.Bug;
+import jp.util.ImageLoader;
 import jp.util.Util;
 
 public class ActivityBug extends ListActivity {

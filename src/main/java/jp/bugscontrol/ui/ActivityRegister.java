@@ -16,7 +16,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jp.bugscontrol;
+package jp.bugscontrol.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,6 +29,7 @@ import com.activeandroid.query.Select;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
 public class ActivityRegister extends Activity {

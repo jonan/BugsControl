@@ -42,19 +42,14 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_product_list);
 
-        // Set up the action bar
-        final ActionBar actionBar = getActionBar();
-        final Context context = actionBar.getThemedContext();
-        ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_dropdown_item);
-        for (final Server s : ActivityRegister.servers) {
-            list.add(s.getName());
-        }
-        list.add(getResources().getString(R.string.add_server));
+        setActionBar();
+        setServer(getIntent().getIntExtra("server_position", 0));
+    }
 
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actionBar.setListNavigationCallbacks(list, this);
-
-        setServer(getIntent().getIntExtra("server_position", -1));
+    @Override
+    protected void onNewIntent(final Intent intent) {
+        setActionBar();
+        setServer(intent.getIntExtra("server_position", 0));
     }
 
     @Override
@@ -81,6 +76,19 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
 
         setServer(position);
         return true;
+    }
+
+    private void setActionBar() {
+        final ActionBar actionBar = getActionBar();
+        final Context context = actionBar.getThemedContext();
+        ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_dropdown_item);
+        for (final Server s : ActivityRegister.servers) {
+            list.add(s.getName());
+        }
+        list.add(getResources().getString(R.string.add_server));
+
+        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+        actionBar.setListNavigationCallbacks(list, this);
     }
 
     private void setServer(final int pos) {

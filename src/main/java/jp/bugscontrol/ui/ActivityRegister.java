@@ -41,7 +41,7 @@ import jp.bugscontrol.general.Server;
 public class ActivityRegister extends Activity {
     static public List<Server> servers = new ArrayList<Server>();
 
-    private static String[] typeName = {"Bugzilla", "GitHub"};
+    private static String[] typeName = {Server.BUGZILLA, Server.GITHUB};
     private static int[] typeIcon = {R.drawable.server_icon_bugzilla, R.drawable.server_icon_github};
 
     private Spinner serverTypeSpinner;
@@ -52,25 +52,24 @@ public class ActivityRegister extends Activity {
         setContentView(R.layout.activity_register);
 
         if (!getIntent().getBooleanExtra("new_server", false)) {
-            final List<jp.bugscontrol.db.Server> dBservers = new Select().from(jp.bugscontrol.db.Server.class).execute();
+            final List<jp.bugscontrol.db.Server> dbServers = new Select().from(jp.bugscontrol.db.Server.class).execute();
             servers.clear();
-            for (final jp.bugscontrol.db.Server s : dBservers) {
+            for (final jp.bugscontrol.db.Server s : dbServers) {
                 servers.add(new jp.bugscontrol.bugzilla.Server(s));
             }
 
             if (servers.size() > 0) {
                 openProductList(0);
+                return;
             }
-
-            return;
         }
 
         serverTypeSpinner = (Spinner) findViewById(R.id.server_type_spinner);
         serverTypeSpinner.setAdapter(new ServerTypeAdapter(this));
     }
 
-    public void registerServer(View view) {
-        if (serverTypeSpinner.getSelectedItemPosition() != 0) {
+    public void registerServer(final View view) {
+        if (serverTypeSpinner.getSelectedItem() != Server.BUGZILLA) {
             Toast.makeText(this, "This server type is not yet supported", Toast.LENGTH_LONG).show();
             return;
         }
@@ -97,7 +96,7 @@ public class ActivityRegister extends Activity {
 
     private class ServerTypeAdapter extends ArrayAdapter {
         public ServerTypeAdapter(final Context context) {
-            super(context, R.layout.adapter_server_type, R.id.name, typeName);
+            super(context, R.layout.adapter_server_type, R.id.server_type, typeName);
         }
 
         @Override

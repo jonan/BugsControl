@@ -28,7 +28,7 @@ import jp.util.Util.TaskListener;
 
 public class Server extends jp.bugscontrol.general.Server {
     public Server(final String name, final String url) {
-        super(name, url);
+        super(name, url, BUGZILLA);
     }
 
     public Server(final jp.bugscontrol.db.Server server) {

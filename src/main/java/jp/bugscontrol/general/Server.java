@@ -27,7 +27,11 @@ import java.util.List;
 import jp.bugscontrol.ui.AdapterProduct;
 
 public abstract class Server {
+    public static final String BUGZILLA = "Bugzilla";
+    public static final String GITHUB = "GitHub";
+
     protected final List<Product> products = new ArrayList<Product>();
+    protected final String type;
     protected final String name;
     protected final String url;
     protected String user;
@@ -38,7 +42,8 @@ public abstract class Server {
 
     private jp.bugscontrol.db.Server databaseServer = null;
 
-    public Server(final String name, final String url) {
+    public Server(final String name, final String url, final String type) {
+        this.type = type;
         this.name = name;
         this.url = url;
         user = "";
@@ -47,6 +52,7 @@ public abstract class Server {
 
     public Server(final jp.bugscontrol.db.Server server) {
         databaseServer = server;
+        type = server.type;
         name = server.name;
         url = server.url;
         user = server.user;
@@ -92,6 +98,7 @@ public abstract class Server {
         if (databaseServer == null) {
             databaseServer = new jp.bugscontrol.db.Server();
         }
+        databaseServer.type = type;
         databaseServer.name = name;
         databaseServer.url = url;
         databaseServer.user = user;

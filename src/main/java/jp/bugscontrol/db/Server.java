@@ -24,6 +24,8 @@ import com.activeandroid.annotation.Table;
 
 @Table(name = "Servers")
 public class Server extends Model {
+    @Column(name = "type")
+    public String type;
     @Column(name = "name")
     public String name;
     @Column(name = "url")

@@ -22,6 +22,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -74,17 +75,43 @@ public class ActivityRegister extends Activity {
             return;
         }
 
-        final String name = ((EditText) findViewById(R.id.name)).getText().toString();
-        final String url = ((EditText) findViewById(R.id.url)).getText().toString();
-        final String user = ((EditText) findViewById(R.id.user)).getText().toString();
-        final String password = ((EditText) findViewById(R.id.password)).getText().toString();
+        final EditText nameView = ((EditText) findViewById(R.id.name));
+        final EditText urlView = ((EditText) findViewById(R.id.url));
+        final EditText userView = ((EditText) findViewById(R.id.user));
+        final EditText passwordView = ((EditText) findViewById(R.id.password));
 
-        final Server newServer = new jp.bugscontrol.bugzilla.Server(name, url);
-        newServer.setUser(user, password);
-        newServer.save();
-        servers.add(newServer);
+        final String name = nameView.getText().toString();
+        final String url = urlView.getText().toString();
+        final String user = userView.getText().toString();
+        final String password = passwordView.getText().toString();
 
-        openProductList(servers.size() - 1);
+        boolean error = false;
+
+        if (TextUtils.isEmpty(name)) {
+            nameView.setError(getString(R.string.name_cant_be_empty));
+            error = true;
+        }
+
+        for (final Server s : servers) {
+            if (s.getName().equals(name)) {
+                nameView.setError(getString(R.string.server_with_that_name_exists));
+                error = true;
+            }
+        }
+
+        if (TextUtils.isEmpty(url)) {
+            urlView.setError(getString(R.string.name_cant_be_empty));
+            error = true;
+        }
+
+        if (!error) {
+            final Server newServer = new jp.bugscontrol.bugzilla.Server(name, url);
+            newServer.setUser(user, password);
+            newServer.save();
+            servers.add(newServer);
+
+            openProductList(servers.size() - 1);
+        }
     }
 
     private void openProductList(final int position) {

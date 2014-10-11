@@ -29,8 +29,12 @@
         <activity
             android:name=".ui.ActivityProductList"
             android:label="" />
-        <activity android:name=".ui.ActivityProduct" />
-        <activity android:name=".ui.ActivityBug" />
+        <activity
+            android:name=".ui.ActivityProduct"
+            android:parentActivityName=".ui.ActivityProductList" />
+        <activity
+            android:name=".ui.ActivityBug"
+            android:parentActivityName=".ui.ActivityProduct" />
     </application>
 
 </manifest>

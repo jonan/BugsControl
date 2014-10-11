@@ -75,6 +75,7 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
             final Intent intent = new Intent(this, ActivityRegister.class);
             intent.putExtra("new_server", true);
             startActivity(intent);
+            getActionBar().setSelectedNavigationItem(serverPos);
             return true;
         }
 

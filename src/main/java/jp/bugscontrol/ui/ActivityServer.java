@@ -45,8 +45,10 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
         setProgressBarIndeterminateVisibility(false);
         setContentView(R.layout.activity_product_list);
 
+        getActionBar().setDisplayShowHomeEnabled(false);
+        getActionBar().setDisplayShowTitleEnabled(false);
+
         ActivityRegister.readDbServers();
-        setTitle("");
     }
 
     @Override
@@ -96,7 +98,7 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
         for (final Server s : ActivityRegister.servers) {
             list.add(s.getName());
         }
-        list.add(getResources().getString(R.string.add_server));
+        list.add(getResources().getString(R.string.manage_servers));
 
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
         actionBar.setListNavigationCallbacks(list, this);

@@ -14,7 +14,9 @@
     <string name="user_name">Nombre de usuario</string>
     <string name="password">Contraseña</string>
     <string name="ok">Aceptar</string>
+    <string name="manage_servers">Gestionar servidores</string>
     <string name="add_server">Añadir servidor</string>
+    <string name="edit_server">Editar servidor</string>
     <string name="name_cant_be_empty">El nombre no puede estar vacio</string>
     <string name="server_with_that_name_exists">Ya hay un servidor con ese nombre</string>
     <string name="url_cant_be_empty">La URL no puede estar vacia</string>

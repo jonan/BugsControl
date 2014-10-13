@@ -63,6 +63,13 @@ public class ActivityRegister extends Activity {
 
         serverTypeSpinner = (Spinner) findViewById(R.id.server_type_spinner);
         serverTypeSpinner.setAdapter(new ServerTypeAdapter(this));
+
+        int serverPos = getIntent().getIntExtra("server_position", -1);
+        if (serverPos == -1) {
+            setTitle(R.string.add_server);
+        } else {
+            setTitle(R.string.edit_server);
+        }
     }
 
     @Override

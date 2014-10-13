@@ -24,11 +24,15 @@ import android.text.TextUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.bugscontrol.R;
 import jp.bugscontrol.ui.AdapterProduct;
 
 public abstract class Server {
     public static final String BUGZILLA = "Bugzilla";
     public static final String GITHUB = "GitHub";
+
+    public static final int BUGZILLA_ICON = R.drawable.server_icon_bugzilla;
+    public static final int GITHUB_ICON = R.drawable.server_icon_github;
 
     protected final List<Product> products = new ArrayList<Product>();
     protected final String type;
@@ -108,6 +112,10 @@ public abstract class Server {
 
     public List<Product> getProducts() {
         return products;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public String getName() {

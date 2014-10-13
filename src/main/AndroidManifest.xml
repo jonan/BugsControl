@@ -20,10 +20,13 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".ui.ActivityServerManager"
+            android:label="@string/app_name" />
+        <activity
             android:name=".ui.ActivityRegister"
             android:label="@string/app_name"
             android:noHistory="true"
-            android:parentActivityName=".ui.ActivityServer" />
+            android:parentActivityName=".ui.ActivityServerManager" />
         <activity
             android:name=".ui.ActivityProduct"
             android:parentActivityName=".ui.ActivityServer" />

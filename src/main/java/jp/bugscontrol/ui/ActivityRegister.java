@@ -19,9 +19,7 @@
 package jp.bugscontrol.ui;
 
 import android.app.Activity;
-import android.app.TaskStackBuilder;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -45,7 +43,7 @@ public class ActivityRegister extends Activity {
     static public List<Server> servers = new ArrayList<Server>();
 
     private static String[] typeName = {Server.BUGZILLA, Server.GITHUB};
-    private static int[] typeIcon = {R.drawable.server_icon_bugzilla, R.drawable.server_icon_github};
+    private static int[] typeIcon = {Server.BUGZILLA_ICON, Server.GITHUB_ICON};
 
     private Spinner serverTypeSpinner;
 
@@ -69,8 +67,12 @@ public class ActivityRegister extends Activity {
 
     @Override
     public boolean onNavigateUp() {
-        finish();
-        return true;
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            finish();
+            return true;
+        } else {
+            return super.onNavigateUp();
+        }
     }
 
     public void registerServer(final View view) {
@@ -113,25 +115,7 @@ public class ActivityRegister extends Activity {
             newServer.setUser(user, password);
             newServer.save();
             servers.add(newServer);
-
-            openProductList(servers.size() - 1);
-        }
-    }
-
-    private void openProductList(final int position) {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
             finish();
-            final Intent intent = new Intent(this, ActivityServer.class);
-            intent.putExtra("server_position", position);
-            startActivity(intent);
-        } else {
-            final Intent upIntent = getParentActivityIntent();
-            upIntent.putExtra("server_position", position);
-            if (shouldUpRecreateTask(upIntent)) {
-                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-            } else {
-                navigateUpTo(upIntent);
-            }
         }
     }
 
@@ -142,7 +126,7 @@ public class ActivityRegister extends Activity {
 
         @Override
         public View getView(final int position, final View convertView, final ViewGroup parent) {
-            final View view = super.getDropDownView(position, convertView, parent);
+            final View view = super.getView(position, convertView, parent);
             final ImageView iconImage = (ImageView) view.findViewById(R.id.icon);
             iconImage.setImageResource(typeIcon[position]);
             return view;

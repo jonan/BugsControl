@@ -47,6 +47,11 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
 
         ActivityRegister.readDbServers();
         setTitle("");
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         setActionBar();
         setServer(getIntent().getIntExtra("server_position", -1));
     }
@@ -120,7 +125,7 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
     }
 
     private void openServerRegistry() {
-        startActivity(new Intent(this, ActivityRegister.class));
+        startActivity(new Intent(this, ActivityServerManager.class));
         if (serverPos != -1) {
             getActionBar().setSelectedNavigationItem(serverPos);
         }

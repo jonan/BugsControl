@@ -19,17 +19,21 @@
 package jp.bugscontrol.ui;
 
 import android.app.ListActivity;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Product;
 
 public class ActivityProduct extends ListActivity {
     private int serverPos;
+    private int productId;
     private AdapterBug adapter;
 
     @Override
@@ -40,7 +44,14 @@ public class ActivityProduct extends ListActivity {
         setContentView(R.layout.activity_product_list);
 
         serverPos = getIntent().getIntExtra("server_position", -1);
-        final int productId = getIntent().getIntExtra("product_id", -1);
+        productId = getIntent().getIntExtra("product_id", -1);
+
+        if (serverPos == -1 || productId == -1) {
+            Toast.makeText(this, R.string.invalid_product, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
         final Product product = ActivityRegister.servers.get(serverPos).getProductFromId(productId);
         setTitle(product.getName());
 
@@ -53,7 +64,25 @@ public class ActivityProduct extends ListActivity {
     protected void onListItemClick(final ListView l, final View v, final int position, final long id) {
         final Intent intent = new Intent(this, ActivityBug.class);
         intent.putExtra("server_position", serverPos);
+        intent.putExtra("product_id", productId);
         intent.putExtra("bug_id", adapter.getBugIdFromPosition(position));
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            finish();
+        } else {
+            final Intent upIntent = getParentActivityIntent();
+            upIntent.putExtra("server_position", serverPos);
+            if (shouldUpRecreateTask(upIntent)) {
+                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+            } else {
+                navigateUpTo(upIntent);
+            }
+        }
+
+        return true;
     }
 }

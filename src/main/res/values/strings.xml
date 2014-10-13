@@ -5,6 +5,8 @@
     <string name="app_name">BugsControl</string>
     <string name="action_settings">Settings</string>
     <string name="no_items">No hay elementos.</string>
+    <string name="invalid_product">Producto inválido.</string>
+    <string name="invalid_bug">Bug inválido.</string>
 
     <!-- REGISTER -->
     <string name="server_name">Nombre del servidor</string>

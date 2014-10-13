@@ -19,13 +19,17 @@
 package jp.bugscontrol.ui;
 
 import android.app.ListActivity;
+import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Bug;
@@ -33,6 +37,9 @@ import jp.util.ImageLoader;
 import jp.util.Util;
 
 public class ActivityBug extends ListActivity {
+    private int serverPos;
+    private int productId;
+
     private Bug bug;
 
     private View mainView;
@@ -44,9 +51,17 @@ public class ActivityBug extends ListActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_bug);
 
-        int server = getIntent().getIntExtra("server_position", -1);
-        int bug_id = getIntent().getIntExtra("bug_id", -1);
-        bug = ActivityRegister.servers.get(server).getBugFromId(bug_id);
+        serverPos = getIntent().getIntExtra("server_position", -1);
+        productId = getIntent().getIntExtra("product_id", -1);
+        final int bugId = getIntent().getIntExtra("bug_id", -1);
+
+        if (serverPos == -1 || productId == -1 || bugId == -1) {
+            Toast.makeText(this, R.string.invalid_bug, Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        bug = ActivityRegister.servers.get(serverPos).getBugFromId(bugId);
 
         final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mainView = inflater.inflate(R.layout.bug_info, getListView(), false);
@@ -73,5 +88,23 @@ public class ActivityBug extends ListActivity {
         ((TextView) mainView.findViewById(R.id.status)).setText(bug.getStatus());
 
         ((TextView) mainView.findViewById(R.id.description)).setText(bug.getDescription());
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            finish();
+        } else {
+            final Intent upIntent = getParentActivityIntent();
+            upIntent.putExtra("server_position", serverPos);
+            upIntent.putExtra("product_id", productId);
+            if (shouldUpRecreateTask(upIntent)) {
+                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+            } else {
+                navigateUpTo(upIntent);
+            }
+        }
+
+        return true;
     }
 }

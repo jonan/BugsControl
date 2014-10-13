@@ -20,8 +20,10 @@ package jp.bugscontrol.ui;
 
 import android.app.ActionBar;
 import android.app.ListActivity;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -40,16 +42,19 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        setProgressBarIndeterminateVisibility(false);
         setContentView(R.layout.activity_product_list);
 
+        ActivityRegister.readDbServers();
+        setTitle("");
         setActionBar();
-        setServer(getIntent().getIntExtra("server_position", 0));
+        setServer(getIntent().getIntExtra("server_position", -1));
     }
 
     @Override
     protected void onNewIntent(final Intent intent) {
         setActionBar();
-        setServer(intent.getIntExtra("server_position", 0));
+        setServer(intent.getIntExtra("server_position", -1));
     }
 
     @Override
@@ -67,10 +72,7 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
         }
 
         if (position == ActivityRegister.servers.size()) {
-            final Intent intent = new Intent(this, ActivityRegister.class);
-            intent.putExtra("new_server", true);
-            startActivity(intent);
-            getActionBar().setSelectedNavigationItem(serverPos);
+            openServerRegistry();
             return true;
         }
 
@@ -79,6 +81,10 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
     }
 
     private void setActionBar() {
+        if (ActivityRegister.servers.size() == 0) {
+            return;
+        }
+
         final ActionBar actionBar = getActionBar();
         final Context context = actionBar.getThemedContext();
         ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_dropdown_item);
@@ -93,12 +99,30 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
 
     private void setServer(final int pos) {
         serverPos = pos;
+
+        if (serverPos == -1) {
+            if (ActivityRegister.servers.size() == 0) {
+                openServerRegistry();
+                return;
+            } else {
+                serverPos = 0;
+            }
+        }
+
         getActionBar().setSelectedNavigationItem(serverPos);
 
-        final Server server = ActivityRegister.servers.get(pos);
+        final Server server = ActivityRegister.servers.get(serverPos);
 
+        setProgressBarIndeterminateVisibility(true);
         adapter = new AdapterProduct(this, server.getProducts());
         setListAdapter(adapter);
         server.setAdapterProduct(adapter, this);
+    }
+
+    private void openServerRegistry() {
+        startActivity(new Intent(this, ActivityRegister.class));
+        if (serverPos != -1) {
+            getActionBar().setSelectedNavigationItem(serverPos);
+        }
     }
 }

@@ -19,8 +19,10 @@
 package jp.bugscontrol.ui;
 
 import android.app.Activity;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -47,26 +49,28 @@ public class ActivityRegister extends Activity {
 
     private Spinner serverTypeSpinner;
 
+    public static void readDbServers() {
+        final List<jp.bugscontrol.db.Server> dbServers = new Select().from(jp.bugscontrol.db.Server.class).execute();
+        servers.clear();
+        for (final jp.bugscontrol.db.Server s : dbServers) {
+            servers.add(new jp.bugscontrol.bugzilla.Server(s));
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_register);
-
-        if (!getIntent().getBooleanExtra("new_server", false)) {
-            final List<jp.bugscontrol.db.Server> dbServers = new Select().from(jp.bugscontrol.db.Server.class).execute();
-            servers.clear();
-            for (final jp.bugscontrol.db.Server s : dbServers) {
-                servers.add(new jp.bugscontrol.bugzilla.Server(s));
-            }
-
-            if (servers.size() > 0) {
-                openProductList(0);
-                return;
-            }
-        }
 
         serverTypeSpinner = (Spinner) findViewById(R.id.server_type_spinner);
         serverTypeSpinner.setAdapter(new ServerTypeAdapter(this));
+    }
+
+    @Override
+    public boolean onNavigateUp() {
+        finish();
+        return true;
     }
 
     public void registerServer(final View view) {
@@ -115,13 +119,23 @@ public class ActivityRegister extends Activity {
     }
 
     private void openProductList(final int position) {
-        finish();
-        final Intent intent = new Intent(this, ActivityServer.class);
-        intent.putExtra("server_position", position);
-        startActivity(intent);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+            finish();
+            final Intent intent = new Intent(this, ActivityServer.class);
+            intent.putExtra("server_position", position);
+            startActivity(intent);
+        } else {
+            final Intent upIntent = getParentActivityIntent();
+            upIntent.putExtra("server_position", position);
+            if (shouldUpRecreateTask(upIntent)) {
+                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
+            } else {
+                navigateUpTo(upIntent);
+            }
+        }
     }
 
-    private class ServerTypeAdapter extends ArrayAdapter {
+    private class ServerTypeAdapter extends ArrayAdapter<String> {
         public ServerTypeAdapter(final Context context) {
             super(context, R.layout.adapter_server_type, R.id.server_type, typeName);
         }

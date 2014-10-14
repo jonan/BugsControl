@@ -48,8 +48,10 @@ public class ActivityBug extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_bug);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayShowHomeEnabled(false);
 
         serverPos = getIntent().getIntExtra("server_position", -1);
         productId = getIntent().getIntExtra("product_id", -1);

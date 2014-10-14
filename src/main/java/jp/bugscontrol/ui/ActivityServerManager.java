@@ -45,8 +45,10 @@ public class ActivityServerManager extends ListActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_product_list);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayShowHomeEnabled(false);
 
         ActivityRegister.readDbServers();
         adapter = new ServerTypeAdapter(this);

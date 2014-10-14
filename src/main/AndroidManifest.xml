@@ -21,19 +21,15 @@
         </activity>
         <activity
             android:name=".ui.ActivityServerManager"
-            android:icon="@android:color/transparent"
             android:label="@string/manage_servers" />
         <activity
             android:name=".ui.ActivityRegister"
-            android:icon="@android:color/transparent"
             android:parentActivityName=".ui.ActivityServerManager" />
         <activity
             android:name=".ui.ActivityProduct"
-            android:icon="@android:color/transparent"
             android:parentActivityName=".ui.ActivityServer" />
         <activity
             android:name=".ui.ActivityBug"
-            android:icon="@android:color/transparent"
             android:label=""
             android:parentActivityName=".ui.ActivityProduct" />
     </application>

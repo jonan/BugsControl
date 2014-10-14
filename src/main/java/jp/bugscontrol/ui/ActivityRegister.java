@@ -64,8 +64,10 @@ public class ActivityRegister extends Activity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_register);
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setDisplayShowHomeEnabled(false);
 
         serverTypeSpinner = (Spinner) findViewById(R.id.server_type_spinner);
         nameView = ((EditText) findViewById(R.id.name));

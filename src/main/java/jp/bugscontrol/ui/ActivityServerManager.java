@@ -18,15 +18,10 @@
 
 package jp.bugscontrol.ui;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -122,41 +117,11 @@ public class ActivityServerManager extends ListActivity {
                 @Override
                 public void onClick(final View view) {
                     final Server s = ActivityRegister.servers.get(position);
-                    new DeleteServerDialog().setServer(s).show(getFragmentManager(), "DeleteServerDialog");
+                    new DialogDeleteServer().setAdapter(adapter).setServer(s).show(getFragmentManager(), "DeleteServerDialog");
                 }
             });
 
             return convertView;
-        }
-    }
-
-    private class DeleteServerDialog extends DialogFragment {
-        private Server server;
-
-        public DeleteServerDialog setServer(final Server server) {
-            this.server = server;
-            return this;
-        }
-
-        @Override
-        public Dialog onCreateDialog(final Bundle savedInstanceState) {
-            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-            builder.setTitle(Html.fromHtml(String.format(getString(R.string.delete_server_title), server.getName())));
-            builder.setMessage(Html.fromHtml(String.format(getString(R.string.delete_server_description), server.getName())));
-            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                public void onClick(final DialogInterface dialog, final int id) {
-                    server.delete();
-                    ActivityRegister.servers.remove(server);
-                    adapter.notifyDataSetChanged();
-                }
-            });
-            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                public void onClick(final DialogInterface dialog, final int id) {
-                }
-            });
-
-            return builder.create();
         }
     }
 }

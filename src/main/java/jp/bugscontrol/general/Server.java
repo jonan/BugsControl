@@ -36,8 +36,8 @@ public abstract class Server {
 
     protected final List<Product> products = new ArrayList<Product>();
     protected final String type;
-    protected final String name;
-    protected final String url;
+    protected String name;
+    protected String url;
     protected String user;
     protected String password;
 
@@ -61,6 +61,14 @@ public abstract class Server {
         url = server.url;
         user = server.user;
         password = server.password;
+    }
+
+    public void setName(final String name) {
+        this.name = name;
+    }
+
+    public void setUrl(final String url) {
+        this.url = url;
     }
 
     public void setUser(final String user, final String password) {

@@ -45,7 +45,13 @@ public class ActivityRegister extends Activity {
     private static String[] typeName = {Server.BUGZILLA, Server.GITHUB};
     private static int[] typeIcon = {Server.BUGZILLA_ICON, Server.GITHUB_ICON};
 
+    private Server server = null;
+
     private Spinner serverTypeSpinner;
+    private EditText nameView;
+    private EditText urlView;
+    private EditText userView;
+    private EditText passwordView;
 
     public static void readDbServers() {
         final List<jp.bugscontrol.db.Server> dbServers = new Select().from(jp.bugscontrol.db.Server.class).execute();
@@ -56,19 +62,40 @@ public class ActivityRegister extends Activity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.activity_register);
 
         serverTypeSpinner = (Spinner) findViewById(R.id.server_type_spinner);
+        nameView = ((EditText) findViewById(R.id.name));
+        urlView = ((EditText) findViewById(R.id.url));
+        userView = ((EditText) findViewById(R.id.user));
+        passwordView = ((EditText) findViewById(R.id.password));
+
         serverTypeSpinner.setAdapter(new ServerTypeAdapter(this));
 
-        int serverPos = getIntent().getIntExtra("server_position", -1);
+        final int serverPos = getIntent().getIntExtra("server_position", -1);
         if (serverPos == -1) {
             setTitle(R.string.add_server);
         } else {
             setTitle(R.string.edit_server);
+            server = servers.get(serverPos);
+            switch (server.getType()) {
+                case Server.BUGZILLA:
+                    serverTypeSpinner.setSelection(0);
+                    break;
+                case Server.GITHUB:
+                    serverTypeSpinner.setSelection(1);
+                    break;
+                default:
+                    break;
+            }
+            serverTypeSpinner.setEnabled(false);
+            nameView.setText(server.getName());
+            urlView.setText(server.getUrl());
+            userView.setText(server.getUser());
+            passwordView.setText(server.getPassword());
         }
     }
 
@@ -82,17 +109,7 @@ public class ActivityRegister extends Activity {
         }
     }
 
-    public void registerServer(final View view) {
-        if (serverTypeSpinner.getSelectedItem() != Server.BUGZILLA) {
-            Toast.makeText(this, "This server type is not yet supported", Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        final EditText nameView = ((EditText) findViewById(R.id.name));
-        final EditText urlView = ((EditText) findViewById(R.id.url));
-        final EditText userView = ((EditText) findViewById(R.id.user));
-        final EditText passwordView = ((EditText) findViewById(R.id.password));
-
+    public void onAccept(final View view) {
         final String name = nameView.getText().toString();
         final String url = urlView.getText().toString();
         final String user = userView.getText().toString();
@@ -118,12 +135,33 @@ public class ActivityRegister extends Activity {
         }
 
         if (!error) {
-            final Server newServer = new jp.bugscontrol.bugzilla.Server(name, url);
-            newServer.setUser(user, password);
-            newServer.save();
-            servers.add(newServer);
-            finish();
+            if (server == null) {
+                registerServer(name, url, user, password);
+            } else {
+                editServer(name, url, user, password);
+            }
         }
+    }
+
+    private void editServer(final String name, final String url, final String user, final String password) {
+        server.setName(name);
+        server.setUrl(url);
+        server.setUser(user, password);
+        server.save();
+        finish();
+    }
+
+    private void registerServer(final String name, final String url, final String user, final String password) {
+        if (serverTypeSpinner.getSelectedItem() != Server.BUGZILLA) {
+            Toast.makeText(this, "This server type is not yet supported", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        final Server newServer = new jp.bugscontrol.bugzilla.Server(name, url);
+        newServer.setUser(user, password);
+        newServer.save();
+        servers.add(newServer);
+        finish();
     }
 
     private class ServerTypeAdapter extends ArrayAdapter<String> {

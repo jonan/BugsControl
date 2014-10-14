@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import jp.bugscontrol.R;
@@ -68,6 +69,13 @@ public class ActivityServerManager extends ListActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onListItemClick(final ListView l, final View v, final int position, final long id) {
+        final Intent intent = new Intent(this, ActivityRegister.class);
+        intent.putExtra("server_position", position);
+        startActivity(intent);
     }
 
     @Override

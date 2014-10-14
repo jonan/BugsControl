@@ -18,10 +18,15 @@
 
 package jp.bugscontrol.ui;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -86,17 +91,19 @@ public class ActivityServerManager extends ListActivity {
 
     private class ServerTypeAdapter extends ArrayAdapter<Server> {
         public ServerTypeAdapter(final Context context) {
-            super(context, R.layout.adapter_server_type, R.id.server_type, ActivityRegister.servers);
+            super(context, R.layout.adapter_server, R.id.name, ActivityRegister.servers);
         }
 
         @Override
         public View getView(final int position, View convertView, final ViewGroup parent) {
             if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.adapter_server_type, parent, false);
+                convertView = getLayoutInflater().inflate(R.layout.adapter_server, parent, false);
             }
 
             final Server s = ActivityRegister.servers.get(position);
-            ((TextView) convertView.findViewById(R.id.server_type)).setText(s.getName());
+
+            ((TextView) convertView.findViewById(R.id.name)).setText(s.getName());
+
             final ImageView iconImage = (ImageView) convertView.findViewById(R.id.icon);
             switch (s.getType()) {
                 case Server.BUGZILLA:
@@ -108,7 +115,46 @@ public class ActivityServerManager extends ListActivity {
                 default:
                     break;
             }
+
+            convertView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View view) {
+                    final Server s = ActivityRegister.servers.get(position);
+                    new DeleteServerDialog().setServer(s).show(getFragmentManager(), "DeleteServerDialog");
+                }
+            });
+
             return convertView;
+        }
+    }
+
+    private class DeleteServerDialog extends DialogFragment {
+        private Server server;
+
+        public DeleteServerDialog setServer(final Server server) {
+            this.server = server;
+            return this;
+        }
+
+        @Override
+        public Dialog onCreateDialog(final Bundle savedInstanceState) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setTitle(Html.fromHtml(String.format(getString(R.string.delete_server_title), server.getName())));
+            builder.setMessage(Html.fromHtml(String.format(getString(R.string.delete_server_description), server.getName())));
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(final DialogInterface dialog, final int id) {
+                    server.delete();
+                    ActivityRegister.servers.remove(server);
+                    adapter.notifyDataSetChanged();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(final DialogInterface dialog, final int id) {
+                }
+            });
+
+            return builder.create();
         }
     }
 }

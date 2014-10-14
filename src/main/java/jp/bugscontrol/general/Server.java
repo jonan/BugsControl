@@ -118,6 +118,12 @@ public abstract class Server {
         databaseServer.save();
     }
 
+    public void delete() {
+        if (databaseServer != null) {
+            databaseServer.delete();
+        }
+    }
+
     public List<Product> getProducts() {
         return products;
     }

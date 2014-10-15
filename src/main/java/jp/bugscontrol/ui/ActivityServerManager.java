@@ -116,7 +116,7 @@ public class ActivityServerManager extends ListActivity {
                 @Override
                 public void onClick(final View view) {
                     final Server s = Server.servers.get(position);
-                    new DialogDeleteServer().setAdapter(adapter).setServer(s).show(getFragmentManager(), "DeleteServerDialog");
+                    new DialogDeleteServer().setAdapter(adapter).setServerPos(position).show(getFragmentManager(), "DeleteServerDialog");
                 }
             });
 

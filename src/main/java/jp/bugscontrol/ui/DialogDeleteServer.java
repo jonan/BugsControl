@@ -30,11 +30,11 @@ import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
 public class DialogDeleteServer extends DialogFragment {
-    private Server server;
+    private int serverPos;
     private BaseAdapter adapter = null;
 
-    public DialogDeleteServer setServer(final Server server) {
-        this.server = server;
+    public DialogDeleteServer setServerPos(final int serverPos) {
+        this.serverPos = serverPos;
         return this;
     }
 
@@ -45,8 +45,15 @@ public class DialogDeleteServer extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(final Bundle savedInstanceState) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        if (savedInstanceState != null) {
+            final int savedServerPos = savedInstanceState.getInt("server_position", -1);
+            if (savedServerPos != -1) {
+                serverPos = savedServerPos;
+            }
+        }
+        final Server server = Server.servers.get(serverPos);
 
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(Html.fromHtml(String.format(getString(R.string.delete_server_title), server.getName())));
         builder.setMessage(Html.fromHtml(String.format(getString(R.string.delete_server_description), server.getName())));
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -64,5 +71,11 @@ public class DialogDeleteServer extends DialogFragment {
         });
 
         return builder.create();
+    }
+
+    @Override
+    public void onSaveInstanceState(final Bundle savedInstanceState) {
+        savedInstanceState.putInt("server_position", serverPos);
+        super.onSaveInstanceState(savedInstanceState);
     }
 }

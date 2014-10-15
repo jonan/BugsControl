@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Product;
+import jp.bugscontrol.general.Server;
 
 public class ActivityProduct extends ListActivity {
     private int serverPos;
@@ -54,7 +55,7 @@ public class ActivityProduct extends ListActivity {
             return;
         }
 
-        final Product product = ActivityRegister.servers.get(serverPos).getProductFromId(productId);
+        final Product product = Server.servers.get(serverPos).getProductFromId(productId);
         setTitle(product.getName());
 
         adapter = new AdapterBug(this, product.getBugs());

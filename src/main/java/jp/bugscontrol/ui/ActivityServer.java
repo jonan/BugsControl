@@ -47,8 +47,6 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
 
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
-
-        ActivityRegister.readDbServers();
     }
 
     @Override
@@ -78,7 +76,7 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
             return true;
         }
 
-        if (position == ActivityRegister.servers.size()) {
+        if (position == Server.servers.size()) {
             openServerRegistry();
             return true;
         }
@@ -88,14 +86,14 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
     }
 
     private void setActionBar() {
-        if (ActivityRegister.servers.size() == 0) {
+        if (Server.servers.size() == 0) {
             return;
         }
 
         final ActionBar actionBar = getActionBar();
         final Context context = actionBar.getThemedContext();
         ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_dropdown_item);
-        for (final Server s : ActivityRegister.servers) {
+        for (final Server s : Server.servers) {
             list.add(s.getName());
         }
         list.add(getResources().getString(R.string.manage_servers));
@@ -108,7 +106,7 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
         serverPos = pos;
 
         if (serverPos == -1) {
-            if (ActivityRegister.servers.size() == 0) {
+            if (Server.servers.size() == 0) {
                 openServerRegistry();
                 return;
             } else {
@@ -118,7 +116,7 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
 
         getActionBar().setSelectedNavigationItem(serverPos);
 
-        final Server server = ActivityRegister.servers.get(serverPos);
+        final Server server = Server.servers.get(serverPos);
 
         setProgressBarIndeterminateVisibility(true);
         adapter = new AdapterProduct(this, server.getProducts());

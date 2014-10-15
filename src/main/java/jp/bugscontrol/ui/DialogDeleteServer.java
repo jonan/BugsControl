@@ -52,7 +52,7 @@ public class DialogDeleteServer extends DialogFragment {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(final DialogInterface dialog, final int id) {
                 server.delete();
-                ActivityRegister.servers.remove(server);
+                Server.servers.remove(server);
                 if (adapter != null) {
                     adapter.notifyDataSetChanged();
                 }

@@ -40,8 +40,6 @@ import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
 public class ActivityRegister extends Activity {
-    static public List<Server> servers = new ArrayList<Server>();
-
     private static String[] typeName = {Server.BUGZILLA, Server.GITHUB};
     private static int[] typeIcon = {Server.BUGZILLA_ICON, Server.GITHUB_ICON};
 
@@ -52,14 +50,6 @@ public class ActivityRegister extends Activity {
     private EditText urlView;
     private EditText userView;
     private EditText passwordView;
-
-    public static void readDbServers() {
-        final List<jp.bugscontrol.db.Server> dbServers = new Select().from(jp.bugscontrol.db.Server.class).execute();
-        servers.clear();
-        for (final jp.bugscontrol.db.Server s : dbServers) {
-            servers.add(new jp.bugscontrol.bugzilla.Server(s));
-        }
-    }
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -82,7 +72,7 @@ public class ActivityRegister extends Activity {
             setTitle(R.string.add_server);
         } else {
             setTitle(R.string.edit_server);
-            server = servers.get(serverPos);
+            server = Server.servers.get(serverPos);
             switch (server.getType()) {
                 case Server.BUGZILLA:
                     serverTypeSpinner.setSelection(0);
@@ -124,7 +114,7 @@ public class ActivityRegister extends Activity {
             error = true;
         }
 
-        for (final Server s : servers) {
+        for (final Server s : Server.servers) {
             if (s.getName().equals(name)) {
                 nameView.setError(getString(R.string.server_with_that_name_exists));
                 error = true;
@@ -162,7 +152,7 @@ public class ActivityRegister extends Activity {
         final Server newServer = new jp.bugscontrol.bugzilla.Server(name, url);
         newServer.setUser(user, password);
         newServer.save();
-        servers.add(newServer);
+        Server.servers.add(newServer);
         finish();
     }
 

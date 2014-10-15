@@ -45,7 +45,6 @@ public class ActivityServerManager extends ListActivity {
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
 
-        ActivityRegister.readDbServers();
         adapter = new ServerTypeAdapter(this);
         getListView().setAdapter(adapter);
     }
@@ -88,7 +87,7 @@ public class ActivityServerManager extends ListActivity {
 
     private class ServerTypeAdapter extends ArrayAdapter<Server> {
         public ServerTypeAdapter(final Context context) {
-            super(context, R.layout.adapter_server, R.id.name, ActivityRegister.servers);
+            super(context, R.layout.adapter_server, R.id.name, Server.servers);
         }
 
         @Override
@@ -97,7 +96,7 @@ public class ActivityServerManager extends ListActivity {
                 convertView = getLayoutInflater().inflate(R.layout.adapter_server, parent, false);
             }
 
-            final Server s = ActivityRegister.servers.get(position);
+            final Server s = Server.servers.get(position);
 
             ((TextView) convertView.findViewById(R.id.name)).setText(s.getName());
 
@@ -116,7 +115,7 @@ public class ActivityServerManager extends ListActivity {
             convertView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    final Server s = ActivityRegister.servers.get(position);
+                    final Server s = Server.servers.get(position);
                     new DialogDeleteServer().setAdapter(adapter).setServer(s).show(getFragmentManager(), "DeleteServerDialog");
                 }
             });

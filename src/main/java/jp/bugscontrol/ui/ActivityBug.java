@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Bug;
+import jp.bugscontrol.general.Server;
 import jp.util.ImageLoader;
 import jp.util.Util;
 
@@ -63,7 +64,7 @@ public class ActivityBug extends ListActivity {
             return;
         }
 
-        bug = ActivityRegister.servers.get(serverPos).getBugFromId(bugId);
+        bug = Server.servers.get(serverPos).getBugFromId(bugId);
 
         final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mainView = inflater.inflate(R.layout.bug_info, getListView(), false);

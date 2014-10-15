@@ -28,6 +28,8 @@ import jp.bugscontrol.R;
 import jp.bugscontrol.ui.AdapterProduct;
 
 public abstract class Server {
+    static public List<Server> servers = new ArrayList<Server>();
+
     public static final String BUGZILLA = "Bugzilla";
     public static final String GITHUB = "GitHub";
 

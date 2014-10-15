@@ -20,7 +20,6 @@
             android:id="@+id/name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="@string/server_name"
             android:inputType="text" />
 
@@ -28,7 +27,6 @@
             android:id="@+id/url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="@string/url"
             android:inputType="textUri" />
 
@@ -36,7 +34,6 @@
             android:id="@+id/user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="@string/user_name"
             android:inputType="text" />
 
@@ -44,7 +41,6 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="@string/password"
             android:inputType="textPassword" />
 

@@ -11,6 +11,17 @@
         android:orientation="vertical"
         android:padding="5dp">
 
+        <TextView
+            android:id="@+id/creation_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textIsSelectable="true"
+            android:textSize="14sp" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -35,7 +46,7 @@
                 android:minHeight="40dp"
                 android:textColor="@android:color/white"
                 android:textIsSelectable="true"
-                android:textSize="12sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/assignee_img"
@@ -62,7 +73,7 @@
                 android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textIsSelectable="true"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/assignee"
@@ -74,7 +85,7 @@
                 android:singleLine="true"
                 android:textColor="@android:color/white"
                 android:textIsSelectable="true"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -107,6 +118,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:textIsSelectable="true"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>

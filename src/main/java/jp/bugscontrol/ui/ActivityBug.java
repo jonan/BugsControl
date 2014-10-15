@@ -46,7 +46,7 @@ public class ActivityBug extends ListActivity {
     private View mainView;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_bug);
@@ -81,6 +81,8 @@ public class ActivityBug extends ListActivity {
     public void updateView() {
         ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getReporter()), (ImageView) mainView.findViewById(R.id.reporter_img));
         ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getAssignee()), (ImageView) mainView.findViewById(R.id.assignee_img));
+
+        ((TextView) mainView.findViewById(R.id.creation_date)).setText(bug.getCreationDate());
 
         ((TextView) mainView.findViewById(R.id.summary)).setText(bug.getSummary());
 

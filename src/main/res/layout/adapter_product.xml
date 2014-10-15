@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:textIsSelectable="false"
-        android:textSize="16sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/description"
@@ -19,6 +19,6 @@
         android:layout_height="wrap_content"
         android:singleLine="true"
         android:textIsSelectable="false"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
 </LinearLayout>

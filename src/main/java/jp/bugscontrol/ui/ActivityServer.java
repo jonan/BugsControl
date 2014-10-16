@@ -30,6 +30,9 @@ import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
@@ -47,6 +50,11 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
 
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
+
+        // Load ad
+        final AdView adView = (AdView) findViewById(R.id.adView);
+        final AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     @Override

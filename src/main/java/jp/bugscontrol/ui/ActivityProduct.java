@@ -28,6 +28,9 @@ import android.view.Window;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Product;
 import jp.bugscontrol.general.Server;
@@ -61,6 +64,11 @@ public class ActivityProduct extends ListActivity {
         adapter = new AdapterBug(this, product.getBugs());
         getListView().setAdapter(adapter);
         product.setAdapterBug(adapter, this);
+
+        // Load ad
+        final AdView adView = (AdView) findViewById(R.id.adView);
+        final AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     @Override

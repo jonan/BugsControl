@@ -18,6 +18,7 @@ repositories {
 }
 
 dependencies {
+    compile 'com.google.android.gms:play-services:6.1.11'
     compile files('libs/activeandroid-3.0.jar')
 }
 
@@ -26,7 +27,7 @@ android {
     buildToolsVersion '20.0.0'
 
     defaultConfig {
-        versionCode 5
+        versionCode 6
         versionName '0.0.1'
         minSdkVersion 15
         targetSdkVersion 19

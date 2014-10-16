@@ -31,6 +31,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Bug;
 import jp.bugscontrol.general.Server;
@@ -49,7 +52,7 @@ public class ActivityBug extends ListActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.activity_bug);
+        setContentView(R.layout.activity_product_list);
 
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
@@ -76,6 +79,11 @@ public class ActivityBug extends ListActivity {
         final AdapterComment adapter = new AdapterComment(this, bug.getComments());
         getListView().setAdapter(adapter);
         bug.setAdapterComment(adapter, this);
+
+        // Load ad
+        final AdView adView = (AdView) findViewById(R.id.adView);
+        final AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
     }
 
     public void updateView() {

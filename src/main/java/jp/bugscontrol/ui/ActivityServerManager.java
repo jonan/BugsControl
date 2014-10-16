@@ -101,16 +101,7 @@ public class ActivityServerManager extends ListActivity {
             ((TextView) convertView.findViewById(R.id.name)).setText(s.getName());
 
             final ImageView iconImage = (ImageView) convertView.findViewById(R.id.icon);
-            switch (s.getType()) {
-                case Server.BUGZILLA:
-                    iconImage.setImageResource(Server.BUGZILLA_ICON);
-                    break;
-                case Server.GITHUB:
-                    iconImage.setImageResource(Server.GITHUB_ICON);
-                    break;
-                default:
-                    break;
-            }
+            iconImage.setImageResource(Server.typeIcon.get(Server.typeName.indexOf(s.getType())));
 
             convertView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
                 @Override

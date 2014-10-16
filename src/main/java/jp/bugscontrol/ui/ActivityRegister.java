@@ -29,20 +29,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
-
-import com.activeandroid.query.Select;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
 public class ActivityRegister extends Activity {
-    private static String[] typeName = {Server.BUGZILLA, Server.GITHUB};
-    private static int[] typeIcon = {Server.BUGZILLA_ICON, Server.GITHUB_ICON};
-
     private Server server = null;
 
     private Spinner serverTypeSpinner;
@@ -73,16 +64,7 @@ public class ActivityRegister extends Activity {
         } else {
             setTitle(R.string.edit_server);
             server = Server.servers.get(serverPos);
-            switch (server.getType()) {
-                case Server.BUGZILLA:
-                    serverTypeSpinner.setSelection(0);
-                    break;
-                case Server.GITHUB:
-                    serverTypeSpinner.setSelection(1);
-                    break;
-                default:
-                    break;
-            }
+            serverTypeSpinner.setSelection(Server.typeName.indexOf(server.getType()));
             serverTypeSpinner.setEnabled(false);
             nameView.setText(server.getName());
             urlView.setText(server.getUrl());
@@ -144,10 +126,11 @@ public class ActivityRegister extends Activity {
     }
 
     private void registerServer(final String name, final String url, final String user, final String password) {
-        if (serverTypeSpinner.getSelectedItem() != Server.BUGZILLA) {
+        // TODO
+        /*if (serverTypeSpinner.getSelectedItem() != Server.BUGZILLA) {
             Toast.makeText(this, "This server type is not yet supported", Toast.LENGTH_LONG).show();
             return;
-        }
+        }*/
 
         final Server newServer = new jp.bugscontrol.bugzilla.Server(name, url);
         newServer.setUser(user, password);
@@ -158,14 +141,14 @@ public class ActivityRegister extends Activity {
 
     private class ServerTypeAdapter extends ArrayAdapter<String> {
         public ServerTypeAdapter(final Context context) {
-            super(context, R.layout.adapter_server_type, R.id.server_type, typeName);
+            super(context, R.layout.adapter_server_type, R.id.server_type, Server.typeName);
         }
 
         @Override
         public View getView(final int position, final View convertView, final ViewGroup parent) {
             final View view = super.getView(position, convertView, parent);
             final ImageView iconImage = (ImageView) view.findViewById(R.id.icon);
-            iconImage.setImageResource(typeIcon[position]);
+            iconImage.setImageResource(Server.typeIcon.get(position));
             return view;
         }
 

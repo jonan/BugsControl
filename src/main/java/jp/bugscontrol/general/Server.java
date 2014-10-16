@@ -22,19 +22,22 @@ import android.app.Activity;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.ui.AdapterProduct;
 
 public abstract class Server {
-    static public List<Server> servers = new ArrayList<Server>();
+    public static List<Server> servers = new ArrayList<Server>();
+    public static List<String> typeName = Arrays.asList(Server.BUGZILLA, Server.GITHUB);
+    public static List<Integer> typeIcon = Arrays.asList(Server.BUGZILLA_ICON, Server.GITHUB_ICON);
 
-    public static final String BUGZILLA = "Bugzilla";
-    public static final String GITHUB = "GitHub";
+    protected static final String BUGZILLA = "Bugzilla";
+    protected static final String GITHUB = "GitHub";
 
-    public static final int BUGZILLA_ICON = R.drawable.server_icon_bugzilla;
-    public static final int GITHUB_ICON = R.drawable.server_icon_github;
+    private static final int BUGZILLA_ICON = R.drawable.server_icon_bugzilla;
+    private static final int GITHUB_ICON = R.drawable.server_icon_github;
 
     protected final List<Product> products = new ArrayList<Product>();
     protected final String type;

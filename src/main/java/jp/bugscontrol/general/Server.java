@@ -33,8 +33,8 @@ public abstract class Server {
     public static List<String> typeName = Arrays.asList(Server.BUGZILLA, Server.GITHUB);
     public static List<Integer> typeIcon = Arrays.asList(Server.BUGZILLA_ICON, Server.GITHUB_ICON);
 
-    protected static final String BUGZILLA = "Bugzilla";
-    protected static final String GITHUB = "GitHub";
+    public static final String BUGZILLA = "Bugzilla";
+    public static final String GITHUB = "GitHub";
 
     private static final int BUGZILLA_ICON = R.drawable.server_icon_bugzilla;
     private static final int GITHUB_ICON = R.drawable.server_icon_github;

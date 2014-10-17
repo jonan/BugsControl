@@ -20,6 +20,8 @@ package jp.bugscontrol.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -29,9 +31,13 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.UUID;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
+import jp.bugscontrol.github.GithubLogin;
 
 public class ActivityRegister extends Activity {
     private Server server = null;
@@ -126,16 +132,15 @@ public class ActivityRegister extends Activity {
     }
 
     private void registerServer(final String name, final String url, final String user, final String password) {
-        // TODO
-        /*if (serverTypeSpinner.getSelectedItem() != Server.BUGZILLA) {
-            Toast.makeText(this, "This server type is not yet supported", Toast.LENGTH_LONG).show();
-            return;
-        }*/
+        if (serverTypeSpinner.getSelectedItem() == Server.BUGZILLA) {
+            final Server newServer = new jp.bugscontrol.bugzilla.Server(name, url);
+            newServer.setUser(user, password);
+            newServer.save();
+            Server.servers.add(newServer);
+        } else if (serverTypeSpinner.getSelectedItem() == Server.GITHUB) {
+            startActivity(new Intent(this, GithubLogin.class));
+        }
 
-        final Server newServer = new jp.bugscontrol.bugzilla.Server(name, url);
-        newServer.setUser(user, password);
-        newServer.save();
-        Server.servers.add(newServer);
         finish();
     }
 

@@ -37,6 +37,20 @@
             android:label=""
             android:parentActivityName=".ui.ActivityProduct" />
         <activity
+            android:name=".github.GithubLogin"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="register"
+                    android:scheme="bugscontrol" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
     </application>

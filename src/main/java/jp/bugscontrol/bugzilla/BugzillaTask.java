@@ -57,7 +57,7 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected Void doInBackground(Void... p) {
+    protected Void doInBackground(final Void... p) {
         try {
             // Add login info if needed
             if (server.hasUser()) {
@@ -82,7 +82,7 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
             request.put("params", array);
 
             // Send the request
-            //HttpClient httpClient = new DefaultHttpClient();
+            //final HttpClient httpClient = new DefaultHttpClient();
             final HttpClient httpClient = MySSLSocketFactory.getNewHttpClient();
             final HttpPost httpPost = new HttpPost(server.getUrl() + "/jsonrpc.cgi");
             httpPost.addHeader("Content-Type", "application/json");
@@ -98,7 +98,7 @@ public class BugzillaTask extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPostExecute(Void result) {
+    protected void onPostExecute(final Void result) {
         listener.onPostExecute(response);
     }
 }

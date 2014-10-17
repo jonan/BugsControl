@@ -32,7 +32,16 @@ public class Application extends com.activeandroid.app.Application {
         final List<jp.bugscontrol.db.Server> dbServers = new Select().from(jp.bugscontrol.db.Server.class).execute();
         Server.servers.clear();
         for (final jp.bugscontrol.db.Server s : dbServers) {
-            Server.servers.add(new jp.bugscontrol.bugzilla.Server(s));
+            switch (s.type) {
+                case Server.BUGZILLA:
+                    Server.servers.add(new jp.bugscontrol.bugzilla.Server(s));
+                    break;
+                case Server.GITHUB:
+                    Server.servers.add(new jp.bugscontrol.github.Server(s));
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

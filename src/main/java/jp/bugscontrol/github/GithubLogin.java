@@ -38,34 +38,27 @@ public class GithubLogin extends Activity {
     private static final String CLIENT_ID = "7b3fcb9f74ac6386db23";
     private static final String CLIENT_SECRET = "451a20387960e984e649dd806e0ec98f7826ce02";
 
-    private String state;
+    private static String state = null;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (savedInstanceState != null) {
-            state = savedInstanceState.getString("state");
-        }
 
         final Uri data = getIntent().getData();
         if (data != null) {
-            // Activity opened in response to a registry
-            final String code = data.getQueryParameter("code");
-            new OauthTask(code).execute();
-            // TODO compare state
-            /*final String responseState = data.getQueryParameter("state");
+            final String responseState = data.getQueryParameter("state");
             if (state.equals(responseState)) {
                 final String code = data.getQueryParameter("code");
                 new OauthTask(code).execute();
             } else {
-                // give feedback to the user
+                // TODO give feedback to the user
                 finish();
-            }*/
+            }
             return;
         }
 
         state = String.valueOf(UUID.randomUUID().hashCode());
-        final String githubUrl = "https://github.com/login/oauth/authorize?client_id=" + CLIENT_ID + "&state=" + state;
+        final String githubUrl = "https://github.com/login/oauth/authorize?scope=user,repo&client_id=" + CLIENT_ID + "&state=" + state;
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(githubUrl)));
     }
 

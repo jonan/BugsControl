@@ -1,6 +1,6 @@
 /*
  *  BugsControl
- *  Copyright (C) 2013  Jon Ander Peñalba
+ *  Copyright (C) 2014  Jon Ander Peñalba
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -16,38 +16,33 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jp.bugscontrol.bugzilla;
+package jp.bugscontrol.github;
 
 import org.json.JSONObject;
 
 import jp.util.Util;
 
-public class Comment extends jp.bugscontrol.general.Comment {
-    public Comment(final Bug bug, final JSONObject json) {
-        super(bug);
+
+public class Bug extends jp.bugscontrol.general.Bug {
+    public Bug(final jp.bugscontrol.general.Product product, final JSONObject json) {
+        super(product);
         createFromJSON(json);
+    }
+
+    @Override
+    protected void loadComments() {
+        commentsListUpdated();
     }
 
     private void createFromJSON(final JSONObject json) {
         try {
             id = json.getInt("id");
-            text = json.getString("text");
-
-            if (json.has("creator")) {
-                author = json.getString("creator");
-            } else {
-                author = json.getString("author");
-            }
-
-            if (json.has("creation_time")) {
-                date = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time"));
-            } else {
-                date = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("time"));
-            }
-
-            if (json.has("count")) {
-                number = json.getInt("count");
-            }
+            summary = json.getString("title");
+            description = json.getString("body");
+            creationDate = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("created_at"));
+            status = json.getString("state");
+            reporter = json.getJSONObject("user").getString("login");
+            open = json.getString("closed_at").equals("null");
         } catch (final Exception e) {
             e.printStackTrace();
         }

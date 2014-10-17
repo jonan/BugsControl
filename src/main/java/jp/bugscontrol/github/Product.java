@@ -26,29 +26,26 @@ import java.util.List;
 
 import jp.util.Util.TaskListener;
 
-public class Server extends jp.bugscontrol.general.Server {
-    public Server(final String token) {
-        super(GITHUB, "", GITHUB);
-        password = token;
-    }
+public class Product extends jp.bugscontrol.general.Product {
+    private String fullName;
 
-    public Server(final jp.bugscontrol.db.Server server) {
+    public Product(final jp.bugscontrol.general.Server server, final JSONObject json) {
         super(server);
+        createFromJSON(json);
     }
 
     @Override
-    protected void loadProducts() {
-        final Server server = this;
-        final List<jp.bugscontrol.general.Product> newList = new ArrayList<jp.bugscontrol.general.Product>();
-        final GithubTask task = new GithubTask(this, "/user/repos", new TaskListener() {
+    protected void loadBugs() {
+        final Product p = this;
+        final List<jp.bugscontrol.general.Bug> newList = new ArrayList<jp.bugscontrol.general.Bug>();
+        final GithubTask task = new GithubTask(server, "/repos/" + fullName + "/issues", new TaskListener() {
             @Override
             public void doInBackground(final String s) {
                 try {
                     final JSONArray object = new JSONArray(s);
                     final int size = object.length();
                     for (int i = 0; i < size; ++i) {
-                        final JSONObject p = object.getJSONObject(i);
-                        newList.add(new Product(server, p));
+                        newList.add(new Bug(p, object.getJSONObject(i)));
                     }
                 } catch (final Exception e) {
                     e.printStackTrace();
@@ -57,11 +54,22 @@ public class Server extends jp.bugscontrol.general.Server {
 
             @Override
             public void onPostExecute(final String s) {
-                products.clear();
-                products.addAll(newList);
-                productsListUpdated();
+                p.clearBugs();
+                p.addBugs(newList);
+                bugsListUpdated();
             }
         });
         task.execute();
+    }
+
+    private void createFromJSON(final JSONObject json) {
+        try {
+            id = json.getInt("id");
+            name = json.getString("name");
+            fullName = json.getString("full_name");
+            description = json.getString("description");
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -63,7 +63,7 @@ public class Product extends jp.bugscontrol.general.Product {
         task.execute();
     }
 
-    public void createFromJSON(final JSONObject json) {
+    private void createFromJSON(final JSONObject json) {
         try {
             id = json.getInt("id");
             name = json.getString("name");

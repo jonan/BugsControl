@@ -30,7 +30,7 @@ public abstract class Bug {
     protected boolean open;
 
     protected String summary;
-    protected String priority;
+    protected String priority = null;
     protected String status;
     protected String description;
     protected String creationDate;

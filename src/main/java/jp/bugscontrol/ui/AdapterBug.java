@@ -51,10 +51,15 @@ public class AdapterBug extends ArrayAdapter<Bug> {
         } else {
             color = getContext().getResources().getColor(R.color.adapter_green);
         }
+        String summary = "";
+        if (item.getPriority() != null) {
+            summary += "[" + item.getPriority() + "] ";
+        }
+        summary += item.getSummary();
 
         final TextView summaryView = (TextView) convertView.findViewById(R.id.summary);
         summaryView.setTextColor(color);
-        summaryView.setText("[" + item.getPriority() + "] " + item.getSummary());
+        summaryView.setText(summary);
 
         ((TextView) convertView.findViewById(R.id.creation_date)).setText(item.getCreationDate());
         ((TextView) convertView.findViewById(R.id.assignee)).setText(item.getAssignee());

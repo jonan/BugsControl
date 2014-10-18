@@ -75,8 +75,8 @@ public class Bug extends jp.bugscontrol.general.Bug {
             creationDate = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("creation_time"));
             priority = json.getString("priority");
             status = json.getString("status");
-            reporter = json.getString("creator");
-            assignee = json.getString("assigned_to");
+            reporter = new User(json.getString("creator"));
+            assignee = new User(json.getString("assigned_to"));
             open = TextUtils.isEmpty(json.getString("resolution"));
         } catch (final Exception e) {
             e.printStackTrace();

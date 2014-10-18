@@ -41,7 +41,18 @@ public class Bug extends jp.bugscontrol.general.Bug {
             description = json.getString("body");
             creationDate = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("created_at"));
             status = json.getString("state");
-            reporter = json.getJSONObject("user").getString("login");
+            String userJson = json.getString("user");
+            if (!userJson.equals("null")) {
+                reporter = new User(new JSONObject(userJson));
+            } else {
+                reporter = null;
+            }
+            userJson = json.getString("assignee");
+            if (!userJson.equals("null")) {
+                assignee = new User(new JSONObject(userJson));
+            } else {
+                assignee = null;
+            }
             open = json.getString("closed_at").equals("null");
         } catch (final Exception e) {
             e.printStackTrace();

@@ -22,6 +22,7 @@ import java.util.List;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Bug;
+import jp.bugscontrol.general.User;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -62,7 +63,10 @@ public class AdapterBug extends ArrayAdapter<Bug> {
         summaryView.setText(summary);
 
         ((TextView) convertView.findViewById(R.id.creation_date)).setText(item.getCreationDate());
-        ((TextView) convertView.findViewById(R.id.assignee)).setText(item.getAssignee());
+        final User assignee = item.getAssignee();
+        if (assignee != null) {
+            ((TextView) convertView.findViewById(R.id.assignee)).setText(assignee.name);
+        }
 
         return convertView;
     }

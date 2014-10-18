@@ -35,8 +35,8 @@ public abstract class Bug {
     protected String description;
     protected String creationDate;
 
-    protected String reporter;
-    protected String assignee;
+    protected User reporter;
+    protected User assignee = null;
 
     protected final List<Comment> comments = new ArrayList<Comment>();
 
@@ -93,11 +93,11 @@ public abstract class Bug {
         return creationDate;
     }
 
-    public String getReporter() {
+    public User getReporter() {
         return reporter;
     }
 
-    public String getAssignee() {
+    public User getAssignee() {
         return assignee;
     }
 

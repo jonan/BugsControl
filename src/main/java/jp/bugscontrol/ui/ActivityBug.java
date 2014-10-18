@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -37,6 +38,7 @@ import com.google.android.gms.ads.AdView;
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Bug;
 import jp.bugscontrol.general.Server;
+import jp.bugscontrol.general.User;
 import jp.util.ImageLoader;
 import jp.util.Util;
 
@@ -87,15 +89,29 @@ public class ActivityBug extends ListActivity {
     }
 
     public void updateView() {
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getReporter()), (ImageView) mainView.findViewById(R.id.reporter_img));
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(bug.getAssignee()), (ImageView) mainView.findViewById(R.id.assignee_img));
+        final User reporter = bug.getReporter();
+        if (!TextUtils.isEmpty(reporter.avatarUrl)) {
+            ImageLoader.loadImage(reporter.avatarUrl, (ImageView) mainView.findViewById(R.id.reporter_img));
+        } else {
+            ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(reporter.email), (ImageView) mainView.findViewById(R.id.reporter_img));
+        }
+        final User assignee = bug.getAssignee();
+        if (assignee != null) {
+            if (!TextUtils.isEmpty(assignee.avatarUrl)) {
+                ImageLoader.loadImage(assignee.avatarUrl, (ImageView) mainView.findViewById(R.id.assignee_img));
+            } else {
+                ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(assignee.email), (ImageView) mainView.findViewById(R.id.assignee_img));
+            }
+        }
 
         ((TextView) mainView.findViewById(R.id.creation_date)).setText(bug.getCreationDate());
 
         ((TextView) mainView.findViewById(R.id.summary)).setText(bug.getSummary());
 
-        ((TextView) mainView.findViewById(R.id.reporter)).setText(bug.getReporter());
-        ((TextView) mainView.findViewById(R.id.assignee)).setText(bug.getAssignee());
+        ((TextView) mainView.findViewById(R.id.reporter)).setText(bug.getReporter().name);
+        if (assignee != null) {
+            ((TextView) mainView.findViewById(R.id.assignee)).setText(assignee.name);
+        }
 
         ((TextView) mainView.findViewById(R.id.priority)).setText(bug.getPriority());
         ((TextView) mainView.findViewById(R.id.status)).setText(bug.getStatus());

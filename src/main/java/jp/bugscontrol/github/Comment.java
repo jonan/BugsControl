@@ -32,7 +32,7 @@ public class Comment extends jp.bugscontrol.general.Comment {
         try {
             id = json.getInt("id");
             text = json.getString("body");
-            author = json.getJSONObject("user").getString("login");
+            author = new User(json.getJSONObject("user"));
             date = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("created_at"));
         } catch (final Exception e) {
             e.printStackTrace();

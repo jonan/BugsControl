@@ -34,9 +34,9 @@ public class Comment extends jp.bugscontrol.general.Comment {
             text = json.getString("text");
 
             if (json.has("creator")) {
-                author = json.getString("creator");
+                author = new User(json.getString("creator"));
             } else {
-                author = json.getString("author");
+                author = new User(json.getString("author"));
             }
 
             if (json.has("creation_time")) {

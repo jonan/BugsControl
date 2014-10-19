@@ -21,7 +21,7 @@ package jp.bugscontrol.general;
 public abstract class Comment {
     protected int id;
     protected String text;
-    protected String author;
+    protected User author;
     protected String date;
     protected int number = 0;
 
@@ -39,7 +39,7 @@ public abstract class Comment {
         return text;
     }
 
-    public String getAuthor() {
+    public User getAuthor() {
         return author;
     }
 

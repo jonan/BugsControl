@@ -22,10 +22,12 @@ import java.util.List;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Comment;
+import jp.bugscontrol.general.User;
 import jp.util.ImageLoader;
 import jp.util.Util;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,12 +50,17 @@ public class AdapterComment extends ArrayAdapter<Comment> {
         }
 
         final Comment item = getItem(position);
-        ((TextView) convertView.findViewById(R.id.creator)).setText(item.getAuthor());
+        ((TextView) convertView.findViewById(R.id.creator)).setText(item.getAuthor().name);
         ((TextView) convertView.findViewById(R.id.text)).setText(item.getText());
         ((TextView) convertView.findViewById(R.id.date)).setText(item.getDate());
         ((TextView) convertView.findViewById(R.id.bug_number)).setText("#" + ( (item.getNumber() > 0) ? item.getNumber() : (position + 1) ));
 
-        ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(item.getAuthor()), (ImageView) convertView.findViewById(R.id.author_img));
+        final User author = item.getAuthor();
+        if (!TextUtils.isEmpty(author.avatarUrl)) {
+            ImageLoader.loadImage(author.avatarUrl, (ImageView) convertView.findViewById(R.id.author_img));
+        } else {
+            ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(author.email), (ImageView) convertView.findViewById(R.id.author_img));
+        }
 
         return convertView;
     }

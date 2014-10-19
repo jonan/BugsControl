@@ -16,42 +16,26 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package jp.bugscontrol.general;
+package jp.bugscontrol.github;
 
-public abstract class Comment {
-    protected int id;
-    protected String text;
-    protected String author;
-    protected String date;
-    protected int number = 0;
+import org.json.JSONObject;
 
-    protected final Bug bug;
+import jp.util.Util;
 
-    public Comment(final Bug bug) {
-        this.bug = bug;
+public class Comment extends jp.bugscontrol.general.Comment {
+    public Comment(final Bug bug, final JSONObject json) {
+        super(bug);
+        createFromJSON(json);
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public Bug getBug() {
-        return bug;
-    }
-
-    public int getNumber() {
-        return number;
+    private void createFromJSON(final JSONObject json) {
+        try {
+            id = json.getInt("id");
+            text = json.getString("body");
+            author = json.getJSONObject("user").getString("login");
+            date = Util.formatDate("yyyy-MM-dd'T'HH:mm:ss'Z'", json.getString("created_at"));
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
     }
 }

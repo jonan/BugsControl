@@ -48,7 +48,7 @@ public class GithubTask extends AsyncTask<Void, Void, Void> {
         try {
             // Send the request
             final HttpClient httpClient = new DefaultHttpClient();
-            final HttpGet httpGet = new HttpGet("https://api.github.com" + method);
+            final HttpGet httpGet = new HttpGet(method.contains("http") ? method : "https://api.github.com" + method);
             httpGet.addHeader("Authorization", "token " + server.getPassword());
             httpGet.addHeader("Accept", "application/vnd.github.v3+json");
             HttpEntity entity = httpClient.execute(httpGet).getEntity();

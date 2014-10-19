@@ -18,12 +18,18 @@
 
 package jp.bugscontrol.github;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import jp.util.Util;
 
 
 public class Bug extends jp.bugscontrol.general.Bug {
+    private String commentsUrl;
+
     public Bug(final jp.bugscontrol.general.Product product, final JSONObject json) {
         super(product);
         createFromJSON(json);
@@ -31,7 +37,30 @@ public class Bug extends jp.bugscontrol.general.Bug {
 
     @Override
     protected void loadComments() {
-        commentsListUpdated();
+        final Bug b = this;
+        final List<Comment> newList = new ArrayList<Comment>();
+        final GithubTask task = new GithubTask(product.getServer(), commentsUrl, new Util.TaskListener() {
+            @Override
+            public void doInBackground(final String s) {
+                try {
+                    final JSONArray object = new JSONArray(s);
+                    final int size = object.length();
+                    for (int i = 0; i < size; ++i) {
+                        newList.add(new Comment(b, object.getJSONObject(i)));
+                    }
+                } catch (final Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onPostExecute(final String s) {
+                comments.clear();
+                comments.addAll(newList);
+                commentsListUpdated();
+            }
+        });
+        task.execute();
     }
 
     private void createFromJSON(final JSONObject json) {
@@ -54,6 +83,7 @@ public class Bug extends jp.bugscontrol.general.Bug {
                 assignee = null;
             }
             open = json.getString("closed_at").equals("null");
+            commentsUrl = json.getString("comments_url");
         } catch (final Exception e) {
             e.printStackTrace();
         }

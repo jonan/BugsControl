@@ -46,7 +46,8 @@ public class Bug extends jp.bugscontrol.general.Bug {
                 try {
                     final JSONObject object = new JSONObject(s);
                     final JSONArray comments = object.getJSONObject("result").getJSONObject("bugs").getJSONObject(Integer.toString(b.id)).getJSONArray("comments");
-                    for (int i = 0; i < comments.length(); ++i) {
+                    final int size = comments.length();
+                    for (int i = 0; i < size; ++i) {
                         if (i == 0) {
                             description = comments.getJSONObject(i).getString("text");
                         } else {

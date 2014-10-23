@@ -21,7 +21,6 @@ package jp.bugscontrol.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,9 +30,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
-
-import java.util.UUID;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
@@ -103,7 +99,7 @@ public class ActivityRegister extends Activity {
         }
 
         for (final Server s : Server.servers) {
-            if (s.getName().equals(name)) {
+            if (s.getName().equals(name) && server != s) {
                 nameView.setError(getString(R.string.server_with_that_name_exists));
                 error = true;
             }

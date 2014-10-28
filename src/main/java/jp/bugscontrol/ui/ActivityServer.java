@@ -77,6 +77,8 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
             return true;
         }
 
+        getFragmentManager().popBackStack();
+        getFragmentManager().popBackStack();
         setServer(position);
         return true;
     }
@@ -89,7 +91,7 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
         arguments.putInt("server_position", serverPos);
         arguments.putInt("product_id", productId);
         fragment.setArguments(arguments);
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -100,7 +102,7 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
         arguments.putInt("product_id", productId);
         arguments.putInt("bug_id", bugId);
         fragment.setArguments(arguments);
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
     }
 
     private void setActionBar() {

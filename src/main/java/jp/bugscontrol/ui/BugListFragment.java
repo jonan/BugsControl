@@ -25,23 +25,25 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import jp.bugscontrol.R;
+import jp.bugscontrol.general.Product;
 import jp.bugscontrol.general.Server;
 
 
-public class ProductListFragment extends ListFragment {
-    private OnProductSelectedListener listener;
-    private AdapterProduct adapter;
+public class BugListFragment extends ListFragment {
+    private OnBugSelectedListener listener;
+    private AdapterBug adapter;
 
-    public interface OnProductSelectedListener {
-        public void onProductSelected(final int productId);
+    public interface OnBugSelectedListener {
+        public void onBugSelected(final int bugId);
     }
 
     @Override
     public void onAttach(final Activity activity) {
         super.onAttach(activity);
-        listener = (OnProductSelectedListener) activity;
+        listener = (OnBugSelectedListener) activity;
     }
 
     @Override
@@ -53,23 +55,33 @@ public class ProductListFragment extends ListFragment {
 
         final Bundle arguments = getArguments();
         final int serverPos;
+        final int productId;
         if (arguments != null) {
-            serverPos = arguments.getInt("server_position", 0);
+            serverPos = arguments.getInt("server_position", -1);
+            productId = arguments.getInt("product_id", -1);
         } else {
-            serverPos = 0;
+            serverPos = -1;
+            productId = -1;
         }
 
-        final Server server = Server.servers.get(serverPos);
+        if (serverPos == -1 || productId == -1) {
+            Toast.makeText(activity, R.string.invalid_product, Toast.LENGTH_SHORT).show();
+            activity.onBackPressed();
+            return view;
+        }
 
-        adapter = new AdapterProduct(activity, server.getProducts());
+        final Product product = Server.servers.get(serverPos).getProductFromId(productId);
+        activity.setTitle(product.getName());
+
+        adapter = new AdapterBug(activity, product.getBugs());
         setListAdapter(adapter);
-        server.setAdapterProduct(adapter, activity);
+        product.setAdapterBug(adapter, activity);
 
         return view;
     }
 
     @Override
     public void onListItemClick(final ListView l, final View v, final int position, final long id) {
-        listener.onProductSelected(adapter.getProductIdFromPosition(position));
+        listener.onBugSelected(adapter.getBugIdFromPosition(position));
     }
 }

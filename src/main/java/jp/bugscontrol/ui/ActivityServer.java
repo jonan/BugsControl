@@ -33,10 +33,8 @@ import com.google.android.gms.ads.AdView;
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
-public class ActivityServer extends Activity implements ActionBar.OnNavigationListener {
+public class ActivityServer extends Activity implements ActionBar.OnNavigationListener, ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener {
     private int serverPos;
-
-    private AdapterProduct adapter;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -80,6 +78,21 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
 
         setServer(position);
         return true;
+    }
+
+    @Override
+    public void onProductSelected(final int productId) {
+        Fragment fragment = new BugListFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putInt("server_position", serverPos);
+        arguments.putInt("product_id", productId);
+        fragment.setArguments(arguments);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+    }
+
+    @Override
+    public void onBugSelected(final int bugId) {
+
     }
 
     private void setActionBar() {

@@ -35,6 +35,7 @@ import jp.bugscontrol.general.Server;
 
 public class ActivityServer extends Activity implements ActionBar.OnNavigationListener, ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener {
     private int serverPos;
+    private int productId;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
 
     @Override
     public void onProductSelected(final int productId) {
+        this.productId = productId;
         Fragment fragment = new BugListFragment();
         final Bundle arguments = new Bundle();
         arguments.putInt("server_position", serverPos);
@@ -92,7 +94,13 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
 
     @Override
     public void onBugSelected(final int bugId) {
-
+        Fragment fragment = new BugInfoFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putInt("server_position", serverPos);
+        arguments.putInt("product_id", productId);
+        arguments.putInt("bug_id", bugId);
+        fragment.setArguments(arguments);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
     private void setActionBar() {

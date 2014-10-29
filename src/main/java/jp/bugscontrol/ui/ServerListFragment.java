@@ -90,7 +90,6 @@ public class ServerListFragment extends ListFragment {
             convertView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(final View view) {
-                    final Server s = Server.servers.get(position);
                     new DialogDeleteServer().setAdapter(adapter).setServerPos(position).show(getFragmentManager(), "DeleteServerDialog");
                 }
             });

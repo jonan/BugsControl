@@ -77,8 +77,8 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
             return true;
         }
 
-        getFragmentManager().popBackStack();
-        getFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
         setServer(position);
         return true;
     }

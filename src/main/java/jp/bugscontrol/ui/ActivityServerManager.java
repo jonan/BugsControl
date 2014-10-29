@@ -18,41 +18,21 @@
 
 package jp.bugscontrol.ui;
 
-import android.app.ListActivity;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
 
 import jp.bugscontrol.R;
-import jp.bugscontrol.general.Server;
 
-public class ActivityServerManager extends ListActivity {
-    private ServerTypeAdapter adapter;
-
+public class ActivityServerManager extends Activity implements ServerListFragment.OnServerSelectedListener {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_product_list);
+        setContentView(R.layout.activity_server_manager);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setDisplayShowHomeEnabled(false);
-
-        adapter = new ServerTypeAdapter(this);
-        getListView().setAdapter(adapter);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -73,7 +53,7 @@ public class ActivityServerManager extends ListActivity {
     }
 
     @Override
-    protected void onListItemClick(final ListView l, final View v, final int position, final long id) {
+    public void onServerSelected(final int position) {
         final Intent intent = new Intent(this, ActivityRegister.class);
         intent.putExtra("server_position", position);
         startActivity(intent);
@@ -83,35 +63,5 @@ public class ActivityServerManager extends ListActivity {
     public boolean onNavigateUp() {
         finish();
         return true;
-    }
-
-    private class ServerTypeAdapter extends ArrayAdapter<Server> {
-        public ServerTypeAdapter(final Context context) {
-            super(context, R.layout.adapter_server, R.id.name, Server.servers);
-        }
-
-        @Override
-        public View getView(final int position, View convertView, final ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater().inflate(R.layout.adapter_server, parent, false);
-            }
-
-            final Server s = Server.servers.get(position);
-
-            ((TextView) convertView.findViewById(R.id.name)).setText(s.getName());
-
-            final ImageView iconImage = (ImageView) convertView.findViewById(R.id.icon);
-            iconImage.setImageResource(Server.typeIcon.get(Server.typeName.indexOf(s.getType())));
-
-            convertView.findViewById(R.id.delete_button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    final Server s = Server.servers.get(position);
-                    new DialogDeleteServer().setAdapter(adapter).setServerPos(position).show(getFragmentManager(), "DeleteServerDialog");
-                }
-            });
-
-            return convertView;
-        }
     }
 }

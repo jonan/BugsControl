@@ -19,16 +19,13 @@
 package jp.bugscontrol.ui;
 
 import android.app.ActionBar;
-import android.app.ListActivity;
-import android.app.TaskStackBuilder;
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -36,17 +33,16 @@ import com.google.android.gms.ads.AdView;
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
-public class ActivityServer extends ListActivity implements ActionBar.OnNavigationListener {
+public class ActivityServer extends Activity implements ActionBar.OnNavigationListener, ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener {
     private int serverPos;
-
-    private AdapterProduct adapter;
+    private int productId;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setProgressBarIndeterminateVisibility(false);
-        setContentView(R.layout.activity_product_list);
+        setContentView(R.layout.activity_server);
 
         getActionBar().setDisplayShowHomeEnabled(false);
         getActionBar().setDisplayShowTitleEnabled(false);
@@ -71,14 +67,6 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
     }
 
     @Override
-    protected void onListItemClick(final ListView l, final View v, final int position, final long id) {
-        final Intent intent = new Intent(this, ActivityProduct.class);
-        intent.putExtra("server_position", serverPos);
-        intent.putExtra("product_id", adapter.getProductIdFromPosition(position));
-        startActivity(intent);
-    }
-
-    @Override
     public boolean onNavigationItemSelected(final int position, final long id) {
         if (position == serverPos) {
             return true;
@@ -89,8 +77,32 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
             return true;
         }
 
+        getFragmentManager().popBackStack();
+        getFragmentManager().popBackStack();
         setServer(position);
         return true;
+    }
+
+    @Override
+    public void onProductSelected(final int productId) {
+        this.productId = productId;
+        Fragment fragment = new BugListFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putInt("server_position", serverPos);
+        arguments.putInt("product_id", productId);
+        fragment.setArguments(arguments);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+    }
+
+    @Override
+    public void onBugSelected(final int bugId) {
+        Fragment fragment = new BugInfoFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putInt("server_position", serverPos);
+        arguments.putInt("product_id", productId);
+        arguments.putInt("bug_id", bugId);
+        fragment.setArguments(arguments);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
     }
 
     private void setActionBar() {
@@ -124,12 +136,11 @@ public class ActivityServer extends ListActivity implements ActionBar.OnNavigati
 
         getActionBar().setSelectedNavigationItem(serverPos);
 
-        final Server server = Server.servers.get(serverPos);
-
-        setProgressBarIndeterminateVisibility(true);
-        adapter = new AdapterProduct(this, server.getProducts());
-        setListAdapter(adapter);
-        server.setAdapterProduct(adapter, this);
+        Fragment fragment = new ProductListFragment();
+        final Bundle arguments = new Bundle();
+        arguments.putInt("server_position", serverPos);
+        fragment.setArguments(arguments);
+        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
     private void openServerRegistry() {

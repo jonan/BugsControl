@@ -30,13 +30,6 @@
             android:name=".ui.ActivityRegister"
             android:parentActivityName=".ui.ActivityServerManager" />
         <activity
-            android:name=".ui.ActivityProduct"
-            android:parentActivityName=".ui.ActivityServer" />
-        <activity
-            android:name=".ui.ActivityBug"
-            android:label=""
-            android:parentActivityName=".ui.ActivityProduct" />
-        <activity
             android:name=".github.GithubLogin"
             android:noHistory="true">
             <intent-filter>

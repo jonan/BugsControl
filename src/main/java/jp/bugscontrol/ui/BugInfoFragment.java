@@ -1,6 +1,6 @@
 /*
  *  BugsControl
- *  Copyright (C) 2013  Jon Ander Peñalba
+ *  Copyright (C) 2014  Jon Ander Peñalba
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -18,22 +18,16 @@
 
 package jp.bugscontrol.ui;
 
-import android.app.ListActivity;
-import android.app.TaskStackBuilder;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
+import android.app.Activity;
+import android.app.ListFragment;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Bug;
@@ -42,50 +36,57 @@ import jp.bugscontrol.general.User;
 import jp.util.ImageLoader;
 import jp.util.Util;
 
-public class ActivityBug extends ListActivity {
-    private int serverPos;
-    private int productId;
 
+public class BugInfoFragment extends ListFragment {
     private Bug bug;
 
     private View mainView;
 
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setContentView(R.layout.activity_bug);
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.activity_bug, container, false);
+        final Activity activity = getActivity();
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setDisplayShowHomeEnabled(false);
+        activity.setProgressBarIndeterminateVisibility(true);
 
-        serverPos = getIntent().getIntExtra("server_position", -1);
-        productId = getIntent().getIntExtra("product_id", -1);
-        final int bugId = getIntent().getIntExtra("bug_id", -1);
+        final Bundle arguments = getArguments();
+        final int serverPos;
+        final int productId;
+        final int bugId;
+        if (arguments != null) {
+            serverPos = arguments.getInt("server_position", -1);
+            productId = arguments.getInt("product_id", -1);
+            bugId = arguments.getInt("bug_id", -1);
+        } else {
+            serverPos = -1;
+            productId = -1;
+            bugId = -1;
+        }
 
         if (serverPos == -1 || productId == -1 || bugId == -1) {
-            Toast.makeText(this, R.string.invalid_bug, Toast.LENGTH_SHORT).show();
-            finish();
-            return;
+            Toast.makeText(activity, R.string.invalid_bug, Toast.LENGTH_SHORT).show();
+            activity.onBackPressed();
+            return view;
         }
 
         bug = Server.servers.get(serverPos).getBugFromId(bugId);
 
-        final LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        mainView = inflater.inflate(R.layout.bug_info, getListView(), false);
+        mainView = inflater.inflate(R.layout.bug_info, null, false);
         updateView();
 
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        final Activity activity = getActivity();
+
         getListView().addHeaderView(mainView);
-        getListView().setAdapter(new AdapterComment(this, bug.getComments()));
 
-        final AdapterComment adapter = new AdapterComment(this, bug.getComments());
-        getListView().setAdapter(adapter);
-        bug.setAdapterComment(adapter, this);
-
-        // Load ad
-        final AdView adView = (AdView) findViewById(R.id.adView);
-        final AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+        final AdapterComment adapter = new AdapterComment(activity, bug.getComments());
+        setListAdapter(adapter);
+        bug.setAdapterComment(adapter, activity);
     }
 
     public void updateView() {
@@ -117,23 +118,5 @@ public class ActivityBug extends ListActivity {
         ((TextView) mainView.findViewById(R.id.status)).setText(bug.getStatus());
 
         ((TextView) mainView.findViewById(R.id.description)).setText(bug.getDescription());
-    }
-
-    @Override
-    public boolean onNavigateUp() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            finish();
-        } else {
-            final Intent upIntent = getParentActivityIntent();
-            upIntent.putExtra("server_position", serverPos);
-            upIntent.putExtra("product_id", productId);
-            if (shouldUpRecreateTask(upIntent)) {
-                TaskStackBuilder.create(this).addNextIntentWithParentStack(upIntent).startActivities();
-            } else {
-                navigateUpTo(upIntent);
-            }
-        }
-
-        return true;
     }
 }

@@ -18,12 +18,11 @@
 
 package jp.bugscontrol.general;
 
+import android.app.Activity;
 import android.widget.BaseAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import jp.bugscontrol.ui.ActivityBug;
 
 public abstract class Bug {
     protected int id;
@@ -43,7 +42,7 @@ public abstract class Bug {
     protected final Product product;
 
     protected BaseAdapter adapter;
-    protected ActivityBug activity;
+    protected Activity activity;
 
     public Bug(final Product product) {
         this.product = product;
@@ -51,7 +50,7 @@ public abstract class Bug {
 
     protected abstract void loadComments();
 
-    public void setAdapterComment(final BaseAdapter adapter, final ActivityBug activity) {
+    public void setAdapterComment(final BaseAdapter adapter, final Activity activity) {
         this.adapter = adapter;
         this.activity = activity;
 
@@ -62,7 +61,7 @@ public abstract class Bug {
     protected void commentsListUpdated() {
         adapter.notifyDataSetChanged();
         activity.setProgressBarIndeterminateVisibility(false);
-        activity.updateView();
+        //activity.updateView();
     }
 
     public int getId() {

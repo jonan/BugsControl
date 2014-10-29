@@ -18,12 +18,12 @@
 
 package jp.bugscontrol.ui;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 
@@ -33,19 +33,19 @@ import com.google.android.gms.ads.AdView;
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
-public class ActivityServer extends Activity implements ActionBar.OnNavigationListener, ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener {
+public class ActivityServer extends ActionBarActivity implements ActionBar.OnNavigationListener, ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener {
     private int serverPos;
     private int productId;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        setProgressBarIndeterminateVisibility(false);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        //setSupportProgressBarIndeterminateVisibility(false);
         setContentView(R.layout.activity_server);
 
-        getActionBar().setDisplayShowHomeEnabled(false);
-        getActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         // Load ad
         final AdView adView = (AdView) findViewById(R.id.adView);
@@ -77,8 +77,8 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
             return true;
         }
 
-        getFragmentManager().popBackStack();
-        getFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
         setServer(position);
         return true;
     }
@@ -91,7 +91,7 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
         arguments.putInt("server_position", serverPos);
         arguments.putInt("product_id", productId);
         fragment.setArguments(arguments);
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
     }
 
     @Override
@@ -102,7 +102,7 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
         arguments.putInt("product_id", productId);
         arguments.putInt("bug_id", bugId);
         fragment.setArguments(arguments);
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
     }
 
     private void setActionBar() {
@@ -110,7 +110,7 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
             return;
         }
 
-        final ActionBar actionBar = getActionBar();
+        final ActionBar actionBar = getSupportActionBar();
         final Context context = actionBar.getThemedContext();
         ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_dropdown_item);
         for (final Server s : Server.servers) {
@@ -134,19 +134,19 @@ public class ActivityServer extends Activity implements ActionBar.OnNavigationLi
             }
         }
 
-        getActionBar().setSelectedNavigationItem(serverPos);
+        getSupportActionBar().setSelectedNavigationItem(serverPos);
 
         Fragment fragment = new ProductListFragment();
         final Bundle arguments = new Bundle();
         arguments.putInt("server_position", serverPos);
         fragment.setArguments(arguments);
-        getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
     private void openServerRegistry() {
         startActivity(new Intent(this, ActivityServerManager.class));
         if (serverPos != -1) {
-            getActionBar().setSelectedNavigationItem(serverPos);
+            getSupportActionBar().setSelectedNavigationItem(serverPos);
         }
     }
 }

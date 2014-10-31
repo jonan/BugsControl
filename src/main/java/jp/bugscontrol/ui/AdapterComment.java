@@ -45,21 +45,33 @@ public class AdapterComment extends ArrayAdapter<Comment> {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
+        final ViewHolder holder;
+
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.adapter_comment, parent, false);
+            holder = new ViewHolder();
+            holder.creator = (TextView) convertView.findViewById(R.id.creator);
+            holder.text = (TextView) convertView.findViewById(R.id.text);
+            holder.date = (TextView) convertView.findViewById(R.id.date);
+            holder.bugNumber = (TextView) convertView.findViewById(R.id.bug_number);
+            holder.authorImg = (ImageView) convertView.findViewById(R.id.author_img);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         final Comment item = getItem(position);
-        ((TextView) convertView.findViewById(R.id.creator)).setText(item.getAuthor().name);
-        ((TextView) convertView.findViewById(R.id.text)).setText(item.getText());
-        ((TextView) convertView.findViewById(R.id.date)).setText(item.getDate());
-        ((TextView) convertView.findViewById(R.id.bug_number)).setText("#" + ( (item.getNumber() > 0) ? item.getNumber() : (position + 1) ));
+
+        holder.creator.setText(item.getAuthor().name);
+        holder.text.setText(item.getText());
+        holder.date.setText(item.getDate());
+        holder.bugNumber.setText("#" + ( (item.getNumber() > 0) ? item.getNumber() : (position + 1) ));
 
         final User author = item.getAuthor();
         if (!TextUtils.isEmpty(author.avatarUrl)) {
-            ImageLoader.loadImage(author.avatarUrl, (ImageView) convertView.findViewById(R.id.author_img));
+            ImageLoader.loadImage(author.avatarUrl, holder.authorImg);
         } else {
-            ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(author.email), (ImageView) convertView.findViewById(R.id.author_img));
+            ImageLoader.loadImage("http://www.gravatar.com/avatar/" + Util.md5(author.email), holder.authorImg);
         }
 
         return convertView;
@@ -73,5 +85,13 @@ public class AdapterComment extends ArrayAdapter<Comment> {
     @Override
     public boolean isEnabled(final int position) {
         return false;
+    }
+
+    private static class ViewHolder {
+        TextView creator;
+        TextView text;
+        TextView date;
+        TextView bugNumber;
+        ImageView authorImg;
     }
 }

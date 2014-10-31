@@ -40,18 +40,32 @@ public class AdapterProduct extends ArrayAdapter<Product> {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
+        final ViewHolder holder;
+
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.adapter_product, parent, false);
+            holder = new ViewHolder();
+            holder.name = (TextView) convertView.findViewById(R.id.name);
+            holder.description = (TextView) convertView.findViewById(R.id.description);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         final Product p = getItem(position);
-        ((TextView) convertView.findViewById(R.id.name)).setText(p.getName());
-        ((TextView) convertView.findViewById(R.id.description)).setText(p.getDescription());
+
+        holder.name.setText(p.getName());
+        holder.description.setText(p.getDescription());
 
         return convertView;
     }
 
     public int getProductIdFromPosition(final int position) {
         return getItem(position).getId();
+    }
+
+    private static class ViewHolder {
+        TextView name;
+        TextView description;
     }
 }

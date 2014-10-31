@@ -41,8 +41,17 @@ public class AdapterBug extends ArrayAdapter<Bug> {
 
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
+        final ViewHolder holder;
+
         if (convertView == null) {
             convertView = inflater.inflate(R.layout.adapter_bug, parent, false);
+            holder = new ViewHolder();
+            holder.summary = (TextView) convertView.findViewById(R.id.summary);
+            holder.creationDate = (TextView) convertView.findViewById(R.id.creation_date);
+            holder.assignee = (TextView) convertView.findViewById(R.id.assignee);
+            convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
         final Bug item = getItem(position);
@@ -58,14 +67,15 @@ public class AdapterBug extends ArrayAdapter<Bug> {
         }
         summary += item.getSummary();
 
-        final TextView summaryView = (TextView) convertView.findViewById(R.id.summary);
-        summaryView.setTextColor(color);
-        summaryView.setText(summary);
+        holder.summary.setTextColor(color);
+        holder.summary.setText(summary);
 
-        ((TextView) convertView.findViewById(R.id.creation_date)).setText(item.getCreationDate());
+        holder.creationDate.setText(item.getCreationDate());
         final User assignee = item.getAssignee();
         if (assignee != null) {
-            ((TextView) convertView.findViewById(R.id.assignee)).setText(assignee.name);
+            holder.assignee.setText(assignee.name);
+        } else {
+            holder.assignee.setText("");
         }
 
         return convertView;
@@ -73,5 +83,11 @@ public class AdapterBug extends ArrayAdapter<Bug> {
 
     public int getBugIdFromPosition(final int position) {
         return getItem(position).getId();
+    }
+
+    private static class ViewHolder {
+        TextView summary;
+        TextView creationDate;
+        TextView assignee;
     }
 }

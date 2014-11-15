@@ -20,17 +20,18 @@ package jp.bugscontrol.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
 
-public class ProductListFragment extends ListFragment {
+public class ProductListFragment extends Fragment {
     private OnProductSelectedListener listener;
     private AdapterProduct adapter;
 
@@ -46,8 +47,12 @@ public class ProductListFragment extends ListFragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.product_list_fragment, container, false);
+        final RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
         final Activity activity = getActivity();
+
+        view.setHasFixedSize(true);
+
+        view.setLayoutManager(new LinearLayoutManager(activity));
 
         activity.setProgressBarIndeterminateVisibility(true);
 
@@ -61,15 +66,14 @@ public class ProductListFragment extends ListFragment {
 
         final Server server = Server.servers.get(serverPos);
 
-        adapter = new AdapterProduct(activity, server.getProducts());
-        setListAdapter(adapter);
+        adapter = new AdapterProduct(server.getProducts(), this);
+        view.setAdapter(adapter);
         server.setAdapterProduct(adapter, activity);
 
         return view;
     }
 
-    @Override
-    public void onListItemClick(final ListView l, final View v, final int position, final long id) {
+    public void onListItemClick(final int position) {
         listener.onProductSelected(adapter.getProductIdFromPosition(position));
     }
 }

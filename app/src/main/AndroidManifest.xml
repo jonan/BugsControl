@@ -16,7 +16,8 @@
 
         <activity
             android:name=".ui.ActivityServer"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:theme="@style/Theme.BugsControl.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

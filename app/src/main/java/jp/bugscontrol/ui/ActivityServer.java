@@ -22,8 +22,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 
@@ -40,9 +42,12 @@ public class ActivityServer extends ActionBarActivity implements ActionBar.OnNav
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        //supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         //setSupportProgressBarIndeterminateVisibility(false);
         setContentView(R.layout.activity_server);
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayShowHomeEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);

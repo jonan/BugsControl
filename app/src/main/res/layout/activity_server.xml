@@ -34,12 +34,17 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/left_menu_fragment_container"
         android:layout_width="304dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#FFFFFF"
-        android:fitsSystemWindows="true">
+        android:background="#FFFFFF">
 
-    </LinearLayout>
+        <fragment
+            android:name="jp.bugscontrol.ui.ServerListFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
+
 </android.support.v4.widget.DrawerLayout>

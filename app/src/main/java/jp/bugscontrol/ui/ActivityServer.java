@@ -36,9 +36,11 @@ import com.google.android.gms.ads.AdView;
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
-public class ActivityServer extends ActionBarActivity implements ActionBar.OnNavigationListener, ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener {
+public class ActivityServer extends ActionBarActivity implements ActionBar.OnNavigationListener, ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener, ServerListFragment.OnServerSelectedListener {
     private int serverPos;
     private int productId;
+
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class ActivityServer extends ActionBarActivity implements ActionBar.OnNav
         //setSupportProgressBarIndeterminateVisibility(false);
         setContentView(R.layout.activity_server);
 
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,6 +98,14 @@ public class ActivityServer extends ActionBarActivity implements ActionBar.OnNav
         getSupportFragmentManager().popBackStack();
         setServer(position);
         return true;
+    }
+
+    @Override
+    public void onServerSelected(final int position) {
+        drawerLayout.closeDrawer(Gravity.START);
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
+        setServer(position);
     }
 
     @Override

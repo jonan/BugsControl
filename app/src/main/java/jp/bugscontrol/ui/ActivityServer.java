@@ -85,9 +85,13 @@ public class ActivityServer extends ActionBarActivity implements ProductListFrag
     @Override
     public void onServerSelected(final int position) {
         drawerLayout.closeDrawer(Gravity.START);
-        getSupportFragmentManager().popBackStack();
-        getSupportFragmentManager().popBackStack();
-        setServer(position);
+        if (position == Server.servers.size()) {
+            openServerManager();
+        } else {
+            getSupportFragmentManager().popBackStack();
+            getSupportFragmentManager().popBackStack();
+            setServer(position);
+        }
     }
 
     @Override

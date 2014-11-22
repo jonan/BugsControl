@@ -31,9 +31,11 @@ import jp.bugscontrol.general.Server;
 
 public class AdapterServer extends RecyclerView.Adapter<AdapterServer.ViewHolder> {
     private LeftMenuFragment.OnServerSelectedListener listener;
+    private final boolean showServerManager;
 
-    public AdapterServer(final LeftMenuFragment.OnServerSelectedListener listener) {
+    public AdapterServer(final LeftMenuFragment.OnServerSelectedListener listener, boolean showServerManager) {
         this.listener = listener;
+        this.showServerManager = showServerManager;
     }
 
     @Override
@@ -44,15 +46,21 @@ public class AdapterServer extends RecyclerView.Adapter<AdapterServer.ViewHolder
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        final Server s = Server.servers.get(position);
+        if (showServerManager && position == getItemCount() - 1) {
+            holder.name.setText(R.string.manage_servers);
+            holder.iconImage.setVisibility(View.GONE);
+        } else {
+            final Server s = Server.servers.get(position);
 
-        holder.name.setText(s.getName());
-        holder.iconImage.setImageResource(Server.typeIcon.get(Server.typeName.indexOf(s.getType())));
+            holder.name.setText(s.getName());
+            holder.iconImage.setVisibility(View.VISIBLE);
+            holder.iconImage.setImageResource(Server.typeIcon.get(Server.typeName.indexOf(s.getType())));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return Server.servers.size();
+        return showServerManager ? Server.servers.size() +1 : Server.servers.size();
     }
 
     static public class ViewHolder extends RecyclerView.ViewHolder {

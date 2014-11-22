@@ -44,7 +44,7 @@ public class LeftMenuFragment extends Fragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        adapter = new AdapterServer(listener);
+        adapter = new AdapterServer(listener, true);
 
         final RecyclerView view = new RecyclerView(getActivity());
         view.setHasFixedSize(true);

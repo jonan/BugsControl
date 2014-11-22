@@ -26,6 +26,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.ProgressBar;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -38,6 +39,7 @@ public class ActivityServer extends ActionBarActivity implements ProductListFrag
     private int productId;
 
     private DrawerLayout drawerLayout;
+    private ProgressBar progressBar;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class ActivityServer extends ActionBarActivity implements ProductListFrag
         setContentView(R.layout.activity_server);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        progressBar = (ProgressBar) findViewById(R.id.progressbar);
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,6 +63,11 @@ public class ActivityServer extends ActionBarActivity implements ProductListFrag
         final AdView adView = (AdView) findViewById(R.id.adView);
         final AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+    }
+
+    @Override
+    public void setSupportProgressBarIndeterminateVisibility(final boolean visible) {
+        progressBar.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
     @Override

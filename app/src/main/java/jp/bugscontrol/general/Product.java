@@ -18,7 +18,7 @@
 
 package jp.bugscontrol.general;
 
-import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public abstract class Product {
     protected final List<Bug> bugs = new ArrayList<Bug>();
 
     protected AdapterBug adapter;
-    protected Activity activity;
+    protected ActionBarActivity activity;
 
     public Product(Server server) {
         this.server = server;
@@ -43,17 +43,17 @@ public abstract class Product {
 
     protected abstract void loadBugs();
 
-    public void setAdapterBug(final AdapterBug adapter, final Activity activity) {
+    public void setAdapterBug(final AdapterBug adapter, final ActionBarActivity activity) {
         this.adapter = adapter;
         this.activity = activity;
 
-        activity.setProgressBarIndeterminateVisibility(true);
+        activity.setSupportProgressBarIndeterminateVisibility(true);
         loadBugs();
     }
 
     protected void bugsListUpdated() {
         adapter.notifyDataSetChanged();
-        activity.setProgressBarIndeterminateVisibility(false);
+        activity.setSupportProgressBarIndeterminateVisibility(false);
     }
 
     public int getId() {

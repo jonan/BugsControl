@@ -21,6 +21,7 @@ package jp.bugscontrol.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,9 +50,9 @@ public class BugListFragment extends ListFragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.product_list_fragment, container, false);
-        final Activity activity = getActivity();
+        final ActionBarActivity activity = (ActionBarActivity) getActivity();
 
-        activity.setProgressBarIndeterminateVisibility(true);
+        activity.setSupportProgressBarIndeterminateVisibility(true);
 
         final Bundle arguments = getArguments();
         final int serverPos;

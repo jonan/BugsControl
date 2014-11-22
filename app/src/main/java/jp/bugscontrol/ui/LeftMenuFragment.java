@@ -19,24 +19,18 @@
 package jp.bugscontrol.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
-
-import jp.bugscontrol.R;
-import jp.bugscontrol.general.Server;
 
 
-public class LeftMenuFragment extends ListFragment {
+public class LeftMenuFragment extends Fragment {
     private OnServerSelectedListener listener;
-    private ServerTypeAdapter adapter;
+    private AdapterServer adapter;
 
     public interface OnServerSelectedListener {
         public void onServerSelected(final int position);
@@ -50,10 +44,12 @@ public class LeftMenuFragment extends ListFragment {
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.product_list_fragment, container, false);
+        adapter = new AdapterServer(listener);
 
-        adapter = new ServerTypeAdapter(getActivity());
-        setListAdapter(adapter);
+        final RecyclerView view = new RecyclerView(getActivity());
+        view.setHasFixedSize(true);
+        view.setLayoutManager(new LinearLayoutManager(getActivity()));
+        view.setAdapter(adapter);
 
         return view;
     }
@@ -62,33 +58,5 @@ public class LeftMenuFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onListItemClick(final ListView l, final View v, final int position, final long id) {
-        listener.onServerSelected(position);
-    }
-
-    private class ServerTypeAdapter extends ArrayAdapter<Server> {
-        public ServerTypeAdapter(final Context context) {
-            super(context, R.layout.adapter_server, R.id.name, Server.servers);
-        }
-
-        @Override
-        public View getView(final int position, View convertView, final ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.adapter_server, parent, false);
-                convertView.findViewById(R.id.delete_button).setVisibility(View.GONE);
-            }
-
-            final Server s = Server.servers.get(position);
-
-            ((TextView) convertView.findViewById(R.id.name)).setText(s.getName());
-
-            final ImageView iconImage = (ImageView) convertView.findViewById(R.id.icon);
-            iconImage.setImageResource(Server.typeIcon.get(Server.typeName.indexOf(s.getType())));
-
-            return convertView;
-        }
     }
 }

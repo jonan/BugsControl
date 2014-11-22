@@ -41,7 +41,7 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(final ViewGroup parent, final int i) {
         final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_product, parent, false);
-        return new ViewHolder(v);
+        return new ViewHolder(v, fragment);
     }
 
     @Override
@@ -60,11 +60,11 @@ public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHold
         return values.get(position).getId();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    static public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView name;
         private TextView description;
 
-        public ViewHolder(final View v) {
+        public ViewHolder(final View v, final ProductListFragment fragment) {
             super(v);
             name = (TextView) v.findViewById(R.id.name);
             description = (TextView) v.findViewById(R.id.description);

@@ -24,6 +24,8 @@ import android.widget.BaseAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import jp.bugscontrol.ui.BugInfoFragment;
+
 public abstract class Bug {
     protected int id;
     protected boolean open;
@@ -41,8 +43,9 @@ public abstract class Bug {
 
     protected final Product product;
 
-    protected BaseAdapter adapter;
-    protected ActionBarActivity activity;
+    private BaseAdapter adapter;
+    private ActionBarActivity activity;
+    private BugInfoFragment fragment;
 
     public Bug(final Product product) {
         this.product = product;
@@ -50,9 +53,10 @@ public abstract class Bug {
 
     protected abstract void loadComments();
 
-    public void setAdapterComment(final BaseAdapter adapter, final ActionBarActivity activity) {
+    public void setAdapterComment(final BaseAdapter adapter, final ActionBarActivity activity, final BugInfoFragment fragment) {
         this.adapter = adapter;
         this.activity = activity;
+        this.fragment = fragment;
 
         activity.setSupportProgressBarIndeterminateVisibility(true);
         loadComments();
@@ -61,7 +65,7 @@ public abstract class Bug {
     protected void commentsListUpdated() {
         adapter.notifyDataSetChanged();
         activity.setSupportProgressBarIndeterminateVisibility(false);
-        //activity.updateView();
+        fragment.updateView();
     }
 
     public int getId() {

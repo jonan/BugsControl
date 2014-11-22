@@ -87,7 +87,7 @@ public class BugInfoFragment extends ListFragment {
 
         final AdapterComment adapter = new AdapterComment(activity, bug.getComments());
         setListAdapter(adapter);
-        bug.setAdapterComment(adapter, activity);
+        bug.setAdapterComment(adapter, activity, this);
     }
 
     public void updateView() {

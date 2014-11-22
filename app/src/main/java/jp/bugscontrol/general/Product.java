@@ -34,8 +34,8 @@ public abstract class Product {
 
     protected final List<Bug> bugs = new ArrayList<Bug>();
 
-    protected AdapterBug adapter;
-    protected ActionBarActivity activity;
+    private AdapterBug adapter;
+    private ActionBarActivity activity;
 
     public Product(Server server) {
         this.server = server;

@@ -33,7 +33,7 @@ import com.google.android.gms.ads.AdView;
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
-public class ActivityServer extends ActionBarActivity implements ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener, ServerListFragment.OnServerSelectedListener {
+public class ActivityServer extends ActionBarActivity implements ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener, LeftMenuFragment.OnServerSelectedListener {
     private int serverPos;
     private int productId;
 

@@ -18,17 +18,14 @@
 
 package jp.bugscontrol.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
@@ -36,7 +33,7 @@ import com.google.android.gms.ads.AdView;
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 
-public class ActivityServer extends ActionBarActivity implements ActionBar.OnNavigationListener, ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener, ServerListFragment.OnServerSelectedListener {
+public class ActivityServer extends ActionBarActivity implements ProductListFragment.OnProductSelectedListener, BugListFragment.OnBugSelectedListener, ServerListFragment.OnServerSelectedListener {
     private int serverPos;
     private int productId;
 
@@ -45,8 +42,6 @@ public class ActivityServer extends ActionBarActivity implements ActionBar.OnNav
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-        //setSupportProgressBarIndeterminateVisibility(false);
         setContentView(R.layout.activity_server);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -61,9 +56,6 @@ public class ActivityServer extends ActionBarActivity implements ActionBar.OnNav
             }
         });
 
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
         // Load ad
         final AdView adView = (AdView) findViewById(R.id.adView);
         final AdRequest adRequest = new AdRequest.Builder().build();
@@ -73,31 +65,21 @@ public class ActivityServer extends ActionBarActivity implements ActionBar.OnNav
     @Override
     protected void onResume() {
         super.onResume();
-        setActionBar();
         setServer(getIntent().getIntExtra("server_position", -1));
     }
 
     @Override
     protected void onNewIntent(final Intent intent) {
-        setActionBar();
         setServer(intent.getIntExtra("server_position", -1));
     }
 
     @Override
-    public boolean onNavigationItemSelected(final int position, final long id) {
-        if (position == serverPos) {
-            return true;
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerVisible(Gravity.START)) {
+            drawerLayout.closeDrawer(Gravity.START);
+        } else {
+            super.onBackPressed();
         }
-
-        if (position == Server.servers.size()) {
-            openServerRegistry();
-            return true;
-        }
-
-        getSupportFragmentManager().popBackStack();
-        getSupportFragmentManager().popBackStack();
-        setServer(position);
-        return true;
     }
 
     @Override
@@ -130,36 +112,17 @@ public class ActivityServer extends ActionBarActivity implements ActionBar.OnNav
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
     }
 
-    private void setActionBar() {
-        if (Server.servers.size() == 0) {
-            return;
-        }
-
-        final ActionBar actionBar = getSupportActionBar();
-        final Context context = actionBar.getThemedContext();
-        ArrayAdapter<CharSequence> list = new ArrayAdapter<CharSequence>(context, android.R.layout.simple_spinner_dropdown_item);
-        for (final Server s : Server.servers) {
-            list.add(s.getName());
-        }
-        list.add(getResources().getString(R.string.manage_servers));
-
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-        actionBar.setListNavigationCallbacks(list, this);
-    }
-
     private void setServer(final int pos) {
         serverPos = pos;
 
         if (serverPos == -1) {
             if (Server.servers.size() == 0) {
-                openServerRegistry();
+                openServerManager();
                 return;
             } else {
                 serverPos = 0;
             }
         }
-
-        getSupportActionBar().setSelectedNavigationItem(serverPos);
 
         Fragment fragment = new ProductListFragment();
         final Bundle arguments = new Bundle();
@@ -168,10 +131,7 @@ public class ActivityServer extends ActionBarActivity implements ActionBar.OnNav
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
-    private void openServerRegistry() {
+    private void openServerManager() {
         startActivity(new Intent(this, ActivityServerManager.class));
-        if (serverPos != -1) {
-            getSupportActionBar().setSelectedNavigationItem(serverPos);
-        }
     }
 }

@@ -72,7 +72,7 @@ public class BugListFragment extends ListFragment {
         }
 
         final Product product = Server.servers.get(serverPos).getProductFromId(productId);
-        activity.setTitle(product.getName());
+        //activity.setTitle(product.getName());
 
         adapter = new AdapterBug(activity, product.getBugs());
         setListAdapter(adapter);

@@ -18,11 +18,10 @@
 
 package jp.bugscontrol.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,7 @@ import jp.bugscontrol.R;
 import jp.bugscontrol.general.Server;
 import jp.bugscontrol.github.GithubLogin;
 
-public class ActivityRegister extends Activity {
+public class ActivityRegister extends ActionBarActivity {
     private Server server = null;
 
     private Spinner serverTypeSpinner;
@@ -49,8 +48,7 @@ public class ActivityRegister extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
 
         serverTypeSpinner = (Spinner) findViewById(R.id.server_type_spinner);
         nameView = ((EditText) findViewById(R.id.name));
@@ -72,16 +70,6 @@ public class ActivityRegister extends Activity {
             urlView.setText(server.getUrl());
             userView.setText(server.getUser());
             passwordView.setText(server.getPassword());
-        }
-    }
-
-    @Override
-    public boolean onNavigateUp() {
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-            finish();
-            return true;
-        } else {
-            return super.onNavigateUp();
         }
     }
 

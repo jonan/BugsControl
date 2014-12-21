@@ -18,11 +18,10 @@
 
 package jp.bugscontrol.ui;
 
-import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -30,42 +29,51 @@ import java.util.List;
 import jp.bugscontrol.R;
 import jp.bugscontrol.general.Product;
 
-public class AdapterProduct extends ArrayAdapter<Product> {
-    private final LayoutInflater inflater;
+public class AdapterProduct extends RecyclerView.Adapter<AdapterProduct.ViewHolder> {
+    private final List<Product> values;
+    private final ProductListFragment fragment;
 
-    public AdapterProduct(final Context context, final List<Product> values) {
-        super(context, R.layout.adapter_product, values);
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    public AdapterProduct(final List<Product> values, final ProductListFragment fragment) {
+        this.values = values;
+        this.fragment = fragment;
     }
 
     @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
-        final ViewHolder holder;
+    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int i) {
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_product, parent, false);
+        return new ViewHolder(v, fragment);
+    }
 
-        if (convertView == null) {
-            convertView = inflater.inflate(R.layout.adapter_product, parent, false);
-            holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.name);
-            holder.description = (TextView) convertView.findViewById(R.id.description);
-            convertView.setTag(holder);
-        } else {
-            holder = (ViewHolder) convertView.getTag();
-        }
-
-        final Product p = getItem(position);
-
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, final int i) {
+        final Product p = values.get(i);
         holder.name.setText(p.getName());
         holder.description.setText(p.getDescription());
+    }
 
-        return convertView;
+    @Override
+    public int getItemCount() {
+        return values.size();
     }
 
     public int getProductIdFromPosition(final int position) {
-        return getItem(position).getId();
+        return values.get(position).getId();
     }
 
-    private static class ViewHolder {
-        TextView name;
-        TextView description;
+    static public class ViewHolder extends RecyclerView.ViewHolder {
+        private TextView name;
+        private TextView description;
+
+        public ViewHolder(final View v, final ProductListFragment fragment) {
+            super(v);
+            name = (TextView) v.findViewById(R.id.name);
+            description = (TextView) v.findViewById(R.id.description);
+            v.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    fragment.onListItemClick(getPosition());
+                }
+            });
+        }
     }
 }

@@ -21,60 +21,42 @@ package jp.bugscontrol.ui;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import jp.bugscontrol.R;
-import jp.bugscontrol.general.Server;
 
+public class LeftMenuFragment extends Fragment {
+    private OnServerSelectedListener listener;
+    private AdapterServer adapter;
 
-public class ProductListFragment extends Fragment {
-    private OnProductSelectedListener listener;
-    private AdapterProduct adapter;
-
-    public interface OnProductSelectedListener {
-        public void onProductSelected(final int productId);
+    public interface OnServerSelectedListener {
+        public void onServerSelected(final int position);
     }
 
     @Override
     public void onAttach(final Activity activity) {
         super.onAttach(activity);
-        listener = (OnProductSelectedListener) activity;
+        listener = (OnServerSelectedListener) activity;
     }
 
     @Override
     public View onCreateView(final LayoutInflater inflater, final ViewGroup container, final Bundle savedInstanceState) {
-        final RecyclerView view = (RecyclerView) inflater.inflate(R.layout.recycler_view, container, false);
-        final ActionBarActivity activity = (ActionBarActivity) getActivity();
+        adapter = new AdapterServer(listener, true);
 
+        final RecyclerView view = new RecyclerView(getActivity());
         view.setHasFixedSize(true);
-
-        view.setLayoutManager(new LinearLayoutManager(activity));
-
-        activity.setSupportProgressBarIndeterminateVisibility(true);
-
-        final Bundle arguments = getArguments();
-        final int serverPos;
-        if (arguments != null) {
-            serverPos = arguments.getInt("server_position", 0);
-        } else {
-            serverPos = 0;
-        }
-
-        final Server server = Server.servers.get(serverPos);
-
-        adapter = new AdapterProduct(server.getProducts(), this);
+        view.setLayoutManager(new LinearLayoutManager(getActivity()));
         view.setAdapter(adapter);
-        server.setAdapterProduct(adapter, activity);
 
         return view;
     }
 
-    public void onListItemClick(final int position) {
-        listener.onProductSelected(adapter.getProductIdFromPosition(position));
+    @Override
+    public void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 }

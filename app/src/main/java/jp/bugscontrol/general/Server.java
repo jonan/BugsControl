@@ -18,7 +18,7 @@
 
 package jp.bugscontrol.general;
 
-import android.app.Activity;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
 
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public abstract class Server {
     protected String password;
 
     private AdapterProduct adapter;
-    private Activity activity;
+    private ActionBarActivity activity;
 
     private jp.bugscontrol.db.Server databaseServer = null;
 
@@ -81,11 +81,11 @@ public abstract class Server {
         this.password = password;
     }
 
-    public void setAdapterProduct(final AdapterProduct adapter, final Activity activity) {
+    public void setAdapterProduct(final AdapterProduct adapter, final ActionBarActivity activity) {
         this.adapter = adapter;
         this.activity = activity;
 
-        activity.setProgressBarIndeterminateVisibility(true);
+        activity.setSupportProgressBarIndeterminateVisibility(true);
         loadProducts();
     }
 
@@ -161,6 +161,6 @@ public abstract class Server {
 
     protected void productsListUpdated() {
         adapter.notifyDataSetChanged();
-        activity.setProgressBarIndeterminateVisibility(false);
+        activity.setSupportProgressBarIndeterminateVisibility(false);
     }
 }

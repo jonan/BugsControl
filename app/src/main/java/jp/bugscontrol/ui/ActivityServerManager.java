@@ -18,21 +18,21 @@
 
 package jp.bugscontrol.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import jp.bugscontrol.R;
 
-public class ActivityServerManager extends Activity implements ServerListFragment.OnServerSelectedListener {
+public class ActivityServerManager extends ActionBarActivity implements ServerListFragment.OnServerSelectedListener {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_server_manager);
 
-        getActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
     }
 
     @Override
@@ -57,11 +57,5 @@ public class ActivityServerManager extends Activity implements ServerListFragmen
         final Intent intent = new Intent(this, ActivityRegister.class);
         intent.putExtra("server_position", position);
         startActivity(intent);
-    }
-
-    @Override
-    public boolean onNavigateUp() {
-        finish();
-        return true;
     }
 }

@@ -6,6 +6,4 @@ android:
 
      - platform-tools
 
-     - sys-img-armeabi-v7a-android-15
      - sys-img-armeabi-v7a-android-21
-     - sys-img-x86-android-21
